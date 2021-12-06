@@ -20,8 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class PluginHandler implements Listener {
 
     /** Map for storing handler instances. */
-    protected static final Map<Plugin, Map<Class<? extends PluginHandler>, PluginHandler>> HANDLER_INSTANCES =
-            new ConcurrentHashMap<>();
+    protected static final Map<Plugin, Map<Class<? extends PluginHandler>, PluginHandler>>
+            HANDLER_INSTANCES = new ConcurrentHashMap<>();
     /** The handling plugin */
     protected final Plugin plugin;
 
@@ -35,13 +35,15 @@ public abstract class PluginHandler implements Listener {
     public PluginHandler(Plugin plugin) {
         if (!this.isAllowMultipleInstances()) {
             if (this.isSingleInstanceForAllPlugin()) {
-                for (Map<Class<? extends PluginHandler>, PluginHandler> value : HANDLER_INSTANCES.values()) {
+                for (Map<Class<? extends PluginHandler>, PluginHandler> value :
+                        HANDLER_INSTANCES.values()) {
                     if (value.containsKey(this.getClass()))
                         throw new IllegalStateException(
                                 "Cannot create more than one instance of this handler!");
                 }
             } else {
-                Map<Class<? extends PluginHandler>, PluginHandler> value = HANDLER_INSTANCES.getOrDefault(plugin, null);
+                Map<Class<? extends PluginHandler>, PluginHandler> value =
+                        HANDLER_INSTANCES.getOrDefault(plugin, null);
                 if (value != null && value.containsKey(this.getClass()))
                     throw new IllegalStateException(
                             "Cannot create more than one instance of this handler!");
@@ -49,7 +51,8 @@ public abstract class PluginHandler implements Listener {
         }
 
         this.plugin = plugin;
-        Map<Class<? extends PluginHandler>, PluginHandler> handlers = HANDLER_INSTANCES.getOrDefault(this.plugin, new ConcurrentHashMap<>());
+        Map<Class<? extends PluginHandler>, PluginHandler> handlers =
+                HANDLER_INSTANCES.getOrDefault(this.plugin, new ConcurrentHashMap<>());
         handlers.put(this.getClass(), this);
         PluginHandler.HANDLER_INSTANCES.put(plugin, handlers);
     }
@@ -63,7 +66,8 @@ public abstract class PluginHandler implements Listener {
      * @param clazz Class desired
      * @return Instance of the plugin handle that provided the class
      */
-    public static <T extends PluginHandler> PluginHandler getPluginHandler(Plugin plugin, Class<T> clazz) {
+    public static <T extends PluginHandler> PluginHandler getPluginHandler(
+            Plugin plugin, Class<T> clazz) {
         return HANDLER_INSTANCES.get(plugin).get(clazz);
     }
 
@@ -77,9 +81,9 @@ public abstract class PluginHandler implements Listener {
      * @return Instance of the plugin handle that provided the class
      */
     public static <T extends PluginHandler> PluginHandler getSingletonHandler(Class<T> clazz) {
-        for (Map<Class<? extends PluginHandler>, PluginHandler> value : HANDLER_INSTANCES.values()) {
-            if (value.containsKey(clazz))
-                return value.get(clazz);
+        for (Map<Class<? extends PluginHandler>, PluginHandler> value :
+                HANDLER_INSTANCES.values()) {
+            if (value.containsKey(clazz)) return value.get(clazz);
         }
 
         return null;

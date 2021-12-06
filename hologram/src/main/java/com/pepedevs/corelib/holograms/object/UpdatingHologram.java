@@ -27,28 +27,31 @@ public class UpdatingHologram extends Hologram {
         if (this.task != null && !this.task.isCancelled())
             throw new IllegalStateException("Update already running!");
 
-        this.task = new CancellableWorkload() {
-            long lastExec = System.currentTimeMillis();
+        this.task =
+                new CancellableWorkload() {
+                    long lastExec = System.currentTimeMillis();
 
-            @Override
-            public void compute() {
-                lastExec = System.currentTimeMillis();
-                UpdatingHologram.this.update(UpdatingHologram.this.viewers.stream()
-                        .map(Bukkit::getPlayer)
-                        .filter(Objects::nonNull)
-                        .toArray(Player[]::new));
-            }
+                    @Override
+                    public void compute() {
+                        lastExec = System.currentTimeMillis();
+                        UpdatingHologram.this.update(
+                                UpdatingHologram.this.viewers.stream()
+                                        .map(Bukkit::getPlayer)
+                                        .filter(Objects::nonNull)
+                                        .toArray(Player[]::new));
+                    }
 
-            @Override
-            public boolean shouldExecute() {
-                return !this.isCancelled() && System.currentTimeMillis() - this.lastExec >= UpdatingHologram.this.getSettings().getUpdateInterval();
-            }
-        };
+                    @Override
+                    public boolean shouldExecute() {
+                        return !this.isCancelled()
+                                && System.currentTimeMillis() - this.lastExec
+                                        >= UpdatingHologram.this.getSettings().getUpdateInterval();
+                    }
+                };
         HologramManager.get().getThread().submit(task);
     }
 
     public void stopUpdate() {
         this.task.setCancelled(true);
     }
-
 }

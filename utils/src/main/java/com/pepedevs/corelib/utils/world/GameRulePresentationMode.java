@@ -8,5 +8,4 @@ public enum GameRulePresentationMode {
 
     /** Custom presentation that allows us to create custom rules. */
     METADATA;
-
 }

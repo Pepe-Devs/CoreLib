@@ -54,10 +54,7 @@ public class UpdatingItemMenuHandler extends ItemMenuHandler {
         stopUpdating();
         this.updater_task =
                 SchedulerUtils.runTaskTimer(
-                        this.menu::updateOnlinePlayers,
-                        start_delay,
-                        ticks,
-                        plugin);
+                        this.menu::updateOnlinePlayers, start_delay, ticks, plugin);
     }
 
     /** Stops updating menu */

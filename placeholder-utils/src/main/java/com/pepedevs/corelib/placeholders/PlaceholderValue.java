@@ -76,7 +76,13 @@ public interface PlaceholderValue<T> {
                     string,
                     parser,
                     (str, exc) ->
-                            Bukkit.getLogger().severe("Cannot parse value: '" + str + "' (from '" + string + "')"),
+                            Bukkit.getLogger()
+                                    .severe(
+                                            "Cannot parse value: '"
+                                                    + str
+                                                    + "' (from '"
+                                                    + string
+                                                    + "')"),
                     onError);
         }
         return new FalsePlaceholderValue<>(parsed);
@@ -229,7 +235,5 @@ public interface PlaceholderValue<T> {
         public String getValue() {
             return value;
         }
-
     }
-
 }

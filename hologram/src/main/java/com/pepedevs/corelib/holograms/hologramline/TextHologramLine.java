@@ -13,7 +13,7 @@ public class TextHologramLine extends HologramLine {
     public TextHologramLine(Location location, String content) {
         super(location, HologramLineType.TEXT);
         this.content = content;
-//        this.height = this.getParent().getParent().getSettings().getHeightText();
+        //        this.height = this.getParent().getParent().getSettings().getHeightText();
     }
 
     @Override
@@ -21,16 +21,16 @@ public class TextHologramLine extends HologramLine {
         for (Player player : players) {
             if (this.isVisible(player)) continue;
 
-            PacketUtils.showFakeEntityArmorStand(player, this.getLocation(), this.entityIds[0], true, true, true);
-            PacketUtils.updateFakeEntityCustomName(player, this.parse(this.getContent(), player), this.entityIds[0]);
+            PacketUtils.showFakeEntityArmorStand(
+                    player, this.getLocation(), this.entityIds[0], true, true, true);
+            PacketUtils.updateFakeEntityCustomName(
+                    player, this.parse(this.getContent(), player), this.entityIds[0]);
             this.viewers.add(player.getUniqueId());
         }
     }
 
     @Override
-    public void destroy() {
-
-    }
+    public void destroy() {}
 
     public String getContent() {
         return content;
@@ -39,5 +39,4 @@ public class TextHologramLine extends HologramLine {
     public void setContent(String content) {
         this.content = content;
     }
-
 }

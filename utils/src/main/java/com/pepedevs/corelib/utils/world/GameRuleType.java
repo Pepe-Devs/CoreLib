@@ -549,7 +549,10 @@ public enum GameRuleType {
         } else { // metadata presentation mode
             world.setMetadata(
                     getName(),
-                    new GameRuleMetadata(GameRuleHandler.getSingletonHandler(GameRuleHandler.class).getPlugin(), this, value));
+                    new GameRuleMetadata(
+                            GameRuleHandler.getSingletonHandler(GameRuleHandler.class).getPlugin(),
+                            this,
+                            value));
         }
     }
 }

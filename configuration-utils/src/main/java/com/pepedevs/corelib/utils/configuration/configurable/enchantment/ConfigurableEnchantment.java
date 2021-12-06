@@ -110,5 +110,4 @@ public class ConfigurableEnchantment implements Configurable {
                 && this.getEnchantmentLevel() != null
                 && this.getEnchantmentLevel().intValue() > -1;
     }
-
 }

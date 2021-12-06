@@ -33,14 +33,19 @@ public class HologramManager {
         this.holograms = new ConcurrentHashMap<>();
         this.packetListener = new HologramPacketListener();
         PacketChannelHandler.getInstance(this.handle)
-                .addPacketListener("PacketPlayInUseEntity", PacketListener.Priority.NORMAL, this.packetListener);
+                .addPacketListener(
+                        "PacketPlayInUseEntity",
+                        PacketListener.Priority.NORMAL,
+                        this.packetListener);
         this.hologramListener = new HologramListener(this);
-        this.handle.getServer().getPluginManager().registerEvents(this.hologramListener, this.handle);
+        this.handle
+                .getServer()
+                .getPluginManager()
+                .registerEvents(this.hologramListener, this.handle);
     }
 
     public HologramManager(Plugin plugin) {
-        this(plugin, new TaskQueueHandler("Hologram Thread %d")
-                .newPool(1, 3 * 1000000));
+        this(plugin, new TaskQueueHandler("Hologram Thread %d").newPool(1, 3 * 1000000));
     }
 
     public Map<String, Hologram> getHolograms() {
@@ -84,5 +89,4 @@ public class HologramManager {
     public static HologramManager get() {
         return instance;
     }
-
 }

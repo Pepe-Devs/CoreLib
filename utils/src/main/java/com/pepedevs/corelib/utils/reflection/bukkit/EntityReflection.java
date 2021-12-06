@@ -56,49 +56,131 @@ public class EntityReflection {
 
     static {
         NMSClassResolver nmsClassResolver = new NMSClassResolver();
-        NMS_ENTITY_CLASS = nmsClassResolver.resolveWrapper("Entity", "net.minecraft.world.entity.Entity");
-        ENTITY_HUMAN = nmsClassResolver.resolveWrapper("EntityHuman", "net.minecraft.world.entity.player.EntityHuman");
-        ENTITY_LIVING = nmsClassResolver.resolveWrapper("EntityLiving", "net.minecraft.world.entity.EntityLiving");
-        ENTITY_ARMOR_STAND = nmsClassResolver.resolveWrapper("EntityArmorStand", "net.minecraft.world.entity.decoration.EntityArmorStand");
-        NBT_TAG_COMPOUND = nmsClassResolver.resolveWrapper("NBTTagCompound", "net.minecraft.nbt.NBTTagCompound");
-        DAMAGE_SOURCE = nmsClassResolver.resolveWrapper("DamageSource", "net.minecraft.world.damagesource.DamageSource");
-        PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_DESTROY.getClazz()).resolveWrapper(new Class<?>[]{int[].class});
-        NBT_TAG_COMPOUND_CONSTRUCTOR = new ConstructorResolver(NBT_TAG_COMPOUND.getClazz()).resolveWrapper(new Class[0]);
-        NMS_ENTITY_GET_BOUNDING_BOX = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("getBoundingBox");
-        NMS_ENTITY_GET_HEAD_HEIGHT = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("getHeadHeight");
+        NMS_ENTITY_CLASS =
+                nmsClassResolver.resolveWrapper("Entity", "net.minecraft.world.entity.Entity");
+        ENTITY_HUMAN =
+                nmsClassResolver.resolveWrapper(
+                        "EntityHuman", "net.minecraft.world.entity.player.EntityHuman");
+        ENTITY_LIVING =
+                nmsClassResolver.resolveWrapper(
+                        "EntityLiving", "net.minecraft.world.entity.EntityLiving");
+        ENTITY_ARMOR_STAND =
+                nmsClassResolver.resolveWrapper(
+                        "EntityArmorStand",
+                        "net.minecraft.world.entity.decoration.EntityArmorStand");
+        NBT_TAG_COMPOUND =
+                nmsClassResolver.resolveWrapper(
+                        "NBTTagCompound", "net.minecraft.nbt.NBTTagCompound");
+        DAMAGE_SOURCE =
+                nmsClassResolver.resolveWrapper(
+                        "DamageSource", "net.minecraft.world.damagesource.DamageSource");
+        PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_DESTROY.getClazz())
+                        .resolveWrapper(new Class<?>[] {int[].class});
+        NBT_TAG_COMPOUND_CONSTRUCTOR =
+                new ConstructorResolver(NBT_TAG_COMPOUND.getClazz()).resolveWrapper(new Class[0]);
+        NMS_ENTITY_GET_BOUNDING_BOX =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("getBoundingBox");
+        NMS_ENTITY_GET_HEAD_HEIGHT =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("getHeadHeight");
         NMS_ENTITY_LOC_X = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("locX");
         NMS_ENTITY_LOC_Y = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("locY");
         NMS_ENTITY_LOC_Z = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("locZ");
-        NMS_ENTITY_SET_LOCATION = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("setLocation", double.class, double.class, double.class, float.class, float.class).build());
-        NMS_ENTITY_SET_YAW_PITCH = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("setYawPitch", float.class, float.class).build());
-        NMS_ENTITY_IS_INVISIBLE = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("isInvisible");
-        NMS_ENTITY_SET_INVISIBLE = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("setInvisible", boolean.class).build());
-        NMS_ENTITY_IS_SILENT = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("isSilent", "R", "ad");
-        NMS_ENTITY_SET_SILENT = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("b", boolean.class).with("setSilent", boolean.class).build());
-        NMS_ENTITY_IS_INVULNERABLE = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("isInvulnerable", DAMAGE_SOURCE.getClazz()).build());
-        ENTITY_LIVING_C = new MethodResolver(ENTITY_LIVING.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("c", NBT_TAG_COMPOUND.getClazz()).build());
-        ENTITY_LIVING_F = new MethodResolver(ENTITY_LIVING.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("f", NBT_TAG_COMPOUND.getClazz()).build());
-        NBT_TAG_COMPOUND_SET_INT = new MethodResolver(NBT_TAG_COMPOUND.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("setInt", String.class, int.class).build());
-        NMS_ENTITY_YAW = new FieldResolver(NMS_ENTITY_CLASS.getClazz()).resolveAccessor(
-                ResolverQuery.builder().with("yaw", float.class).with("ay", float.class).build());
-        NMS_ENTITY_PITCH = new FieldResolver(NMS_ENTITY_CLASS.getClazz()).resolveAccessor(
-                ResolverQuery.builder().with("pitch", float.class).with("az", float.class).build());
-        NMS_ENTITY_INVULNERABLE = new FieldResolver(NMS_ENTITY_CLASS.getClazz()).resolveAccessor(
-                ResolverQuery.builder().with("invulnerable", boolean.class).build());
-        ENTITY_ARMOR_STAND_INVULNERABLE = new FieldResolver(ENTITY_ARMOR_STAND.getClazz()).resolveAccessor(
-                ResolverQuery.builder().with("by", boolean.class).with("bz", boolean.class)
-                        .with("bA", boolean.class).with("bG", boolean.class).with("bD", boolean.class)
-                        .with("armorStandInvisible", boolean.class).with("ce", boolean.class)
-                        .with("h", boolean.class).build());
-        DAMAGE_SOURCE_GENERIC = new FieldResolver(DAMAGE_SOURCE.getClazz()).resolveAccessor("GENERIC", "n");
+        NMS_ENTITY_SET_LOCATION =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with(
+                                                "setLocation",
+                                                double.class,
+                                                double.class,
+                                                double.class,
+                                                float.class,
+                                                float.class)
+                                        .build());
+        NMS_ENTITY_SET_YAW_PITCH =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("setYawPitch", float.class, float.class)
+                                        .build());
+        NMS_ENTITY_IS_INVISIBLE =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("isInvisible");
+        NMS_ENTITY_SET_INVISIBLE =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("setInvisible", boolean.class)
+                                        .build());
+        NMS_ENTITY_IS_SILENT =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveWrapper("isSilent", "R", "ad");
+        NMS_ENTITY_SET_SILENT =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("b", boolean.class)
+                                        .with("setSilent", boolean.class)
+                                        .build());
+        NMS_ENTITY_IS_INVULNERABLE =
+                new MethodResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("isInvulnerable", DAMAGE_SOURCE.getClazz())
+                                        .build());
+        ENTITY_LIVING_C =
+                new MethodResolver(ENTITY_LIVING.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("c", NBT_TAG_COMPOUND.getClazz())
+                                        .build());
+        ENTITY_LIVING_F =
+                new MethodResolver(ENTITY_LIVING.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("f", NBT_TAG_COMPOUND.getClazz())
+                                        .build());
+        NBT_TAG_COMPOUND_SET_INT =
+                new MethodResolver(NBT_TAG_COMPOUND.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("setInt", String.class, int.class)
+                                        .build());
+        NMS_ENTITY_YAW =
+                new FieldResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveAccessor(
+                                ResolverQuery.builder()
+                                        .with("yaw", float.class)
+                                        .with("ay", float.class)
+                                        .build());
+        NMS_ENTITY_PITCH =
+                new FieldResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveAccessor(
+                                ResolverQuery.builder()
+                                        .with("pitch", float.class)
+                                        .with("az", float.class)
+                                        .build());
+        NMS_ENTITY_INVULNERABLE =
+                new FieldResolver(NMS_ENTITY_CLASS.getClazz())
+                        .resolveAccessor(
+                                ResolverQuery.builder()
+                                        .with("invulnerable", boolean.class)
+                                        .build());
+        ENTITY_ARMOR_STAND_INVULNERABLE =
+                new FieldResolver(ENTITY_ARMOR_STAND.getClazz())
+                        .resolveAccessor(
+                                ResolverQuery.builder()
+                                        .with("by", boolean.class)
+                                        .with("bz", boolean.class)
+                                        .with("bA", boolean.class)
+                                        .with("bG", boolean.class)
+                                        .with("bD", boolean.class)
+                                        .with("armorStandInvisible", boolean.class)
+                                        .with("ce", boolean.class)
+                                        .with("h", boolean.class)
+                                        .build());
+        DAMAGE_SOURCE_GENERIC =
+                new FieldResolver(DAMAGE_SOURCE.getClazz()).resolveAccessor("GENERIC", "n");
     }
 
     /**
@@ -158,7 +240,8 @@ public class EntityReflection {
      * @param targets Players that will not can see the entity
      */
     public static void setInvisibleTo(Entity entity, Player... targets) {
-        Object packet = PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR.newInstance(entity.getEntityId());
+        Object packet =
+                PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR.newInstance(entity.getEntityId());
         for (Player target : targets) {
             if (target.isOnline()) {
                 BukkitReflection.sendPacket(target, packet);
@@ -438,5 +521,4 @@ public class EntityReflection {
     public static void setInvulnerable(ArmorStand stand, boolean invulnerable) {
         ENTITY_ARMOR_STAND_INVULNERABLE.set(BukkitReflection.getHandle(stand), !invulnerable);
     }
-
 }

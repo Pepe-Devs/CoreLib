@@ -8,7 +8,8 @@ import java.util.function.BiFunction;
 public class HologramSettings {
 
     private String defaultText = " ";
-    private BiFunction<String, Player, String> messageParser = (s, player) -> StringUtils.translateAlternateColorCodes(s);
+    private BiFunction<String, Player, String> messageParser =
+            (s, player) -> StringUtils.translateAlternateColorCodes(s);
     private boolean downOrigin = false;
 
     private double heightText = 0.3;
@@ -99,5 +100,4 @@ public class HologramSettings {
     public void setUpdateInterval(int updateInterval) {
         this.updateInterval = updateInterval;
     }
-
 }

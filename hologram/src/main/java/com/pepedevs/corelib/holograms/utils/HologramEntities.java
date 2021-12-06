@@ -16,40 +16,40 @@ public final class HologramEntities {
             ENTITY_TYPE_ALIASES.put(entityType.name().replace("_", "").toLowerCase(), entityType);
         }
 
-        ENTITY_TYPE_BLACKLIST = Sets.newHashSet(
-                "ENDER_DRAGON",
-                "ARMOR_STAND",
-                "PRIMED_TNT",
-                "AREA_EFFECT_CLOUD",
-                "FISHING_HOOK",
-                "GIANT",
-                "EVOKER_FANGS",
-                "EXPERIENCE_ORB",
-                "LEASH_HITCH",
-                "DROPPED_ITEM",
-                "ITEM_FRAME",
-                "GLOW_ITEM_FRAME",
-                "THROWN_EXP_BOTTLE",
-                "SPLASH_POTION",
-                "SPECTRAL_ARROW",
-                "LLAMA_SPIT",
-                "MARKER",
-                "LIGHTNING",
-                "TRIDENT",
-                "PAINTING",
-                "PLAYER",
-                "MINECART",
-                "MINECART_CHEST",
-                "MINECART_COMMAND",
-                "MINECART_FURNACE",
-                "MINECART_HOPPER",
-                "MINECART_MOB_SPAWNER",
-                "MINECART_TNT",
-                "COMPLEX_PART",
-                "WEATHER",
-                "TIPPED_ARROW",
-                "UNKNOWN"
-        );
+        ENTITY_TYPE_BLACKLIST =
+                Sets.newHashSet(
+                        "ENDER_DRAGON",
+                        "ARMOR_STAND",
+                        "PRIMED_TNT",
+                        "AREA_EFFECT_CLOUD",
+                        "FISHING_HOOK",
+                        "GIANT",
+                        "EVOKER_FANGS",
+                        "EXPERIENCE_ORB",
+                        "LEASH_HITCH",
+                        "DROPPED_ITEM",
+                        "ITEM_FRAME",
+                        "GLOW_ITEM_FRAME",
+                        "THROWN_EXP_BOTTLE",
+                        "SPLASH_POTION",
+                        "SPECTRAL_ARROW",
+                        "LLAMA_SPIT",
+                        "MARKER",
+                        "LIGHTNING",
+                        "TRIDENT",
+                        "PAINTING",
+                        "PLAYER",
+                        "MINECART",
+                        "MINECART_CHEST",
+                        "MINECART_COMMAND",
+                        "MINECART_FURNACE",
+                        "MINECART_HOPPER",
+                        "MINECART_MOB_SPAWNER",
+                        "MINECART_TNT",
+                        "COMPLEX_PART",
+                        "WEATHER",
+                        "TIPPED_ARROW",
+                        "UNKNOWN");
     }
 
     public static List<EntityType> getAllowedEntityTypes() {
@@ -76,5 +76,4 @@ public final class HologramEntities {
         }
         return entityType;
     }
-
 }

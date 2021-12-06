@@ -181,7 +181,8 @@ public abstract class Plugin extends JavaPlugin {
      *     file.
      */
     public void saveResource(String resource_path, File out_directory, boolean replace) {
-        URL url = this.getClassLoader().getResource(resource_path = resource_path.replace('\\', '/'));
+        URL url =
+                this.getClassLoader().getResource(resource_path = resource_path.replace('\\', '/'));
         if (url != null) {
             File out =
                     new File(
@@ -194,7 +195,8 @@ public abstract class Plugin extends JavaPlugin {
                 try {
                     FileUtils.copyURLToFile(url, out);
                 } catch (IOException ex) {
-                    this.getLogger().severe("Couldn't save resource " + resource_path + " to " + out);
+                    this.getLogger()
+                            .severe("Couldn't save resource " + resource_path + " to " + out);
                     ex.printStackTrace();
                 }
             }

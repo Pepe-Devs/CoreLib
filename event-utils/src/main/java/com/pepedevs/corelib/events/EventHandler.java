@@ -12,22 +12,29 @@ import java.util.function.Consumer;
 
 public interface EventHandler extends Listener, EventExecutor {
 
-    static <T extends Event> EventHandler listen(Plugin plugin, Class<T> type, Consumer<T> listener) {
+    static <T extends Event> EventHandler listen(
+            Plugin plugin, Class<T> type, Consumer<T> listener) {
         return listen(plugin, type, EventPriority.NORMAL, listener);
     }
 
-    static <T extends Event> EventHandler listen(Plugin plugin, Class<T> type, EventPriority priority, Consumer<T> listener) {
+    static <T extends Event> EventHandler listen(
+            Plugin plugin, Class<T> type, EventPriority priority, Consumer<T> listener) {
         return listen(plugin, type, priority, listener, false);
     }
 
-    static <T extends Event> EventHandler listen(Plugin plugin, Class<T> type, EventPriority priority, Consumer<T> listener, boolean ignoredCancelled) {
+    static <T extends Event> EventHandler listen(
+            Plugin plugin,
+            Class<T> type,
+            EventPriority priority,
+            Consumer<T> listener,
+            boolean ignoredCancelled) {
         final EventHandler events = ($, event) -> listener.accept(type.cast(event));
-        Bukkit.getPluginManager().registerEvent(type, events, priority, events, plugin, ignoredCancelled);
+        Bukkit.getPluginManager()
+                .registerEvent(type, events, priority, events, plugin, ignoredCancelled);
         return events;
     }
 
     default void unregister() {
         HandlerList.unregisterAll(this);
     }
-
 }

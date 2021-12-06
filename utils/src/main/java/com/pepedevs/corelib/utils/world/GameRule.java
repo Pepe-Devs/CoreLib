@@ -34,9 +34,7 @@ public class GameRule implements Validable {
         this.value = value;
         this.parents = new HashSet<>();
         this.parents.addAll(
-                Arrays.stream(parents)
-                        .filter(GameRule::isValid)
-                        .collect(Collectors.toSet()));
+                Arrays.stream(parents).filter(GameRule::isValid).collect(Collectors.toSet()));
     }
 
     /**
@@ -90,5 +88,4 @@ public class GameRule implements Validable {
     public boolean isValid() {
         return getType() != null && getValue() != null && getType().isSameDataType(getValue());
     }
-
 }

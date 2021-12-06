@@ -45,8 +45,7 @@ public final class PacketUtils {
 
     private static final FieldAccessor ENTITY_COUNTER_FIELD;
 
-    private PacketUtils() {
-    }
+    private PacketUtils() {}
 
     public static int getFreeEntityId() {
         int entityCount = ENTITY_COUNTER_FIELD.get(null);
@@ -54,14 +53,16 @@ public final class PacketUtils {
         return entityCount;
     }
 
-    public static void showFakeEntity(Player player, Location location, EntityType entityType, int entityId) {
+    public static void showFakeEntity(
+            Player player, Location location, EntityType entityType, int entityId) {
         Validate.notNull(player);
         Validate.notNull(location);
 
         PacketUtils.showFakeEntity(player, location, entityType.getTypeId(), entityId);
     }
 
-    public static void showFakeEntity(Player player, Location location, int entityTypeId, int entityId) {
+    public static void showFakeEntity(
+            Player player, Location location, int entityTypeId, int entityId) {
         Validate.notNull(player);
         Validate.notNull(location);
 
@@ -69,11 +70,20 @@ public final class PacketUtils {
         if (spawn == null) return;
         try {
             FieldReflection.setValue(spawn, "a", entityId);
-            FieldReflection.setValue(spawn, "b", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getX() * 32.0D));
-            FieldReflection.setValue(spawn, "c", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getY() * 32.0D));
-            FieldReflection.setValue(spawn, "d", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getZ() * 32.0D));
-            FieldReflection.setValue(spawn, "h", MATH_HELPER_D_METHOD.invoke(null, location.getPitch() * 256.0F / 360.0F));
-            FieldReflection.setValue(spawn, "i", MATH_HELPER_D_METHOD.invoke(null, location.getYaw() * 256.0F / 360.0F));
+            FieldReflection.setValue(
+                    spawn, "b", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getX() * 32.0D));
+            FieldReflection.setValue(
+                    spawn, "c", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getY() * 32.0D));
+            FieldReflection.setValue(
+                    spawn, "d", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getZ() * 32.0D));
+            FieldReflection.setValue(
+                    spawn,
+                    "h",
+                    MATH_HELPER_D_METHOD.invoke(null, location.getPitch() * 256.0F / 360.0F));
+            FieldReflection.setValue(
+                    spawn,
+                    "i",
+                    MATH_HELPER_D_METHOD.invoke(null, location.getYaw() * 256.0F / 360.0F));
             FieldReflection.setValue(spawn, "j", entityTypeId);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -81,31 +91,43 @@ public final class PacketUtils {
         BukkitReflection.sendPacket(player, spawn);
     }
 
-    public static void showFakeEntityLiving(Player player, Location location, EntityType entityType, int entityId) {
+    public static void showFakeEntityLiving(
+            Player player, Location location, EntityType entityType, int entityId) {
         Validate.notNull(player);
         Validate.notNull(location);
 
-        Object dataWatcher = DATA_WATCHER_CONSTRUCTOR.newInstance(EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
+        Object dataWatcher =
+                DATA_WATCHER_CONSTRUCTOR.newInstance(
+                        EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
         DATA_WATCHER_A_METHOD.invoke(dataWatcher, 15, (byte) 0);
-        PacketUtils.showFakeEntityLiving(player, location, entityType.getTypeId(), entityId, dataWatcher);
+        PacketUtils.showFakeEntityLiving(
+                player, location, entityType.getTypeId(), entityId, dataWatcher);
     }
 
-    public static void showFakeEntityLiving(Player player, Location location, int entityTypeId, int entityId, Object dataWatcher) {
+    public static void showFakeEntityLiving(
+            Player player, Location location, int entityTypeId, int entityId, Object dataWatcher) {
         Validate.notNull(player);
         Validate.notNull(location);
-        if (dataWatcher == null || !DATA_WATCHER_CLASS.getClazz().isAssignableFrom(dataWatcher.getClass())) return;
+        if (dataWatcher == null
+                || !DATA_WATCHER_CLASS.getClazz().isAssignableFrom(dataWatcher.getClass())) return;
 
         Object spawn = PACKET_SPAWN_ENTITY_LIVING_CONSTRUCTOR.newInstance();
         if (spawn == null) return;
         try {
             FieldReflection.setValue(spawn, "a", entityId);
             FieldReflection.setValue(spawn, "b", entityTypeId);
-            FieldReflection.setValue(spawn, "c", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getX() * 32.0D));
-            FieldReflection.setValue(spawn, "d", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getY() * 32.0D));
-            FieldReflection.setValue(spawn, "e", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getZ() * 32.0D));
-            FieldReflection.setValue(spawn, "i", (byte) ((int) (location.getYaw() * 256.0F / 360.0F)));
-            FieldReflection.setValue(spawn, "j", (byte) ((int) (location.getPitch() * 256.0F / 360.0F)));
-            FieldReflection.setValue(spawn, "k", (byte) ((int) (location.getYaw() * 256.0F / 360.0F)));
+            FieldReflection.setValue(
+                    spawn, "c", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getX() * 32.0D));
+            FieldReflection.setValue(
+                    spawn, "d", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getY() * 32.0D));
+            FieldReflection.setValue(
+                    spawn, "e", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getZ() * 32.0D));
+            FieldReflection.setValue(
+                    spawn, "i", (byte) ((int) (location.getYaw() * 256.0F / 360.0F)));
+            FieldReflection.setValue(
+                    spawn, "j", (byte) ((int) (location.getPitch() * 256.0F / 360.0F)));
+            FieldReflection.setValue(
+                    spawn, "k", (byte) ((int) (location.getYaw() * 256.0F / 360.0F)));
             FieldReflection.setValue(spawn, "l", dataWatcher);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -113,8 +135,16 @@ public final class PacketUtils {
         BukkitReflection.sendPacket(player, spawn);
     }
 
-    public static void showFakeEntityArmorStand(Player player, Location location, int entityId, boolean invisible, boolean small, boolean clickable) {
-        Object dataWatcher = DATA_WATCHER_CONSTRUCTOR.newInstance(EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
+    public static void showFakeEntityArmorStand(
+            Player player,
+            Location location,
+            int entityId,
+            boolean invisible,
+            boolean small,
+            boolean clickable) {
+        Object dataWatcher =
+                DATA_WATCHER_CONSTRUCTOR.newInstance(
+                        EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
         DATA_WATCHER_A_METHOD.invoke(dataWatcher, 0, (byte) (invisible ? 0x20 : 0x00)); // Invisible
         byte data = 0x08;
         if (small) data += 0x01;
@@ -123,17 +153,22 @@ public final class PacketUtils {
         PacketUtils.showFakeEntityLiving(player, location, 30, entityId, dataWatcher);
     }
 
-    public static void showFakeEntityItem(Player player, Location location, ItemStack itemStack, int entityId) {
+    public static void showFakeEntityItem(
+            Player player, Location location, ItemStack itemStack, int entityId) {
         Validate.notNull(player);
         Validate.notNull(location);
         Validate.notNull(itemStack);
 
         Object nmsItemStack = CRAFT_ITEM_NMS_COPY_METHOD.invoke(null, itemStack);
-        Object dataWatcher = DATA_WATCHER_CONSTRUCTOR.newInstance(EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
+        Object dataWatcher =
+                DATA_WATCHER_CONSTRUCTOR.newInstance(
+                        EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
         if (nmsItemStack == null || dataWatcher == null) return;
         DATA_WATCHER_A_METHOD.invoke(dataWatcher, 10, nmsItemStack);
         PacketUtils.showFakeEntity(player, location, 2, entityId);
-        BukkitReflection.sendPacket(player, PACKET_ENTITY_METADATA_CONSTRUCTOR.newInstance(entityId, dataWatcher, true));
+        BukkitReflection.sendPacket(
+                player,
+                PACKET_ENTITY_METADATA_CONSTRUCTOR.newInstance(entityId, dataWatcher, true));
         PacketUtils.teleportFakeEntity(player, location, entityId);
     }
 
@@ -141,10 +176,17 @@ public final class PacketUtils {
         Validate.notNull(player);
         Validate.notNull(name);
 
-        Object dataWatcher = DATA_WATCHER_CONSTRUCTOR.newInstance(EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
+        Object dataWatcher =
+                DATA_WATCHER_CONSTRUCTOR.newInstance(
+                        EntityReflection.NMS_ENTITY_CLASS.getClazz().cast(null));
         DATA_WATCHER_A_METHOD.invoke(dataWatcher, 2, name); // Custom Name
-        DATA_WATCHER_A_METHOD.invoke(dataWatcher, 3, (byte) (ChatColor.stripColor(name).isEmpty() ? 0 : 1)); // Custom Name Visible
-        BukkitReflection.sendPacket(player, PACKET_ENTITY_METADATA_CONSTRUCTOR.newInstance(entityId, dataWatcher, true));
+        DATA_WATCHER_A_METHOD.invoke(
+                dataWatcher,
+                3,
+                (byte) (ChatColor.stripColor(name).isEmpty() ? 0 : 1)); // Custom Name Visible
+        BukkitReflection.sendPacket(
+                player,
+                PACKET_ENTITY_METADATA_CONSTRUCTOR.newInstance(entityId, dataWatcher, true));
     }
 
     public static void teleportFakeEntity(Player player, Location location, int entityId) {
@@ -155,11 +197,16 @@ public final class PacketUtils {
         if (teleport == null) return;
         try {
             FieldReflection.setValue(teleport, "a", entityId);
-            FieldReflection.setValue(teleport, "b", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getX() * 32.0D));
-            FieldReflection.setValue(teleport, "c", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getY() * 32.0D));
-            FieldReflection.setValue(teleport, "d", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getZ() * 32.0D));
-            FieldReflection.setValue(teleport, "e", (byte) ((int) (location.getYaw() * 256.0F / 360.0F)));
-            FieldReflection.setValue(teleport, "f", (byte) ((int) (location.getPitch() * 256.0F / 360.0F)));
+            FieldReflection.setValue(
+                    teleport, "b", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getX() * 32.0D));
+            FieldReflection.setValue(
+                    teleport, "c", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getY() * 32.0D));
+            FieldReflection.setValue(
+                    teleport, "d", MATH_HELPER_FLOOR_METHOD.invoke(null, location.getZ() * 32.0D));
+            FieldReflection.setValue(
+                    teleport, "e", (byte) ((int) (location.getYaw() * 256.0F / 360.0F)));
+            FieldReflection.setValue(
+                    teleport, "f", (byte) ((int) (location.getPitch() * 256.0F / 360.0F)));
             FieldReflection.setValue(teleport, "g", true);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -196,41 +243,69 @@ public final class PacketUtils {
 
     public static void hideFakeEntities(Player player, int... entityIds) {
         Validate.notNull(player);
-        BukkitReflection.sendPacket(player, PACKET_ENTITY_DESTROY_CONSTRUCTOR.newInstance((Object) entityIds));
+        BukkitReflection.sendPacket(
+                player, PACKET_ENTITY_DESTROY_CONSTRUCTOR.newInstance((Object) entityIds));
     }
 
     static {
         NMSClassResolver nmsClassResolver = new NMSClassResolver();
         CraftClassResolver craftClassResolver = new CraftClassResolver();
-        ClassWrapper<?> craftItemStack = craftClassResolver.resolveWrapper("inventory.CraftItemStack");
-        ITEM_STACK_CLASS = nmsClassResolver.resolveWrapper("ItemStack", "net.minecraft.world.item.ItemStack");
-        CRAFT_ITEM_NMS_COPY_METHOD = new MethodResolver(craftItemStack.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("asNMSCopy", ItemStack.class).build());
+        ClassWrapper<?> craftItemStack =
+                craftClassResolver.resolveWrapper("inventory.CraftItemStack");
+        ITEM_STACK_CLASS =
+                nmsClassResolver.resolveWrapper("ItemStack", "net.minecraft.world.item.ItemStack");
+        CRAFT_ITEM_NMS_COPY_METHOD =
+                new MethodResolver(craftItemStack.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder().with("asNMSCopy", ItemStack.class).build());
         // DATA WATCHER
         DATA_WATCHER_CLASS = nmsClassResolver.resolveWrapper("DataWatcher");
-        DATA_WATCHER_CONSTRUCTOR = new ConstructorResolver(DATA_WATCHER_CLASS.getClazz())
-                .resolveWrapper(new Class[]{EntityReflection.NMS_ENTITY_CLASS.getClazz()});
-        DATA_WATCHER_A_METHOD = new MethodResolver(DATA_WATCHER_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("a", int.class, Object.class).build());
+        DATA_WATCHER_CONSTRUCTOR =
+                new ConstructorResolver(DATA_WATCHER_CLASS.getClazz())
+                        .resolveWrapper(new Class[] {EntityReflection.NMS_ENTITY_CLASS.getClazz()});
+        DATA_WATCHER_A_METHOD =
+                new MethodResolver(DATA_WATCHER_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder().with("a", int.class, Object.class).build());
         // MATH HELPER
         MATH_HELPER_CLASS = nmsClassResolver.resolveWrapper("MathHelper");
-        MATH_HELPER_FLOOR_METHOD = new MethodResolver(MATH_HELPER_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("floor", double.class).build());
-        MATH_HELPER_D_METHOD = new MethodResolver(MATH_HELPER_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("d", float.class).build());
+        MATH_HELPER_FLOOR_METHOD =
+                new MethodResolver(MATH_HELPER_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder().with("floor", double.class).build());
+        MATH_HELPER_D_METHOD =
+                new MethodResolver(MATH_HELPER_CLASS.getClazz())
+                        .resolveWrapper(ResolverQuery.builder().with("d", float.class).build());
         // PACKETS
-        PACKET_SPAWN_ENTITY_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SPAWN_ENTITY.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_SPAWN_ENTITY_LIVING_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SPAWN_ENTITY_LIVING.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_ENTITY_METADATA_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_METADATA.getClazz())
-                .resolveWrapper(new Class[]{int.class, DATA_WATCHER_CLASS.getClazz(), boolean.class});
-        PACKET_ENTITY_TELEPORT_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_TELEPORT.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_ATTACH_ENTITY_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ATTACH_ENTITY.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_ENTITY_EQUIPMENT_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_EQUIPMENT.getClazz())
-                .resolveWrapper(new Class[]{int.class, int.class, ITEM_STACK_CLASS.getClazz()});
-        PACKET_ENTITY_DESTROY_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_DESTROY.getClazz())
-                .resolveWrapper(new Class[]{int[].class});
+        PACKET_SPAWN_ENTITY_CONSTRUCTOR =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SPAWN_ENTITY.getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_SPAWN_ENTITY_LIVING_CONSTRUCTOR =
+                new ConstructorResolver(
+                                PacketConstant.PACKET_PLAY_OUT_SPAWN_ENTITY_LIVING.getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_ENTITY_METADATA_CONSTRUCTOR =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_METADATA.getClazz())
+                        .resolveWrapper(
+                                new Class[] {
+                                    int.class, DATA_WATCHER_CLASS.getClazz(), boolean.class
+                                });
+        PACKET_ENTITY_TELEPORT_CONSTRUCTOR =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_TELEPORT.getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_ATTACH_ENTITY_CONSTRUCTOR =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ATTACH_ENTITY.getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_ENTITY_EQUIPMENT_CONSTRUCTOR =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_EQUIPMENT.getClazz())
+                        .resolveWrapper(
+                                new Class[] {int.class, int.class, ITEM_STACK_CLASS.getClazz()});
+        PACKET_ENTITY_DESTROY_CONSTRUCTOR =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_DESTROY.getClazz())
+                        .resolveWrapper(new Class[] {int[].class});
 
-        ENTITY_COUNTER_FIELD = new FieldResolver(EntityReflection.NMS_ENTITY_CLASS.getClazz()).resolveAccessor("entityCount");
+        ENTITY_COUNTER_FIELD =
+                new FieldResolver(EntityReflection.NMS_ENTITY_CLASS.getClazz())
+                        .resolveAccessor("entityCount");
     }
-
 }

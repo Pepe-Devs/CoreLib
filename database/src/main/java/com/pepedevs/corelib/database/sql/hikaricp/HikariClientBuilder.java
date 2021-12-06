@@ -69,12 +69,7 @@ public class HikariClientBuilder {
 
         this.config.setJdbcUrl(
                 String.format(
-                        URL_FORMAT,
-                        this.host,
-                        this.port,
-                        this.database,
-                        this.reconnect,
-                        this.ssl));
+                        URL_FORMAT, this.host, this.port, this.database, this.reconnect, this.ssl));
         this.config.setUsername(this.username);
         this.config.setPassword(this.password);
     }

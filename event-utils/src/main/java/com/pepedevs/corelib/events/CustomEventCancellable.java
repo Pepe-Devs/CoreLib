@@ -17,5 +17,4 @@ public abstract class CustomEventCancellable extends CustomEvent implements Canc
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
-
 }

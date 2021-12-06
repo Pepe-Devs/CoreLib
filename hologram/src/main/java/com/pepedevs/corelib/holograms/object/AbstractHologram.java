@@ -2,7 +2,6 @@ package com.pepedevs.corelib.holograms.object;
 
 import com.pepedevs.corelib.holograms.action.ClickType;
 import com.pepedevs.corelib.holograms.action.HologramClickAction;
-import com.pepedevs.corelib.utils.entity.UUIDPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -64,5 +63,4 @@ public abstract class AbstractHologram {
     public Location getLocation() {
         return this.location;
     }
-
 }

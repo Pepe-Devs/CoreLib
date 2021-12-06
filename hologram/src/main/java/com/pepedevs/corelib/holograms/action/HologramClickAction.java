@@ -6,5 +6,4 @@ import org.bukkit.entity.Player;
 public interface HologramClickAction {
 
     void onClick(Player player, ClickType clickType);
-
 }

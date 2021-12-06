@@ -7,8 +7,9 @@ import com.pepedevs.corelib.utils.reflection.resolver.FieldResolver;
 /** Class for getting the current tips per second of the running server. */
 public class TpsUtils {
 
-    public static final FieldAccessor RECENT_TPS = new FieldResolver(BukkitReflection.MINECRAFT_SERVER.getClazz())
-            .resolveAccessor("recentTps");
+    public static final FieldAccessor RECENT_TPS =
+            new FieldResolver(BukkitReflection.MINECRAFT_SERVER.getClazz())
+                    .resolveAccessor("recentTps");
 
     /**
      * Gets current server ticks per second.
@@ -23,5 +24,4 @@ public class TpsUtils {
 
         return tps[0];
     }
-
 }

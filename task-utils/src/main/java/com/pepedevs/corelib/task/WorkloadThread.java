@@ -18,7 +18,8 @@ public class WorkloadThread implements Runnable, Task {
     private final int workThreadId;
     private RepeatingThread thread;
 
-    WorkloadThread(final TaskQueueHandler handler, final int workThreadId, final long maxNanosPerTick) {
+    WorkloadThread(
+            final TaskQueueHandler handler, final int workThreadId, final long maxNanosPerTick) {
         this.handler = handler;
         this.workThreadId = workThreadId;
         this.maxNanosPerTick = maxNanosPerTick;
@@ -95,5 +96,4 @@ public class WorkloadThread implements Runnable, Task {
     public boolean isRunning() {
         return this.thread != null && !this.isCancelled();
     }
-
 }

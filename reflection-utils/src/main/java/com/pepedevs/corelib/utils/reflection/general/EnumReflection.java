@@ -29,7 +29,8 @@ public class EnumReflection {
         }
     }
 
-    public static <T extends Enum<T>> T getEnumConstant(Class<T> enumClass, String enumName, int fallbackOrdinal) {
+    public static <T extends Enum<T>> T getEnumConstant(
+            Class<T> enumClass, String enumName, int fallbackOrdinal) {
         try {
             return Enum.valueOf(enumClass, enumName);
         } catch (IllegalArgumentException e) {

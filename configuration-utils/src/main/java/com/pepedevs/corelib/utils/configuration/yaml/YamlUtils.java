@@ -19,8 +19,8 @@ public class YamlUtils {
      *
      * <p>Some implementations may have limitations on what you may store. See their individual
      * javadocs for details. No implementations should allow you to store {@link Configuration} or
-     * {@link ConfigurationSection}, please use {@link
-     * ConfigurationSection#createSection(String)} for that.
+     * {@link ConfigurationSection}, please use {@link ConfigurationSection#createSection(String)}
+     * for that.
      *
      * <p>
      *
@@ -47,8 +47,8 @@ public class YamlUtils {
      *
      * <p>Some implementations may have limitations on what you may store. See their individual
      * javadocs for details. No implementations should allow you to store {@link Configuration} or
-     * {@link ConfigurationSection}, please use {@link
-     * ConfigurationSection#createSection(String)} for that.
+     * {@link ConfigurationSection}, please use {@link ConfigurationSection#createSection(String)}
+     * for that.
      *
      * <p>
      *

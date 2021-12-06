@@ -26,7 +26,8 @@ public class ActionItemHandler extends PluginHandler {
 
         // registering executors
         for (EventPriority priority : EventPriority.values()) {
-            EventHandler.listen(this.getPlugin(),
+            EventHandler.listen(
+                    this.getPlugin(),
                     PlayerInteractEvent.class,
                     priority,
                     new Consumer<PlayerInteractEvent>() {
@@ -38,10 +39,7 @@ public class ActionItemHandler extends PluginHandler {
                             if (item != null && event.getAction() != Action.PHYSICAL) {
                                 ActionItem action_item =
                                         ACTION_ITEMS.stream()
-                                                .filter(
-                                                        value ->
-                                                                value.getPriority()
-                                                                        == priority)
+                                                .filter(value -> value.getPriority() == priority)
                                                 .filter(value -> value.isThis(item))
                                                 .findAny()
                                                 .orElse(null);
@@ -50,38 +48,33 @@ public class ActionItemHandler extends PluginHandler {
                                     ActionItem.EnumAction action_type;
                                     boolean sneaking = player.isSneaking();
                                     boolean sprinting = player.isSprinting();
-                                    boolean left_click =
-                                            EventUtils.isLeftClick(event.getAction());
+                                    boolean left_click = EventUtils.isLeftClick(event.getAction());
                                     boolean right_click =
                                             EventUtils.isRightClick(event.getAction());
 
                                     if (sneaking) {
                                         action_type =
                                                 left_click
-                                                        ? ActionItem.EnumAction
-                                                        .LEFT_CLICK_SNEAKING
+                                                        ? ActionItem.EnumAction.LEFT_CLICK_SNEAKING
                                                         : (right_click
-                                                        ? ActionItem.EnumAction
-                                                        .RIGHT_CLICK_SNEAKING
-                                                        : null);
+                                                                ? ActionItem.EnumAction
+                                                                        .RIGHT_CLICK_SNEAKING
+                                                                : null);
                                     } else if (sprinting) {
                                         action_type =
                                                 left_click
-                                                        ? ActionItem.EnumAction
-                                                        .LEFT_CLICK_SPRINTING
+                                                        ? ActionItem.EnumAction.LEFT_CLICK_SPRINTING
                                                         : (right_click
-                                                        ? ActionItem.EnumAction
-                                                        .RIGHT_CLICK_SPRINTING
-                                                        : null);
+                                                                ? ActionItem.EnumAction
+                                                                        .RIGHT_CLICK_SPRINTING
+                                                                : null);
                                     } else {
                                         action_type =
                                                 left_click
-                                                        ? ActionItem.EnumAction
-                                                        .LEFT_CLICK
+                                                        ? ActionItem.EnumAction.LEFT_CLICK
                                                         : (right_click
-                                                        ? ActionItem.EnumAction
-                                                        .RIGHT_CLICK
-                                                        : null);
+                                                                ? ActionItem.EnumAction.RIGHT_CLICK
+                                                                : null);
                                     }
 
                                     if (action_type != null) {
@@ -131,5 +124,4 @@ public class ActionItemHandler extends PluginHandler {
     protected boolean isSingleInstanceForAllPlugin() {
         return false;
     }
-
 }

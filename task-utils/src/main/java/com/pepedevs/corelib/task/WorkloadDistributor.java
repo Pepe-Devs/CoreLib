@@ -25,8 +25,7 @@ public class WorkloadDistributor implements Task {
     protected WorkloadThread createThread(final long nanoPerTick) {
         final WorkloadThread thread = new WorkloadThread(this.handler, ++this.nextId, nanoPerTick);
         this.tasks.put(this.nextId, thread);
-        if (this.running)
-            thread.init(this.threadFactory);
+        if (this.running) thread.init(this.threadFactory);
         return thread;
     }
 
@@ -51,8 +50,7 @@ public class WorkloadDistributor implements Task {
     @Override
     public void cancel() {
         for (WorkloadThread value : this.tasks.values()) {
-            if (!value.isCancelled())
-                value.cancel();
+            if (!value.isCancelled()) value.cancel();
         }
         this.running = false;
         this.handler.queueingPool.remove(this.getID());
@@ -83,5 +81,4 @@ public class WorkloadDistributor implements Task {
     public void submit(Workload workload) {
         this.getLeastWorker().submit(workload);
     }
-
 }

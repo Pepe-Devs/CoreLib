@@ -35,8 +35,7 @@ public class SQLite extends SQLDatabase {
     public SQLite(File db, boolean reconnect) {
         super(DatabaseType.SQLite);
 
-        if (db == null)
-            throw new IllegalArgumentException("The database file cannot be null!");
+        if (db == null) throw new IllegalArgumentException("The database file cannot be null!");
 
         this.db = db;
         this.reconnect = reconnect;

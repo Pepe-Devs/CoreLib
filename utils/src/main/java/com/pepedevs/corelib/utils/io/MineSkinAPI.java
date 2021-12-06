@@ -16,18 +16,24 @@ public class MineSkinAPI {
     public static String[] getTextureProperties(String id) {
 
         try {
-            //Open http connection
-            HttpURLConnection textureConnection = (HttpURLConnection) new URL(String.format(URL_FORMAT, id)).openConnection();
+            // Open http connection
+            HttpURLConnection textureConnection =
+                    (HttpURLConnection) new URL(String.format(URL_FORMAT, id)).openConnection();
             textureConnection.setRequestProperty("User-Agent", "JustixDevelopment/APIClient");
             textureConnection.setRequestMethod("GET");
             textureConnection.setReadTimeout(5000);
 
-            //Parse response
-            BufferedReader reader = new BufferedReader(new InputStreamReader(textureConnection.getInputStream()));
+            // Parse response
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(textureConnection.getInputStream()));
             JsonObject jsonObject = new JsonParser().parse(reader).getAsJsonObject();
-            JsonObject texture = jsonObject.get("data").getAsJsonObject().get("texture").getAsJsonObject();
+            JsonObject texture =
+                    jsonObject.get("data").getAsJsonObject().get("texture").getAsJsonObject();
 
-            String[] property = new String[]{texture.get("value").getAsString(), texture.get("signature").getAsString()};
+            String[] property =
+                    new String[] {
+                        texture.get("value").getAsString(), texture.get("signature").getAsString()
+                    };
             reader.close();
             textureConnection.disconnect();
 
@@ -36,7 +42,6 @@ public class MineSkinAPI {
             ex.printStackTrace();
         }
 
-        return new String[]{null, null};
+        return new String[] {null, null};
     }
-
 }

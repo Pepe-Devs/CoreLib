@@ -102,7 +102,7 @@ public class Writable {
                     final String write_method_name =
                             "write"
                                     + (type.name().charAt(0)
-                                    + type.name().toLowerCase().substring(1));
+                                            + type.name().toLowerCase().substring(1));
                     final Method write =
                             data.getClass().getMethod(write_method_name, type_pr_classes);
                     write.invoke(data, to_write);

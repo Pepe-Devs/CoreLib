@@ -150,5 +150,4 @@ public class FieldAccessor {
     public Field getField() {
         return this.field;
     }
-
 }

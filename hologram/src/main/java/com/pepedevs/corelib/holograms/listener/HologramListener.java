@@ -37,5 +37,4 @@ public class HologramListener implements Listener {
             value.hide(player);
         }
     }
-
 }

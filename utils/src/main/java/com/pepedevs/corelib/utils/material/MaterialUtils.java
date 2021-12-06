@@ -16,7 +16,8 @@ public class MaterialUtils {
     /* initialize util fields */
     static {
         try {
-            CRAFT_MAGIC_NUMBERS_CLASS = Class.forName("org.bukkit.craftbukkit.util.CraftMagicNumbers");
+            CRAFT_MAGIC_NUMBERS_CLASS =
+                    Class.forName("org.bukkit.craftbukkit.util.CraftMagicNumbers");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -41,8 +41,7 @@ public class HologramPage {
 
     public void removeLine(int index) {
         HologramLine line = this.lines.remove(index);
-        if (line.getParent().equals(this))
-            line.setParent(null);
+        if (line.getParent().equals(this)) line.setParent(null);
     }
 
     public List<HologramLine> getLines() {
@@ -64,5 +63,4 @@ public class HologramPage {
     public void clearActions() {
         this.actions.clear();
     }
-
 }

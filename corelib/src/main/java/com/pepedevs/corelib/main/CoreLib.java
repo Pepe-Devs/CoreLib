@@ -21,5 +21,4 @@ public class CoreLib extends PluginAdapter {
         metrics = new Metrics(plugin, SERVICE_ID);
         metrics.addCustomChart(new SingleLineChart("servers", () -> 1));
     }
-
 }

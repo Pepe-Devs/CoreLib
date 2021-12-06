@@ -46,14 +46,11 @@ public class RepeatingThread implements Runnable, Task {
 
     @Deprecated
     @Override
-    public void submit(Workload workload) {
-
-    }
+    public void submit(Workload workload) {}
 
     @Override
     public void cancel() {
-        if (this.task == null)
-            throw new IllegalStateException("Task never started!");
+        if (this.task == null) throw new IllegalStateException("Task never started!");
         this.task.cancel(true);
         this.cancelled = true;
     }
@@ -71,23 +68,25 @@ public class RepeatingThread implements Runnable, Task {
     @SuppressWarnings("unchecked")
     @Override
     public void run() {
-        this.task = (Future<Void>) this.executor.submit(() -> {
-            long nextLoop = System.currentTimeMillis() - this.interval;
-            while (true) {
-                try {
-                    nextLoop += this.interval;
-                    long sleep = nextLoop - System.currentTimeMillis();
-                    if (sleep > 0) Thread.sleep(sleep);
-                    runnable.run();
-                } catch (InterruptedException pluginDisabled) {
-                    Thread.currentThread().interrupt();
-                    break;
-                } catch (Exception | NoClassDefFoundError e) {
-                    e.printStackTrace();
-                }
-            }
-            this.executor.shutdown();
-        });
+        this.task =
+                (Future<Void>)
+                        this.executor.submit(
+                                () -> {
+                                    long nextLoop = System.currentTimeMillis() - this.interval;
+                                    while (true) {
+                                        try {
+                                            nextLoop += this.interval;
+                                            long sleep = nextLoop - System.currentTimeMillis();
+                                            if (sleep > 0) Thread.sleep(sleep);
+                                            runnable.run();
+                                        } catch (InterruptedException pluginDisabled) {
+                                            Thread.currentThread().interrupt();
+                                            break;
+                                        } catch (Exception | NoClassDefFoundError e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    this.executor.shutdown();
+                                });
     }
-
 }

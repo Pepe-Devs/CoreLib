@@ -3,11 +3,8 @@ package com.pepedevs.corelib.utils.reflection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Represents an enumeration of Java data types with corresponding classes
- */
+/** Represents an enumeration of Java data types with corresponding classes */
 public enum DataType {
-
     BYTE(byte.class, Byte.class),
     SHORT(short.class, Short.class),
     INTEGER(int.class, Integer.class),

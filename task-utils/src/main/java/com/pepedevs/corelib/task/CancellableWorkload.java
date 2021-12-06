@@ -30,5 +30,4 @@ public abstract class CancellableWorkload implements Workload, Cancellable {
     public boolean isCancelled() {
         return this.cancelled.get();
     }
-
 }

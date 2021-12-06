@@ -16,12 +16,20 @@ public class ServerPropertiesUtils {
         try {
             boolean newest = Version.SERVER_VERSION.isNewerEquals(Version.v1_17_R1);
             Object server = BukkitReflection.MINECRAFT_SERVER_GET_SERVER.invoke(null);
-            Object property_manager = FieldReflection.getValue(server, newest ? "x" : "propertyManager");
+            Object property_manager =
+                    FieldReflection.getValue(server, newest ? "x" : "propertyManager");
 
             if (Version.SERVER_VERSION.isNewerEquals(Version.v1_14_R1)) {
-                Object dedicatedServerProperties = FieldReflection.getValue(property_manager, newest ? "b" : "properties");
-                properties = (Properties) FieldReflection.get(dedicatedServerProperties.getClass().getSuperclass(), newest ? "X" : "properties")
-                        .get(dedicatedServerProperties);
+                Object dedicatedServerProperties =
+                        FieldReflection.getValue(property_manager, newest ? "b" : "properties");
+                properties =
+                        (Properties)
+                                FieldReflection.get(
+                                                dedicatedServerProperties
+                                                        .getClass()
+                                                        .getSuperclass(),
+                                                newest ? "X" : "properties")
+                                        .get(dedicatedServerProperties);
             } else {
                 properties = FieldReflection.getValue(property_manager, "properties");
             }

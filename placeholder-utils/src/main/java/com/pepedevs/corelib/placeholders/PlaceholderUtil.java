@@ -59,16 +59,22 @@ public final class PlaceholderUtil {
 
     public static void tryHook(Plugin plugin) {
         PlaceholderManagerHookEvent event = new PlaceholderManagerHookEvent();
-        PluginLoadEvent.onPluginLoaded(plugin,
+        PluginLoadEvent.onPluginLoaded(
+                plugin,
                 "PlaceholderAPI",
-                    pl -> {
-                        Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(event));
-                        manager = new PAPIPlaceholderManager();
-                    },
-                    () -> {
-                        Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(event));
-                        manager = event.getPlaceholderManager() != null ? event.getPlaceholderManager() : new CustomPlaceholderManager(plugin);
-                    });
+                pl -> {
+                    Bukkit.getScheduler()
+                            .runTask(plugin, () -> Bukkit.getPluginManager().callEvent(event));
+                    manager = new PAPIPlaceholderManager();
+                },
+                () -> {
+                    Bukkit.getScheduler()
+                            .runTask(plugin, () -> Bukkit.getPluginManager().callEvent(event));
+                    manager =
+                            event.getPlaceholderManager() != null
+                                    ? event.getPlaceholderManager()
+                                    : new CustomPlaceholderManager(plugin);
+                });
     }
 
     public static void register(Plugin plugin, Placeholder placeholder) {

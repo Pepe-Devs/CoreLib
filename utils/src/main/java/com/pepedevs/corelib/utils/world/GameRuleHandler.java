@@ -76,5 +76,4 @@ public class GameRuleHandler extends PluginHandler {
     protected boolean isSingleInstanceForAllPlugin() {
         return true;
     }
-
 }

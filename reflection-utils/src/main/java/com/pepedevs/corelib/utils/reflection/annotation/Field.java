@@ -9,7 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Resolves the annotated {@link FieldWrapper} or {@link java.lang.reflect.Field} field to the first matching field name.
+ * Resolves the annotated {@link FieldWrapper} or {@link java.lang.reflect.Field} field to the first
+ * matching field name.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -23,7 +24,8 @@ public @interface Field {
     String className();
 
     /**
-     * Possible names of the field. Use <code>&gt;</code> or <code>&lt;</code> as a name prefix in combination with {@link #versions()} to specify versions newer- or older-than.
+     * Possible names of the field. Use <code>&gt;</code> or <code>&lt;</code> as a name prefix in
+     * combination with {@link #versions()} to specify versions newer- or older-than.
      *
      * @return names of the field
      */
@@ -37,7 +39,8 @@ public @interface Field {
     Version[] versions() default {};
 
     /**
-     * Whether to ignore any com.pepedevs.corelib.utils.reflection exceptions thrown. Defaults to <code>true</code>
+     * Whether to ignore any com.pepedevs.corelib.utils.reflection exceptions thrown. Defaults to
+     * <code>true</code>
      *
      * @return whether to ignore exceptions
      */

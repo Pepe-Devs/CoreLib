@@ -72,8 +72,7 @@ public abstract class Hologram extends AbstractHologram {
     public void hide(Player... players) {
         for (Player player : players) {
             int index = this.viewerPages.getOrDefault(player.getUniqueId(), -1);
-            if (index == -1)
-                continue;
+            if (index == -1) continue;
             HologramPage page = this.pages.get(index);
             page.getLines().forEach(line -> line.hide(player));
             this.viewers.remove(player.getUniqueId());
@@ -85,12 +84,10 @@ public abstract class Hologram extends AbstractHologram {
     public void hideAll() {
         for (UUID uuid : this.getViewers()) {
             Player player = Bukkit.getPlayer(uuid);
-            if (player == null)
-                continue;
+            if (player == null) continue;
 
             int index = this.viewerPages.getOrDefault(uuid, -1);
-            if (index == -1)
-                continue;
+            if (index == -1) continue;
 
             HologramPage page = this.pages.get(index);
             page.getLines().forEach(line -> line.hide(player));
@@ -129,8 +126,7 @@ public abstract class Hologram extends AbstractHologram {
 
     @Override
     public boolean handleClick(Player player, int entityId, ClickType clickType) {
-        if (!this.isVisible(player))
-            return false;
+        if (!this.isVisible(player)) return false;
 
         HologramPage page = this.pages.get(this.viewerPages.get(player.getUniqueId()));
         for (HologramLine line : page.getLines()) {
@@ -146,5 +142,4 @@ public abstract class Hologram extends AbstractHologram {
         }
         return false;
     }
-
 }

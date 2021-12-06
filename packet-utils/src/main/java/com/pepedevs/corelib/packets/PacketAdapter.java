@@ -15,5 +15,4 @@ public class PacketAdapter implements PacketListener {
     public void onSending(final PacketEvent event) {
         /* to override */
     }
-
 }

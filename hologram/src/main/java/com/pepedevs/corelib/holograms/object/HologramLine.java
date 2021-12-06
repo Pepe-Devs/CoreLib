@@ -17,7 +17,8 @@ public abstract class HologramLine extends AbstractHologram {
 
     protected HologramPage parent;
     protected final HologramLineType type;
-    protected BiFunction<String, Player, String> messageParse = (s, player) -> StringUtils.translateAlternateColorCodes(s);
+    protected BiFunction<String, Player, String> messageParse =
+            (s, player) -> StringUtils.translateAlternateColorCodes(s);
     protected final int[] entityIds;
 
     protected HologramLine(Location location, HologramLineType type) {
@@ -40,8 +41,7 @@ public abstract class HologramLine extends AbstractHologram {
     @Override
     public void hide(Player... players) {
         for (Player player : players) {
-            if (!this.isVisible(player))
-                continue;
+            if (!this.isVisible(player)) continue;
 
             PacketUtils.hideFakeEntities(player, this.entityIds[0]);
             this.viewers.remove(player.getUniqueId());
@@ -52,8 +52,7 @@ public abstract class HologramLine extends AbstractHologram {
     public void hideAll() {
         for (UUID uuid : this.getViewers()) {
             Player player = Bukkit.getPlayer(uuid);
-            if (player == null)
-                continue;
+            if (player == null) continue;
 
             PacketUtils.hideFakeEntities(player, this.entityIds[0]);
         }
@@ -83,8 +82,7 @@ public abstract class HologramLine extends AbstractHologram {
 
     @Override
     public boolean handleClick(Player player, int entityId, ClickType clickType) {
-        if (!this.isVisible(player))
-            return false;
+        if (!this.isVisible(player)) return false;
 
         for (int id : this.entityIds) {
             if (id == entityId) {
@@ -108,5 +106,4 @@ public abstract class HologramLine extends AbstractHologram {
         }
         return list;
     }
-
 }

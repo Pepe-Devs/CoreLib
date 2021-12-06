@@ -47,8 +47,9 @@ public class ItemStackUtils {
         }
         AVAILABLE_DURABILITY_FIELD = durability_field;
 
-        CRAFT_PLAYER_GET_GAMEPROFILE = new MethodResolver(PlayerReflection.CRAFT_PLAYER_CLASS.getClazz())
-                .resolveWrapper("getProfile");
+        CRAFT_PLAYER_GET_GAMEPROFILE =
+                new MethodResolver(PlayerReflection.CRAFT_PLAYER_CLASS.getClazz())
+                        .resolveWrapper("getProfile");
     }
 
     /**
@@ -361,7 +362,9 @@ public class ItemStackUtils {
      * @return Skull ItemStack textured with the player skin
      */
     public static ItemStack getSkull(Player owner) {
-        return owner != null ? ItemStackUtils.createSkull(ItemStackUtils.getTexture(owner), owner.getName()) : ItemStackUtils.getSkullMaterial(1);
+        return owner != null
+                ? ItemStackUtils.createSkull(ItemStackUtils.getTexture(owner), owner.getName())
+                : ItemStackUtils.getSkullMaterial(1);
     }
 
     /**
@@ -374,7 +377,9 @@ public class ItemStackUtils {
      * @return Skull ItemStack textured with the player skin
      */
     public static ItemStack getSkull(UUID owner) {
-        return owner != null ? ItemStackUtils.createSkull(ItemStackUtils.getTexture(owner), "Head") : ItemStackUtils.getSkullMaterial(1);
+        return owner != null
+                ? ItemStackUtils.createSkull(ItemStackUtils.getTexture(owner), "Head")
+                : ItemStackUtils.getSkullMaterial(1);
     }
 
     /**
@@ -387,7 +392,9 @@ public class ItemStackUtils {
      * @return Skull ItemStack textured with the player skin
      */
     public static ItemStack getSkull(final String texture) {
-        return texture != null ? ItemStackUtils.createSkull(texture, "Head") : ItemStackUtils.getSkullMaterial(1);
+        return texture != null
+                ? ItemStackUtils.createSkull(texture, "Head")
+                : ItemStackUtils.getSkullMaterial(1);
     }
 
     /**
@@ -402,7 +409,8 @@ public class ItemStackUtils {
     private static ItemStack createSkull(String texture, String displayname) {
         // get item and get meta.
         final ItemStack stack = ItemStackUtils.getSkullMaterial(1);
-        final SkullMeta meta = ItemStackUtils.setSkullMeta(((SkullMeta) stack.getItemMeta()), texture);
+        final SkullMeta meta =
+                ItemStackUtils.setSkullMeta(((SkullMeta) stack.getItemMeta()), texture);
 
         // set display name.
         meta.setDisplayName(StringUtils.translateAlternateColorCodes(displayname));

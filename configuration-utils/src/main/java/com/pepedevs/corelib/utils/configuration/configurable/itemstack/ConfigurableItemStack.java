@@ -356,5 +356,4 @@ public class ConfigurableItemStack implements Configurable {
                 && getName() != null
                 && getSize() > -1;
     }
-
 }

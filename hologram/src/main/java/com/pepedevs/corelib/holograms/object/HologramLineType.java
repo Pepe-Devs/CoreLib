@@ -1,7 +1,6 @@
 package com.pepedevs.corelib.holograms.object;
 
 public enum HologramLineType {
-
     UNKNOWN(0),
     TEXT(-0.5),
     HEAD(-2.0),
@@ -18,5 +17,4 @@ public enum HologramLineType {
     public double getOffsetY() {
         return this.offsetY;
     }
-
 }

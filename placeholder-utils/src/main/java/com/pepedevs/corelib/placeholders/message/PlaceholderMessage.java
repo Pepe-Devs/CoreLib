@@ -60,7 +60,8 @@ public class PlaceholderMessage {
     }
 
     public static PlaceholderMessage fromText(List<String> lines) {
-        return new PlaceholderMessage(lines.stream().map(PlaceholderValue::fake).collect(Collectors.toList()));
+        return new PlaceholderMessage(
+                lines.stream().map(PlaceholderValue::fake).collect(Collectors.toList()));
     }
 
     public static PlaceholderMessage fromText(String... lines) {
@@ -145,7 +146,8 @@ public class PlaceholderMessage {
                         k2, v2));
     }
 
-    public PlaceholderMessage filter(String k1, String v1, String k2, String v2, String k3, String v3) {
+    public PlaceholderMessage filter(
+            String k1, String v1, String k2, String v2, String k3, String v3) {
         return filter(
                 PlaceholderRegistry.wrap(
                         k1, v1,
@@ -155,14 +157,15 @@ public class PlaceholderMessage {
 
     public void send(Player player) {
         for (PlaceholderValue<String> message : lines)
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message.resolve(player)));
+            player.sendMessage(
+                    ChatColor.translateAlternateColorCodes('&', message.resolve(player)));
     }
 
     public void send(Player player, PlaceholderRegistry<?> placeholders) {
         for (PlaceholderValue<String> message : lines)
             player.sendMessage(
-                    ChatColor.translateAlternateColorCodes('&',
-                            message.resolve(player, placeholders)));
+                    ChatColor.translateAlternateColorCodes(
+                            '&', message.resolve(player, placeholders)));
     }
 
     public void send(Player player, String k1, String v1) {
@@ -195,7 +198,8 @@ public class PlaceholderMessage {
     public void send(CommandSender sender, PlaceholderRegistry<?> placeholders) {
         for (PlaceholderValue<String> message : lines)
             sender.sendMessage(
-                    ChatColor.translateAlternateColorCodes('&', message.resolve(null, placeholders)));
+                    ChatColor.translateAlternateColorCodes(
+                            '&', message.resolve(null, placeholders)));
     }
 
     public void send(CommandSender sender, String k1, String v1) {

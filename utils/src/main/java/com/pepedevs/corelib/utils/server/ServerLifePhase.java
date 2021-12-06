@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public enum ServerLifePhase {
-
     STARTUP,
     RUNNING,
     SHUTDOWN,
@@ -42,5 +41,4 @@ public enum ServerLifePhase {
             return ServerLifePhase.UNKNOWN;
         }
     }
-
 }

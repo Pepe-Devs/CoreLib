@@ -21,20 +21,18 @@ import java.util.*;
 public final class PacketChannelHandler extends PluginHandler {
 
     /** All the packet listeners that will be run when a packet is being receive-send. */
-    private static final Map<PacketListener.Priority, Set<RegisteredPacketListener>> PACKET_LISTENERS =
-            new HashMap<>();
+    private static final Map<PacketListener.Priority, Set<RegisteredPacketListener>>
+            PACKET_LISTENERS = new HashMap<>();
 
     private static PacketChannelHandler INSTANCE;
 
     private PacketChannelHandler(Plugin plugin) {
         super(plugin);
-        Bukkit.getPluginManager()
-                .registerEvents(new PlayerInjector(), this.getPlugin());
+        Bukkit.getPluginManager().registerEvents(new PlayerInjector(), this.getPlugin());
     }
 
     public static PacketChannelHandler getInstance(Plugin plugin) {
-        if (INSTANCE == null)
-            INSTANCE = new PacketChannelHandler(plugin);
+        if (INSTANCE == null) INSTANCE = new PacketChannelHandler(plugin);
 
         return INSTANCE;
     }
@@ -50,7 +48,9 @@ public final class PacketChannelHandler extends PluginHandler {
      * @param listener Listener to run.
      */
     public void addPacketListener(
-            final String packet_name, final PacketListener.Priority priority, final PacketListener listener) {
+            final String packet_name,
+            final PacketListener.Priority priority,
+            final PacketListener listener) {
         Set<RegisteredPacketListener> by_priority = PACKET_LISTENERS.get(priority);
         if (by_priority == null) {
             PACKET_LISTENERS.put(priority, (by_priority = new HashSet<>()));
@@ -106,7 +106,6 @@ public final class PacketChannelHandler extends PluginHandler {
             this.packet_name = packet_name;
             this.listener = listener;
         }
-
     }
 
     /**
@@ -148,7 +147,6 @@ public final class PacketChannelHandler extends PluginHandler {
         public void handleQuit(final PlayerQuitEvent event) {
             PlayerInjector.unject(event.getPlayer());
         }
-
     }
 
     /** The duplex channel handler for handling the packets when receiving or sending. */

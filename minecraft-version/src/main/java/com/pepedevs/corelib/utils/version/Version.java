@@ -53,10 +53,8 @@ public enum Version {
     }
 
     public String getNmsPackage() {
-        if (SERVER_VERSION.isNewerEquals(Version.v1_17_R1))
-            return "net.minecraft";
-        else
-            return String.format(NMS_CLASSES_PACKAGE, SERVER_VERSION.name());
+        if (SERVER_VERSION.isNewerEquals(Version.v1_17_R1)) return "net.minecraft";
+        else return String.format(NMS_CLASSES_PACKAGE, SERVER_VERSION.name());
     }
 
     public String getObcPackage() {

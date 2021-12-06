@@ -35,29 +35,70 @@ public class BukkitReflection {
 
     static {
         NMSClassResolver nmsClassResolver = new NMSClassResolver();
-        MINECRAFT_SERVER = nmsClassResolver.resolveWrapper("MinecraftServer", "net.minecraft.server.MinecraftServer");
-        PLAYER_LIST = nmsClassResolver.resolveWrapper("PlayerList", "net.minecraft.server.players.PlayerList");
-        DIMENSION_MANAGER = nmsClassResolver.resolveWrapper("DimensionManager", "net.minecraft.world.level.dimension.DimensionManager");
+        MINECRAFT_SERVER =
+                nmsClassResolver.resolveWrapper(
+                        "MinecraftServer", "net.minecraft.server.MinecraftServer");
+        PLAYER_LIST =
+                nmsClassResolver.resolveWrapper(
+                        "PlayerList", "net.minecraft.server.players.PlayerList");
+        DIMENSION_MANAGER =
+                nmsClassResolver.resolveWrapper(
+                        "DimensionManager", "net.minecraft.world.level.dimension.DimensionManager");
         CRAFT_WORLD = new CraftClassResolver().resolveWrapper("CraftWorld");
         NMS_WORLD = nmsClassResolver.resolveWrapper("World", "net.minecraft.world.level.World");
-        RESOURCE_KEY = nmsClassResolver.resolveWrapper("ResourceKey", "net.minecraft.resources.ResourceKey");
-        SEND_PACKET = new MethodResolver(PlayerReflection.PLAYER_CONNECTION_CLASS.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("sendPacket", PacketConstant.PACKET_CLASS.getClazz()).build());
-        MINECRAFT_SERVER_GET_SERVER = new MethodResolver(MINECRAFT_SERVER.getClazz()).resolveWrapper("getServer");
-        MINECRAFT_SERVER_SET_MOTD = new MethodResolver(MINECRAFT_SERVER.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("setMotd", String.class).build());
-        MINECRAFT_SERVER_GET_PLAYER_LIST = new MethodResolver(MINECRAFT_SERVER.getClazz()).resolveWrapper("getPlayerList");
-        SEND_PACKET_NEARBY = new MethodResolver(PLAYER_LIST.getClazz()).resolveWrapper(
-                ResolverQuery.builder()
-                        .with("sendPacketNearby", EntityReflection.ENTITY_HUMAN.getClazz(),
-                                double.class, double.class, double.class, double.class, int.class, PacketConstant.PACKET_CLASS.getClazz())
-                        .with("sendPacketNearby", EntityReflection.ENTITY_HUMAN.getClazz(),
-                                double.class, double.class, double.class, double.class, DIMENSION_MANAGER.getClazz(), PacketConstant.PACKET_CLASS.getClazz())
-                        .with("sendPacketNearby", EntityReflection.ENTITY_HUMAN.getClazz(),
-                                double.class, double.class, double.class, double.class, RESOURCE_KEY.getClazz(), PacketConstant.PACKET_CLASS.getClazz())
-                        .build());
-        WORLD_BORDER_FIELD = new FieldResolver(CRAFT_WORLD.getClazz()).resolveAccessor("worldBorder");
-        WORLD_WORLD_SERVER = new FieldResolver(BukkitReflection.CRAFT_WORLD.getClazz()).resolveAccessor("world");
+        RESOURCE_KEY =
+                nmsClassResolver.resolveWrapper(
+                        "ResourceKey", "net.minecraft.resources.ResourceKey");
+        SEND_PACKET =
+                new MethodResolver(PlayerReflection.PLAYER_CONNECTION_CLASS.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with("sendPacket", PacketConstant.PACKET_CLASS.getClazz())
+                                        .build());
+        MINECRAFT_SERVER_GET_SERVER =
+                new MethodResolver(MINECRAFT_SERVER.getClazz()).resolveWrapper("getServer");
+        MINECRAFT_SERVER_SET_MOTD =
+                new MethodResolver(MINECRAFT_SERVER.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder().with("setMotd", String.class).build());
+        MINECRAFT_SERVER_GET_PLAYER_LIST =
+                new MethodResolver(MINECRAFT_SERVER.getClazz()).resolveWrapper("getPlayerList");
+        SEND_PACKET_NEARBY =
+                new MethodResolver(PLAYER_LIST.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder()
+                                        .with(
+                                                "sendPacketNearby",
+                                                EntityReflection.ENTITY_HUMAN.getClazz(),
+                                                double.class,
+                                                double.class,
+                                                double.class,
+                                                double.class,
+                                                int.class,
+                                                PacketConstant.PACKET_CLASS.getClazz())
+                                        .with(
+                                                "sendPacketNearby",
+                                                EntityReflection.ENTITY_HUMAN.getClazz(),
+                                                double.class,
+                                                double.class,
+                                                double.class,
+                                                double.class,
+                                                DIMENSION_MANAGER.getClazz(),
+                                                PacketConstant.PACKET_CLASS.getClazz())
+                                        .with(
+                                                "sendPacketNearby",
+                                                EntityReflection.ENTITY_HUMAN.getClazz(),
+                                                double.class,
+                                                double.class,
+                                                double.class,
+                                                double.class,
+                                                RESOURCE_KEY.getClazz(),
+                                                PacketConstant.PACKET_CLASS.getClazz())
+                                        .build());
+        WORLD_BORDER_FIELD =
+                new FieldResolver(CRAFT_WORLD.getClazz()).resolveAccessor("worldBorder");
+        WORLD_WORLD_SERVER =
+                new FieldResolver(BukkitReflection.CRAFT_WORLD.getClazz()).resolveAccessor("world");
     }
 
     /**
@@ -69,7 +110,7 @@ public class BukkitReflection {
      * @param object Object to get
      * @return Handle of the provided craftbukkit object
      */
-    public static Object getHandle(Object object){
+    public static Object getHandle(Object object) {
         try {
             return object.getClass().getMethod("getHandle").invoke(object);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
@@ -91,7 +132,8 @@ public class BukkitReflection {
         SEND_PACKET.invokeSilent(connection, packet);
     }
 
-    public static void sendPacketNearby(Player player, double x, double y, double z, double range, World world, Object packet) {
+    public static void sendPacketNearby(
+            Player player, double x, double y, double z, double range, World world, Object packet) {
         Object handle = null;
         if (player != null) {
             handle = PlayerReflection.getHandle(player);
@@ -119,7 +161,10 @@ public class BukkitReflection {
             }
 
             SEND_PACKET_NEARBY.invoke(player_list, handle, x, y, z, range, dimension, packet);
-        } catch (NoSuchFieldException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchFieldException
+                | NoSuchMethodException
+                | IllegalAccessException
+                | InvocationTargetException e) {
             e.printStackTrace();
         }
     }

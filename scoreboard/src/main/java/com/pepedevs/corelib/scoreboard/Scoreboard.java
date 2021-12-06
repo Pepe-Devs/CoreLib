@@ -26,9 +26,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Scoreboard {
 
     private static final Map<ClassWrapper<?>, FieldAccessor[]> PACKETS = new HashMap<>(8);
-    private static final String[] COLOR_CODES = Arrays.stream(ChatColor.values())
-            .map(Object::toString)
-            .toArray(String[]::new);
+    private static final String[] COLOR_CODES =
+            Arrays.stream(ChatColor.values()).map(Object::toString).toArray(String[]::new);
     // Packets and components
     private static final ClassWrapper<?> CHAT_COMPONENT_CLASS;
     private static final ClassWrapper<?> CHAT_FORMAT_ENUM;
@@ -51,41 +50,82 @@ public class Scoreboard {
     static {
         CraftClassResolver craftClassResolver = new CraftClassResolver();
         NMSClassResolver nmsClassResolver = new NMSClassResolver();
-        ClassWrapper<?> craftChatMessageClass = craftClassResolver.resolveWrapper("util.CraftChatMessage");
-        ClassWrapper<?> sbTeamClass = nmsClassResolver.resolveWrapper(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM.getClazz().getName() + "$b");
+        ClassWrapper<?> craftChatMessageClass =
+                craftClassResolver.resolveWrapper("util.CraftChatMessage");
+        ClassWrapper<?> sbTeamClass =
+                nmsClassResolver.resolveWrapper(
+                        PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM.getClazz().getName() + "$b");
 
-        MESSAGE_FROM_STRING = new MethodResolver(craftChatMessageClass.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("fromString", String.class).build());
-        CHAT_COMPONENT_CLASS = nmsClassResolver.resolveWrapper("IChatBaseComponent", "net.minecraft.network.chat.IChatBaseComponent");
+        MESSAGE_FROM_STRING =
+                new MethodResolver(craftChatMessageClass.getClazz())
+                        .resolveWrapper(
+                                ResolverQuery.builder().with("fromString", String.class).build());
+        CHAT_COMPONENT_CLASS =
+                nmsClassResolver.resolveWrapper(
+                        "IChatBaseComponent", "net.minecraft.network.chat.IChatBaseComponent");
         CHAT_FORMAT_ENUM = nmsClassResolver.resolveWrapper("EnumChatFormat");
         EMPTY_MESSAGE = Array.get(MESSAGE_FROM_STRING.invoke(null, ""), 0);
-        RESET_FORMATTING = EnumReflection.getEnumConstant(CHAT_FORMAT_ENUM.getClazz().asSubclass(Enum.class), "RESET", 21);
-        PACKET_SB_OBJ = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_OBJECTIVE.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_SB_DISPLAY_OBJ = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_DISPLAY_OBJECTIVE.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_SB_SCORE = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_SCORE.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_SB_TEAM = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM.getClazz()).resolveWrapper(new Class[0]);
-        PACKET_SB_SERIALIZABLE_TEAM = sbTeamClass == null ? null : new ConstructorResolver(sbTeamClass.getClazz()).resolveWrapper(new Class[0]);
+        RESET_FORMATTING =
+                EnumReflection.getEnumConstant(
+                        CHAT_FORMAT_ENUM.getClazz().asSubclass(Enum.class), "RESET", 21);
+        PACKET_SB_OBJ =
+                new ConstructorResolver(
+                                PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_OBJECTIVE.getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_SB_DISPLAY_OBJ =
+                new ConstructorResolver(
+                                PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_DISPLAY_OBJECTIVE
+                                        .getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_SB_SCORE =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_SCORE.getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_SB_TEAM =
+                new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM.getClazz())
+                        .resolveWrapper(new Class[0]);
+        PACKET_SB_SERIALIZABLE_TEAM =
+                sbTeamClass == null
+                        ? null
+                        : new ConstructorResolver(sbTeamClass.getClazz())
+                                .resolveWrapper(new Class[0]);
 
-        for (ClassWrapper<?> clazz : new ClassWrapper<?>[]{PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_OBJECTIVE, PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_DISPLAY_OBJECTIVE,
-                PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_SCORE, PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM, sbTeamClass}) {
-            if (clazz == null)
-                continue;
-            FieldAccessor[] fields = Arrays.stream(clazz.getClazz().getDeclaredFields())
-                    .map(FieldAccessor::new)
-                    .filter(field -> !field.isStatic())
-                    .toArray(FieldAccessor[]::new);
+        for (ClassWrapper<?> clazz :
+                new ClassWrapper<?>[] {
+                    PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_OBJECTIVE,
+                    PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_DISPLAY_OBJECTIVE,
+                    PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_SCORE,
+                    PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM,
+                    sbTeamClass
+                }) {
+            if (clazz == null) continue;
+            FieldAccessor[] fields =
+                    Arrays.stream(clazz.getClazz().getDeclaredFields())
+                            .map(FieldAccessor::new)
+                            .filter(field -> !field.isStatic())
+                            .toArray(FieldAccessor[]::new);
             PACKETS.put(clazz, fields);
         }
 
-        String enumSbActionClass = Version.SERVER_VERSION.isNewerEquals(Version.v1_13_R1)
-                ? "ScoreboardServer$Action"
-                : "PacketPlayOutScoreboardScore$EnumScoreboardAction";
-        ENUM_SB_HEALTH_DISPLAY = nmsClassResolver.resolveWrapper("IScoreboardCriteria$EnumScoreboardHealthDisplay",
-                "net.minecraft.world.scores.criteria.IScoreboardCriteria$EnumScoreboardHealthDisplay");
-        ENUM_SB_ACTION = nmsClassResolver.resolveWrapper(enumSbActionClass, "net.minecraft.server." + enumSbActionClass);
-        ENUM_SB_HEALTH_DISPLAY_INTEGER = EnumReflection.getEnumConstant(ENUM_SB_HEALTH_DISPLAY.getClazz().asSubclass(Enum.class), "INTEGER", 0);
-        ENUM_SB_ACTION_CHANGE = EnumReflection.getEnumConstant(ENUM_SB_ACTION.getClazz().asSubclass(Enum.class), "CHANGE", 0);
-        ENUM_SB_ACTION_REMOVE = EnumReflection.getEnumConstant(ENUM_SB_ACTION.getClazz().asSubclass(Enum.class), "REMOVE", 1);
+        String enumSbActionClass =
+                Version.SERVER_VERSION.isNewerEquals(Version.v1_13_R1)
+                        ? "ScoreboardServer$Action"
+                        : "PacketPlayOutScoreboardScore$EnumScoreboardAction";
+        ENUM_SB_HEALTH_DISPLAY =
+                nmsClassResolver.resolveWrapper(
+                        "IScoreboardCriteria$EnumScoreboardHealthDisplay",
+                        "net.minecraft.world.scores.criteria.IScoreboardCriteria$EnumScoreboardHealthDisplay");
+        ENUM_SB_ACTION =
+                nmsClassResolver.resolveWrapper(
+                        enumSbActionClass, "net.minecraft.server." + enumSbActionClass);
+        ENUM_SB_HEALTH_DISPLAY_INTEGER =
+                EnumReflection.getEnumConstant(
+                        ENUM_SB_HEALTH_DISPLAY.getClazz().asSubclass(Enum.class), "INTEGER", 0);
+        ENUM_SB_ACTION_CHANGE =
+                EnumReflection.getEnumConstant(
+                        ENUM_SB_ACTION.getClazz().asSubclass(Enum.class), "CHANGE", 0);
+        ENUM_SB_ACTION_REMOVE =
+                EnumReflection.getEnumConstant(
+                        ENUM_SB_ACTION.getClazz().asSubclass(Enum.class), "REMOVE", 1);
     }
 
     private static final int MAX_DISPLAY_NAME_LENGTH = 32;
@@ -103,7 +143,9 @@ public class Scoreboard {
     }
 
     public Scoreboard(String title, List<String> elements) {
-        Validate.isTrue(!(title.length() > MAX_DISPLAY_NAME_LENGTH && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
+        Validate.isTrue(
+                !(title.length() > MAX_DISPLAY_NAME_LENGTH
+                        && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
                 "Title is longer than 32 chars.");
 
         this.title = title;
@@ -141,7 +183,8 @@ public class Scoreboard {
             int lineCount = 0;
             for (String s : elements) {
                 if (s != null && s.length() > MAX_ELEMENTS_LENGTH) {
-                    throw new IllegalArgumentException("Line " + lineCount + " is longer than 40 chars");
+                    throw new IllegalArgumentException(
+                            "Line " + lineCount + " is longer than 40 chars");
                 }
                 lineCount++;
             }
@@ -172,8 +215,7 @@ public class Scoreboard {
 
     public void show(Player... players) {
         for (Player player : players) {
-            if (this.shown.containsKey(player.getUniqueId()))
-                continue;
+            if (this.shown.containsKey(player.getUniqueId())) continue;
 
             String id = "coreboard-" + Integer.toHexString(ThreadLocalRandom.current().nextInt());
             this.sendObjectivePacket(ObjectiveMode.CREATE, player, id);
@@ -188,8 +230,7 @@ public class Scoreboard {
 
     public void hide(Player... players) {
         for (Player player : players) {
-            if (!this.shown.containsKey(player.getUniqueId()))
-                continue;
+            if (!this.shown.containsKey(player.getUniqueId())) continue;
 
             String id = this.shown.get(player.getUniqueId());
             for (int i = 0; i < this.elements.size(); i++) {
@@ -202,7 +243,9 @@ public class Scoreboard {
 
     public synchronized Scoreboard update(boolean force, Player... players) {
         for (Player player : players) {
-            Validate.isTrue(this.shown.containsKey(player.getUniqueId()), "The player is not viewing the this scoreboard.");
+            Validate.isTrue(
+                    this.shown.containsKey(player.getUniqueId()),
+                    "The player is not viewing the this scoreboard.");
             String id = this.shown.get(player.getUniqueId());
             if (force) {
                 this.sendObjectivePacket(ObjectiveMode.UPDATE, player, id);
@@ -234,13 +277,17 @@ public class Scoreboard {
                             this.sendScorePacket(i, ScoreboardAction.CHANGE, player, id);
                             this.sendTeamPacket(i, TeamMode.CREATE, player, id);
 
-                            this.oldElements.add(this.oldElements.size() - i, this.elements.get(this.elements.size() - 1 - i));
+                            this.oldElements.add(
+                                    this.oldElements.size() - i,
+                                    this.elements.get(this.elements.size() - 1 - i));
                         }
                     }
                 }
 
                 for (int i = 0; i < this.elements.size(); i++) {
-                    if (!Objects.equals(this.oldElements.get(this.oldElements.size() - 1 - i), this.elements.get(this.elements.size() - 1 - i))) {
+                    if (!Objects.equals(
+                            this.oldElements.get(this.oldElements.size() - 1 - i),
+                            this.elements.get(this.elements.size() - 1 - i))) {
                         this.sendTeamPacket(i, TeamMode.UPDATE, player, id);
                     }
                 }
@@ -283,7 +330,8 @@ public class Scoreboard {
         if (mode != ObjectiveMode.REMOVE) {
             this.setComponentField(packet, this.title, 1);
 
-            this.updatePacketField(packet, ENUM_SB_HEALTH_DISPLAY.getClazz(), ENUM_SB_HEALTH_DISPLAY_INTEGER);
+            this.updatePacketField(
+                    packet, ENUM_SB_HEALTH_DISPLAY.getClazz(), ENUM_SB_HEALTH_DISPLAY_INTEGER);
         }
 
         BukkitReflection.sendPacket(player, packet);
@@ -302,7 +350,10 @@ public class Scoreboard {
         Object packet = PACKET_SB_SCORE.newInstance();
 
         this.updatePacketField(packet, String.class, COLOR_CODES[score], 0); // Player Name
-        this.updatePacketField(packet, ENUM_SB_ACTION.getClazz(), action == ScoreboardAction.REMOVE ? ENUM_SB_ACTION_REMOVE : ENUM_SB_ACTION_CHANGE);
+        this.updatePacketField(
+                packet,
+                ENUM_SB_ACTION.getClazz(),
+                action == ScoreboardAction.REMOVE ? ENUM_SB_ACTION_REMOVE : ENUM_SB_ACTION_CHANGE);
 
         if (action == ScoreboardAction.CHANGE) {
             this.updatePacketField(packet, String.class, id, 1); // Objective Name
@@ -321,7 +372,11 @@ public class Scoreboard {
         Object packet = PACKET_SB_TEAM.newInstance();
 
         this.updatePacketField(packet, String.class, id + ':' + score); // Team name
-        this.updatePacketField(packet, int.class, mode.ordinal(), Version.SERVER_VERSION.equalsVersion(Version.v1_8_R3) ? 1 : 0); // Update mode
+        this.updatePacketField(
+                packet,
+                int.class,
+                mode.ordinal(),
+                Version.SERVER_VERSION.equalsVersion(Version.v1_8_R3) ? 1 : 0); // Update mode
 
         if (mode == TeamMode.CREATE || mode == TeamMode.UPDATE) {
             String line = this.elements.get(this.elements.size() - 1 - score);
@@ -334,7 +389,10 @@ public class Scoreboard {
                 prefix = line;
             } else {
                 // Prevent splitting color codes
-                int index = line.charAt(maxLength - 1) == ChatColor.COLOR_CHAR ? (maxLength - 1) : maxLength;
+                int index =
+                        line.charAt(maxLength - 1) == ChatColor.COLOR_CHAR
+                                ? (maxLength - 1)
+                                : maxLength;
                 prefix = line.substring(0, index);
                 String suffixTmp = line.substring(index);
                 ChatColor chatColor = null;
@@ -346,7 +404,9 @@ public class Scoreboard {
                 String color = ChatColor.getLastColors(prefix);
                 boolean addColor = chatColor == null || chatColor.isFormat();
 
-                suffix = (addColor ? (color.isEmpty() ? ChatColor.RESET.toString() : color) : "") + suffixTmp;
+                suffix =
+                        (addColor ? (color.isEmpty() ? ChatColor.RESET.toString() : color) : "")
+                                + suffixTmp;
             }
 
             if (prefix.length() > maxLength || (suffix != null && suffix.length() > maxLength)) {
@@ -359,7 +419,8 @@ public class Scoreboard {
                 Object team = PACKET_SB_SERIALIZABLE_TEAM.newInstance();
                 // Since the packet is initialized with null values, we need to change more things.
                 this.setComponentField(team, "", 0); // Display name
-                this.updatePacketField(team, CHAT_FORMAT_ENUM.getClazz(), RESET_FORMATTING); // Color
+                this.updatePacketField(
+                        team, CHAT_FORMAT_ENUM.getClazz(), RESET_FORMATTING); // Color
                 this.setComponentField(team, prefix, 1); // Prefix
                 this.setComponentField(team, suffix == null ? "" : suffix, 2); // Suffix
                 this.updatePacketField(team, String.class, "always", 0); // Visibility
@@ -373,13 +434,15 @@ public class Scoreboard {
             }
 
             if (mode == TeamMode.CREATE) {
-                this.updatePacketField(packet, Collection.class, Collections.singletonList(COLOR_CODES[score])); // Players in the team
+                this.updatePacketField(
+                        packet,
+                        Collection.class,
+                        Collections.singletonList(COLOR_CODES[score])); // Players in the team
             }
         }
 
         BukkitReflection.sendPacket(player, packet);
     }
-
 
     private void updatePacketField(Object object, Class<?> fieldType, Object value) {
         this.updatePacketField(object, fieldType, value, 0);
@@ -402,23 +465,35 @@ public class Scoreboard {
 
         int i = 0;
         for (FieldAccessor field : PACKETS.get(new ClassWrapper<>(packet.getClass()))) {
-            if ((field.getType() == String.class || field.getType() == CHAT_COMPONENT_CLASS.getClazz()) && count == i++) {
-                field.set(packet, value.isEmpty() ? EMPTY_MESSAGE : Array.get(MESSAGE_FROM_STRING.invoke(value), 0));
+            if ((field.getType() == String.class
+                            || field.getType() == CHAT_COMPONENT_CLASS.getClazz())
+                    && count == i++) {
+                field.set(
+                        packet,
+                        value.isEmpty()
+                                ? EMPTY_MESSAGE
+                                : Array.get(MESSAGE_FROM_STRING.invoke(value), 0));
             }
         }
     }
 
     enum TeamMode {
-        CREATE, REMOVE, UPDATE, ADD_PLAYERS, REMOVE_PLAYERS
+        CREATE,
+        REMOVE,
+        UPDATE,
+        ADD_PLAYERS,
+        REMOVE_PLAYERS
     }
 
     enum ScoreboardAction {
-        CHANGE, REMOVE
+        CHANGE,
+        REMOVE
     }
 
     enum ObjectiveMode {
-        CREATE, REMOVE, UPDATE,
+        CREATE,
+        REMOVE,
+        UPDATE,
         ;
     }
-
 }

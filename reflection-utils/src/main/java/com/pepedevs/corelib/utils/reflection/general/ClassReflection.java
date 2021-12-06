@@ -61,8 +61,8 @@ public class ClassReflection {
     }
 
     /**
-     * Gets a class within the craftbukkit package ({@value Version#CRAFT_CLASSES_PACKAGE}) or within a
-     * sub-package of it.
+     * Gets a class within the craftbukkit package ({@value Version#CRAFT_CLASSES_PACKAGE}) or
+     * within a sub-package of it.
      *
      * <p>
      *
@@ -118,12 +118,7 @@ public class ClassReflection {
                                                 ? ""
                                                 : v17Package.toLowerCase() + ".")
                                         + name);
-            else
-                clazz =
-                        Class.forName(
-                                Version.SERVER_VERSION.getNmsPackage()
-                                        + "."
-                                        + name);
+            else clazz = Class.forName(Version.SERVER_VERSION.getNmsPackage() + "." + name);
 
             CACHED_CLASSES.put(name, clazz);
             return clazz;
@@ -144,12 +139,7 @@ public class ClassReflection {
                                                 ? ""
                                                 : v17Package.toLowerCase() + ".")
                                         + name);
-            else
-                clazz =
-                        Class.forName(
-                                Version.SERVER_VERSION.getNmsPackage()
-                                        + "."
-                                        + name);
+            else clazz = Class.forName(Version.SERVER_VERSION.getNmsPackage() + "." + name);
             CACHED_CLASSES.put(name, clazz);
             return true;
         } catch (ClassNotFoundException e) {

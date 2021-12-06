@@ -29,20 +29,16 @@ public class SmallHeadHologramLine extends HologramLine {
         for (Player player : players) {
             if (this.isVisible(player)) continue;
 
-            PacketUtils.showFakeEntityArmorStand(player, this.getLocation(), this.entityIds[0], true, true, true);
+            PacketUtils.showFakeEntityArmorStand(
+                    player, this.getLocation(), this.entityIds[0], true, true, true);
             PacketUtils.helmetFakeEntity(player, this.content, this.entityIds[0]);
             this.viewers.add(player.getUniqueId());
         }
     }
 
     @Override
-    public void update(Player... players) {
-
-    }
+    public void update(Player... players) {}
 
     @Override
-    public void destroy() {
-
-    }
-
+    public void destroy() {}
 }

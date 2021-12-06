@@ -33,23 +33,22 @@ public class IconHologramLine extends HologramLine {
         for (Player player : players) {
             if (this.isVisible(player)) continue;
 
-            PacketUtils.showFakeEntityArmorStand(player, this.getLocation(), this.entityIds[0], true, true, true);
-            PacketUtils.showFakeEntityItem(player, this.getLocation(), this.content, this.entityIds[1]);
+            PacketUtils.showFakeEntityArmorStand(
+                    player, this.getLocation(), this.entityIds[0], true, true, true);
+            PacketUtils.showFakeEntityItem(
+                    player, this.getLocation(), this.content, this.entityIds[1]);
             PacketUtils.attachFakeEntity(player, this.entityIds[0], this.entityIds[1]);
             this.viewers.add(player.getUniqueId());
         }
     }
 
     @Override
-    public void update(Player... players) {
-
-    }
+    public void update(Player... players) {}
 
     @Override
     public void hide(Player... players) {
         for (Player player : players) {
-            if (!this.isVisible(player))
-                continue;
+            if (!this.isVisible(player)) continue;
 
             PacketUtils.hideFakeEntities(player, this.entityIds[0], this.entityIds[1]);
             this.viewers.remove(player.getUniqueId());
@@ -60,8 +59,7 @@ public class IconHologramLine extends HologramLine {
     public void hideAll() {
         for (UUID uuid : this.getViewers()) {
             Player player = Bukkit.getPlayer(uuid);
-            if (player == null)
-                continue;
+            if (player == null) continue;
 
             PacketUtils.hideFakeEntities(player, this.entityIds[0], this.entityIds[1]);
         }
@@ -69,8 +67,5 @@ public class IconHologramLine extends HologramLine {
     }
 
     @Override
-    public void destroy() {
-
-    }
-
+    public void destroy() {}
 }

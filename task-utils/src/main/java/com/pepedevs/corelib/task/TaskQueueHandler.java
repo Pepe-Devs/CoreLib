@@ -53,58 +53,68 @@ public class TaskQueueHandler {
     }
 
     public CancellableWorkload runTaskLater(int poolId, Runnable runnable, long delay) {
-        CancellableWorkload workload = new CancellableWorkload() {
-            final long start = System.currentTimeMillis();
-            @Override
-            public void compute() {
-                this.setCancelled(true);
-                runnable.run();
-            }
+        CancellableWorkload workload =
+                new CancellableWorkload() {
+                    final long start = System.currentTimeMillis();
 
-            @Override
-            public boolean shouldExecute() {
-                return !this.isCancelled() && System.currentTimeMillis() - this.start >= delay;
-            }
-        };
+                    @Override
+                    public void compute() {
+                        this.setCancelled(true);
+                        runnable.run();
+                    }
+
+                    @Override
+                    public boolean shouldExecute() {
+                        return !this.isCancelled()
+                                && System.currentTimeMillis() - this.start >= delay;
+                    }
+                };
         this.submit(poolId, workload);
         return workload;
     }
 
     public CancellableWorkload runTaskTimer(int poolId, Runnable runnable, long time) {
-        CancellableWorkload workload = new CancellableWorkload() {
-            long lastExec = System.currentTimeMillis();
-            @Override
-            public void compute() {
-                lastExec = System.currentTimeMillis();
-                runnable.run();
-            }
+        CancellableWorkload workload =
+                new CancellableWorkload() {
+                    long lastExec = System.currentTimeMillis();
 
-            @Override
-            public boolean shouldExecute() {
-                return !this.isCancelled() && System.currentTimeMillis() - this.lastExec >= time;
-            }
-        };
+                    @Override
+                    public void compute() {
+                        lastExec = System.currentTimeMillis();
+                        runnable.run();
+                    }
+
+                    @Override
+                    public boolean shouldExecute() {
+                        return !this.isCancelled()
+                                && System.currentTimeMillis() - this.lastExec >= time;
+                    }
+                };
         this.submit(poolId, workload);
         return workload;
     }
 
-    public CancellableWorkload runTaskTimer(int poolId, Runnable runnable, long time, Predicate<Runnable> interruption) {
-        CancellableWorkload workload = new CancellableWorkload() {
-            long lastExec = System.currentTimeMillis();
-            @Override
-            public void compute() {
-                lastExec = System.currentTimeMillis();
-                runnable.run();
-                if (interruption.test(runnable)) {
-                    this.setCancelled(true);
-                }
-            }
+    public CancellableWorkload runTaskTimer(
+            int poolId, Runnable runnable, long time, Predicate<Runnable> interruption) {
+        CancellableWorkload workload =
+                new CancellableWorkload() {
+                    long lastExec = System.currentTimeMillis();
 
-            @Override
-            public boolean shouldExecute() {
-                return !this.isCancelled() && System.currentTimeMillis() - this.lastExec >= time;
-            }
-        };
+                    @Override
+                    public void compute() {
+                        lastExec = System.currentTimeMillis();
+                        runnable.run();
+                        if (interruption.test(runnable)) {
+                            this.setCancelled(true);
+                        }
+                    }
+
+                    @Override
+                    public boolean shouldExecute() {
+                        return !this.isCancelled()
+                                && System.currentTimeMillis() - this.lastExec >= time;
+                    }
+                };
         this.submit(poolId, workload);
         return workload;
     }
@@ -113,5 +123,4 @@ public class TaskQueueHandler {
         Task task = this.queueingPool.remove(poolID);
         task.cancel();
     }
-
 }

@@ -15,19 +15,21 @@ public class EconomyManager {
 
     /** Enables the economy manager and hooks into Vault */
     public static void enable(Plugin handlingPlugin, Runnable notFoundCallback) {
-        PluginLoadEvent.onPluginLoaded(handlingPlugin,
+        PluginLoadEvent.onPluginLoaded(
+                handlingPlugin,
                 "Vault",
-                    plugin -> {
-                        RegisteredServiceProvider<Economy> rsp =
-                                Bukkit.getServicesManager().getRegistration(Economy.class);
-                        if (rsp == null) {
-                            notFoundCallback.run();
-                            enabled = false;
-                            return;
-                        }
-                        enabled = true;
-                        economy = rsp.getProvider();
-                    }, notFoundCallback);
+                plugin -> {
+                    RegisteredServiceProvider<Economy> rsp =
+                            Bukkit.getServicesManager().getRegistration(Economy.class);
+                    if (rsp == null) {
+                        notFoundCallback.run();
+                        enabled = false;
+                        return;
+                    }
+                    enabled = true;
+                    economy = rsp.getProvider();
+                },
+                notFoundCallback);
     }
 
     /**

@@ -17,5 +17,4 @@ public abstract class Database {
     public DatabaseType getDatabaseType() {
         return this.databaseType;
     }
-
 }

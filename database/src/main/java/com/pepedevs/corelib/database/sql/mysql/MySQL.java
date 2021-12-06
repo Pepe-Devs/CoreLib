@@ -191,13 +191,7 @@ public class MySQL extends SQLDatabase {
 
         this.connection =
                 DriverManager.getConnection(
-                        String.format(
-                                URL_FORMAT,
-                                host,
-                                port,
-                                database,
-                                reconnect,
-                                ssl),
+                        String.format(URL_FORMAT, host, port, database, reconnect, ssl),
                         username,
                         password);
     }
