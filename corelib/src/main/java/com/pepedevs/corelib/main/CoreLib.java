@@ -3,8 +3,6 @@ package com.pepedevs.corelib.main;
 import com.pepedevs.corelib.plugin.PluginAdapter;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SingleLineChart;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CoreLib extends PluginAdapter {
@@ -15,8 +13,6 @@ public class CoreLib extends PluginAdapter {
     @Override
     protected boolean setUp() {
         this.getLogger().info("CoreLib loaded!");
-        Bukkit.getServicesManager()
-                .register(CoreLib.class, this, this, ServicePriority.Normal);
         initMetrics(this);
         return true;
     }

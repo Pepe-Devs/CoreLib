@@ -5,7 +5,7 @@
     <parent>
         <artifactId>CoreLib</artifactId>
         <groupId>com.pepedevs</groupId>
-        <version>1.0</version>
+        <version>1.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -49,6 +49,11 @@
         <dependency>
             <groupId>com.pepedevs</groupId>
             <artifactId>event-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>hologram</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
