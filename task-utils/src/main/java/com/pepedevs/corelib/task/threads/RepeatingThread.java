@@ -1,6 +1,7 @@
 package com.pepedevs.corelib.task.threads;
 
 import com.pepedevs.corelib.task.Task;
+import com.pepedevs.corelib.task.TaskQueueHandler;
 import com.pepedevs.corelib.task.Workload;
 
 import java.util.concurrent.ExecutorService;
@@ -35,6 +36,12 @@ public class RepeatingThread implements Runnable, Task {
     @Override
     public int getID() {
         return this.id;
+    }
+
+    @Deprecated
+    @Override
+    public TaskQueueHandler getHandler() {
+        return null;
     }
 
     @Deprecated

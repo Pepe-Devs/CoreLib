@@ -24,10 +24,19 @@ public final class PacketChannelHandler extends PluginHandler {
     private static final Map<PacketListener.Priority, Set<RegisteredPacketListener>> PACKET_LISTENERS =
             new HashMap<>();
 
-    public PacketChannelHandler(Plugin plugin) {
+    private static PacketChannelHandler INSTANCE;
+
+    private PacketChannelHandler(Plugin plugin) {
         super(plugin);
         Bukkit.getPluginManager()
                 .registerEvents(new PlayerInjector(), this.getPlugin());
+    }
+
+    public static PacketChannelHandler getInstance(Plugin plugin) {
+        if (INSTANCE == null)
+            INSTANCE = new PacketChannelHandler(plugin);
+
+        return INSTANCE;
     }
 
     /**

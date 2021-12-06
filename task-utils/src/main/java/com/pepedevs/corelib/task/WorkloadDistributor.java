@@ -10,18 +10,20 @@ public class WorkloadDistributor implements Task {
     private final Map<Integer, WorkloadThread> tasks = new ConcurrentHashMap<>();
 
     private final int id;
+    private final TaskQueueHandler handler;
     private ThreadFactory threadFactory;
     private boolean running;
 
     private int nextId = 0;
 
-    WorkloadDistributor(final int id) {
+    WorkloadDistributor(final TaskQueueHandler handler, final int id) {
+        this.handler = handler;
         this.id = id;
         this.running = false;
     }
 
     protected WorkloadThread createThread(final long nanoPerTick) {
-        final WorkloadThread thread = new WorkloadThread(++this.nextId, nanoPerTick);
+        final WorkloadThread thread = new WorkloadThread(this.handler, ++this.nextId, nanoPerTick);
         this.tasks.put(this.nextId, thread);
         if (this.running)
             thread.init(this.threadFactory);
@@ -42,12 +44,18 @@ public class WorkloadDistributor implements Task {
     }
 
     @Override
+    public TaskQueueHandler getHandler() {
+        return this.handler;
+    }
+
+    @Override
     public void cancel() {
         for (WorkloadThread value : this.tasks.values()) {
             if (!value.isCancelled())
                 value.cancel();
         }
         this.running = false;
+        this.handler.queueingPool.remove(this.getID());
     }
 
     @Override

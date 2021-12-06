@@ -13,7 +13,7 @@ public class TaskQueueHandler {
     public static final int DEFAULT_QUEUING_POOL_CONSTRAIN = 30 * 1000000;
 
     private final ThreadFactory threadFactory;
-    private final Map<Integer, Task> queueingPool;
+    protected final Map<Integer, Task> queueingPool;
 
     private int queueID;
 
@@ -35,13 +35,17 @@ public class TaskQueueHandler {
         if (constrainNanos >= MAX_QUEUING_POOL_CONSTRAIN)
             throw new IllegalArgumentException("Pool constrain cannot be larger than 50ms.");
 
-        WorkloadDistributor distributor = new WorkloadDistributor(queueID++);
+        WorkloadDistributor distributor = new WorkloadDistributor(this, queueID++);
         for (int i = 0; i < poolCapacity; i++) {
             distributor.createThread(constrainNanos);
         }
         this.queueingPool.put(queueID, distributor);
         distributor.start(this.threadFactory);
         return distributor;
+    }
+
+    public Task getTask(int poolId) {
+        return this.queueingPool.get(poolId);
     }
 
     public void submit(int poolId, Workload workload) {

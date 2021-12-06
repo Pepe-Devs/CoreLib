@@ -26,14 +26,14 @@ public class PlayerReflection {
     static {
         NMSClassResolver nmsClassResolver = new NMSClassResolver();
         CraftClassResolver craftClassResolver = new CraftClassResolver();
-        CRAFT_PLAYER_CLASS = craftClassResolver.resolveWrapper("CraftPlayer");
+        CRAFT_PLAYER_CLASS = craftClassResolver.resolveWrapper("entity.CraftPlayer");
         ENTITY_PLAYER_CLASS = nmsClassResolver.resolveWrapper("net.minecraft.server.level.EntityPlayer", "EntityPlayer");
         PLAYER_CONNECTION_CLASS = nmsClassResolver.resolveWrapper("net.minecraft.server.network.PlayerConnection", "PlayerConnection");
         NETWORK_MANAGER_CLASS = nmsClassResolver.resolveWrapper("net.minecraft.network.NetworkManager", "NetworkManager");
         PLAYER_CONNECTION_FIELD = new FieldResolver(ENTITY_PLAYER_CLASS.getClazz()).resolveAccessor(
                 ResolverQuery.builder().with("b", PLAYER_CONNECTION_CLASS.getClazz())
                         .with("playerConnection", PLAYER_CONNECTION_CLASS.getClazz()).build());
-        NETWORK_MANAGER_FIELD = new FieldResolver(ENTITY_PLAYER_CLASS.getClazz()).resolveAccessor(
+        NETWORK_MANAGER_FIELD = new FieldResolver(PLAYER_CONNECTION_CLASS.getClazz()).resolveAccessor(
                 ResolverQuery.builder().with("a", NETWORK_MANAGER_CLASS.getClazz())
                         .with("networkManager", NETWORK_MANAGER_CLASS.getClazz()).build());
         CHANNEL_FIELD = new FieldResolver(NETWORK_MANAGER_CLASS.getClazz()).resolveAccessor(

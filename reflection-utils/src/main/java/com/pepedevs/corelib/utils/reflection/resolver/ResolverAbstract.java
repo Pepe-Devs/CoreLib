@@ -15,8 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class ResolverAbstract<T> {
 
-    protected final Map<ResolverQuery, T> resolvedObjects =
-            new ConcurrentHashMap<>();
+    protected final Map<ResolverQuery, T> resolvedObjects = new ConcurrentHashMap<>();
 
     /**
      * Same as {@link #resolve(ResolverQuery...)} but throws no exceptions

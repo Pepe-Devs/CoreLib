@@ -14,7 +14,6 @@ import com.pepedevs.corelib.utils.reflection.resolver.wrapper.ConstructorWrapper
 import com.pepedevs.corelib.utils.reflection.resolver.wrapper.MethodWrapper;
 import com.pepedevs.corelib.utils.version.Version;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -32,9 +31,7 @@ public class EntityReflection {
     public static final ClassWrapper<?> ENTITY_ARMOR_STAND;
     public static final ClassWrapper<?> NBT_TAG_COMPOUND;
     public static final ClassWrapper<?> DAMAGE_SOURCE;
-    public static final ClassWrapper<?> SOUND_CATEGORY;
     public static final ConstructorWrapper<?> PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR;
-    public static final ConstructorWrapper<?> PACKET_PLAY_OUT_CUSTOM_SOUND_EFFECT_CONSTRUCTOR;
     public static final ConstructorWrapper<?> NBT_TAG_COMPOUND_CONSTRUCTOR;
     public static final MethodWrapper<?> NMS_ENTITY_GET_BOUNDING_BOX;
     public static final MethodWrapper<Float> NMS_ENTITY_GET_HEAD_HEIGHT;
@@ -51,7 +48,6 @@ public class EntityReflection {
     public static final MethodWrapper<?> NBT_TAG_COMPOUND_SET_INT;
     public static final MethodWrapper<?> ENTITY_LIVING_C;
     public static final MethodWrapper<?> ENTITY_LIVING_F;
-    public static final MethodWrapper<?> SOUND_CATEGORY_VALUE_OF;
     public static final FieldAccessor NMS_ENTITY_YAW;
     public static final FieldAccessor NMS_ENTITY_PITCH;
     public static final FieldAccessor NMS_ENTITY_INVULNERABLE;
@@ -66,11 +62,8 @@ public class EntityReflection {
         ENTITY_ARMOR_STAND = nmsClassResolver.resolveWrapper("EntityArmorStand", "net.minecraft.world.entity.decoration.EntityArmorStand");
         NBT_TAG_COMPOUND = nmsClassResolver.resolveWrapper("NBTTagCompound", "net.minecraft.nbt.NBTTagCompound");
         DAMAGE_SOURCE = nmsClassResolver.resolveWrapper("DamageSource", "net.minecraft.world.damagesource.DamageSource");
-        SOUND_CATEGORY = nmsClassResolver.resolveWrapper("SoundCategory", "net.minecraft.sounds.SoundCategory");
         PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_ENTITY_DESTROY.getClazz()).resolveWrapper(new Class<?>[]{int[].class});
-        PACKET_PLAY_OUT_CUSTOM_SOUND_EFFECT_CONSTRUCTOR = new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_CUSTOM_SOUND_EFFECT.getClazz())
-                .resolveWrapper(new Class<?>[]{String.class, SOUND_CATEGORY.getClazz(), double.class, double.class, double.class, float.class, float.class});
-        NBT_TAG_COMPOUND_CONSTRUCTOR = new ConstructorResolver(NBT_TAG_COMPOUND.getClazz()).resolveWrapper();
+        NBT_TAG_COMPOUND_CONSTRUCTOR = new ConstructorResolver(NBT_TAG_COMPOUND.getClazz()).resolveWrapper(new Class[0]);
         NMS_ENTITY_GET_BOUNDING_BOX = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("getBoundingBox");
         NMS_ENTITY_GET_HEAD_HEIGHT = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("getHeadHeight");
         NMS_ENTITY_LOC_X = new MethodResolver(NMS_ENTITY_CLASS.getClazz()).resolveWrapper("locX");
@@ -94,8 +87,6 @@ public class EntityReflection {
                 ResolverQuery.builder().with("f", NBT_TAG_COMPOUND.getClazz()).build());
         NBT_TAG_COMPOUND_SET_INT = new MethodResolver(NBT_TAG_COMPOUND.getClazz()).resolveWrapper(
                 ResolverQuery.builder().with("setInt", String.class, int.class).build());
-        SOUND_CATEGORY_VALUE_OF = new MethodResolver(SOUND_CATEGORY.getClazz()).resolveWrapper(
-                ResolverQuery.builder().with("valueOf", String.class).build());
         NMS_ENTITY_YAW = new FieldResolver(NMS_ENTITY_CLASS.getClazz()).resolveAccessor(
                 ResolverQuery.builder().with("yaw", float.class).with("ay", float.class).build());
         NMS_ENTITY_PITCH = new FieldResolver(NMS_ENTITY_CLASS.getClazz()).resolveAccessor(
@@ -448,55 +439,4 @@ public class EntityReflection {
         ENTITY_ARMOR_STAND_INVULNERABLE.set(BukkitReflection.getHandle(stand), !invulnerable);
     }
 
-    /**
-     * Plays a sound for the provided player.
-     *
-     * <p>This method will fail silently if Location or Sound are null. No sound will be heard by
-     * the player if their client does not have the respective sound for the value passed.
-     *
-     * <p>
-     *
-     * @param player Location to play the sound
-     * @param sound Internal sound name to play
-     * @param volume Volume of the sound
-     * @param pitch Pitch of the sound
-     */
-    public static void playNamedSound(Player player, String sound, float volume, float pitch) {
-        Object master = SOUND_CATEGORY_VALUE_OF.invoke(null, "MASTER");
-
-        Location location = player.getEyeLocation();
-        double x = location.getX();
-        double y = location.getY();
-        double z = location.getZ();
-
-        Object packet = PACKET_PLAY_OUT_CUSTOM_SOUND_EFFECT_CONSTRUCTOR.newInstance(sound, master, x, y, z, volume, pitch);
-        BukkitReflection.sendPacket(player, packet);
-    }
-
-    /**
-     * Plays a Sound at the provided Location in the World.
-     *
-     * <p>This method will fail silently if Location or Sound are null. No sound will be heard by
-     * the players if their clients do not have the respective sound for the value passed.
-     *
-     * <p>
-     *
-     * @param location Location to play the sound
-     * @param sound Internal sound name to play
-     * @param volume Volume of the sound
-     * @param pitch Pitch of the sound
-     */
-    public static void playNameSoundAt(Location location, String sound, float volume, float pitch) {
-        World w = location.getWorld();
-        double x = location.getX();
-        double y = location.getY();
-        double z = location.getZ();
-
-        boolean newest = Version.SERVER_VERSION.isNewerEquals(Version.v1_17_R1);
-
-        Object master = SOUND_CATEGORY_VALUE_OF.invoke(null, newest ? "a" : "MASTER");
-        Object packet = PACKET_PLAY_OUT_CUSTOM_SOUND_EFFECT_CONSTRUCTOR.newInstance(sound, master, x, y, z, volume, pitch);
-
-        BukkitReflection.sendPacketNearby(null, x, y, z, (volume > 1.0F ? 16.0F * volume : 16.0D), w, packet);
-    }
 }

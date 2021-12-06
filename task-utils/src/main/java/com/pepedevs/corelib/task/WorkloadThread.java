@@ -13,11 +13,13 @@ public class WorkloadThread implements Runnable, Task {
 
     private final Queue<Workload> deque = new ConcurrentLinkedQueue<>();
 
+    private final TaskQueueHandler handler;
     private final long maxNanosPerTick;
     private final int workThreadId;
     private RepeatingThread thread;
 
-    WorkloadThread(final int workThreadId, final long maxNanosPerTick) {
+    WorkloadThread(final TaskQueueHandler handler, final int workThreadId, final long maxNanosPerTick) {
+        this.handler = handler;
         this.workThreadId = workThreadId;
         this.maxNanosPerTick = maxNanosPerTick;
     }
@@ -69,6 +71,11 @@ public class WorkloadThread implements Runnable, Task {
     @Override
     public int getID() {
         return this.workThreadId;
+    }
+
+    @Override
+    public TaskQueueHandler getHandler() {
+        return this.handler;
     }
 
     @Override

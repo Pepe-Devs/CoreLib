@@ -97,7 +97,7 @@ public class FieldResolver extends MemberResolver<Field> {
     @Override
     protected Field resolveObject(ResolverQuery query) throws ReflectiveOperationException {
         if (query.getTypes() == null || query.getTypes().length == 0) {
-            return FieldReflection.setAccessible(this.clazz.getDeclaredField(query.getName()));
+            return FieldReflection.getAccessible(this.clazz, query.getName());
         } else {
             for (Field field : this.clazz.getDeclaredFields()) {
                 if (field.getName().equals(query.getName())) {
@@ -109,7 +109,7 @@ public class FieldResolver extends MemberResolver<Field> {
                 }
             }
         }
-        return null;
+        throw new NoSuchFieldException("No field found with the name `" + query.getName() + "`");
     }
 
     /**
