@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /** Enumeration for ItemMenu size. */
 public enum ItemMenuSize {
+    ZERO(0),
     ONE_LINE(9),
     TWO_LINE(18),
     THREE_LINE(27),

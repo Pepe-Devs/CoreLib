@@ -351,22 +351,12 @@ public class MethodReflection {
      * <p>
      *
      * @param method the method to set
-     * @param accessible whether or not the method is accessible
+     * @param accessible whether the method is accessible
      * @return the same Object, for chaining
      * @throws SecurityException if the request is denied
      */
     public static Method setAccessible(Method method, boolean accessible) throws SecurityException {
         method.setAccessible(accessible);
-        if (accessible) {
-            try {
-                Field modifiersField = Method.class.getDeclaredField("modifiers");
-                modifiersField.setAccessible(true);
-                modifiersField.setInt(method, method.getModifiers() & ~Modifier.FINAL);
-                modifiersField.setAccessible(false);
-            } catch (Throwable ex) {
-                ex.printStackTrace();
-            }
-        }
         return method;
     }
 

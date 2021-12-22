@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /** Represents a class for building {@link ItemMeta} */
 public final class ItemMetaBuilder {
@@ -25,7 +26,7 @@ public final class ItemMetaBuilder {
      * @param material Material for getting ItemMeta
      */
     public ItemMetaBuilder(Material material) {
-        this.material = MaterialUtils.getRightMaterial(material);
+        this.material = material;
         this.result = Bukkit.getItemFactory().getItemMeta(this.material);
         if (this.result == null) {
             throw new IllegalArgumentException("Unsupported Material: " + material.name());
@@ -61,9 +62,9 @@ public final class ItemMetaBuilder {
             builder.withDisplayName(meta.getDisplayName());
             builder.withLore(meta.getLore());
             builder.withItemFlags(
-                    meta.getItemFlags().toArray(new ItemFlag[meta.getItemFlags().size()]));
+                    meta.getItemFlags().toArray(new ItemFlag[0]));
             meta.getEnchants().keySet().stream()
-                    .filter(enchantment -> enchantment != null)
+                    .filter(Objects::nonNull)
                     .forEach(
                             enchantment ->
                                     builder.withEnchantment(
@@ -286,7 +287,7 @@ public final class ItemMetaBuilder {
             return null;
         }
 
-        if (MaterialUtils.getRightMaterial(stack) != material) {
+        if (stack.getType() != material) {
             return stack;
         }
 

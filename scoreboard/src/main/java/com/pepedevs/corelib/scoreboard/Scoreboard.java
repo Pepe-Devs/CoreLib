@@ -84,7 +84,7 @@ public class Scoreboard {
                 new ConstructorResolver(PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM.getClazz())
                         .resolveWrapper(new Class[0]);
         PACKET_SB_SERIALIZABLE_TEAM =
-                sbTeamClass == null
+                !sbTeamClass.exists()
                         ? null
                         : new ConstructorResolver(sbTeamClass.getClazz())
                                 .resolveWrapper(new Class[0]);
@@ -97,7 +97,7 @@ public class Scoreboard {
                     PacketConstant.PACKET_PLAY_OUT_SCOREBOARD_TEAM,
                     sbTeamClass
                 }) {
-            if (clazz == null) continue;
+            if (!clazz.exists()) continue;
             FieldAccessor[] fields =
                     Arrays.stream(clazz.getClazz().getDeclaredFields())
                             .map(FieldAccessor::new)

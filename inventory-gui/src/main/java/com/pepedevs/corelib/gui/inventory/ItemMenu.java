@@ -138,9 +138,7 @@ public class ItemMenu {
      * @return Filtered contents
      */
     public Item[] getContents(Predicate<? super Item> predicate_filter) {
-        List<Item> filtered =
-                getContentsStream().filter(predicate_filter).collect(Collectors.toList());
-        return filtered.toArray(new Item[filtered.size()]);
+        return getContentsStream().filter(predicate_filter).toArray(Item[]::new);
     }
 
     /**
@@ -220,7 +218,7 @@ public class ItemMenu {
                 set.add(i);
             }
         }
-        return set.toArray(new Integer[set.size()]);
+        return set.toArray(new Integer[0]);
     }
 
     /**

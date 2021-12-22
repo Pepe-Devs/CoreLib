@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class BookItemMenu extends ItemMenu {
 
     /** Default page button bar size. */
-    public static final ItemMenuSize DEFAULT_BUTTONS_BAR_SIZE = ItemMenuSize.ONE_LINE;
+    public static final ItemMenuSize DEFAULT_BUTTONS_BAR_SIZE = ItemMenuSize.ZERO;
 
     private final ItemMenuSize buttons_bar_size;
     private final Item[] bar_buttons;
@@ -42,7 +42,6 @@ public class BookItemMenu extends ItemMenu {
             Item... contents) {
         super(title, pages_size, parent, contents);
         Validate.notNull(pages_size, "The pages size cannot be null!");
-        Validate.notNull(buttons_bar_size, "The buttons bar size cannot be null!");
         Validate.isTrue(
                 pages_size.isHigherThan(ItemMenuSize.ONE_LINE),
                 "The book pages size must be higher than ItemMenuSize.ONE_LINE!");
@@ -93,7 +92,7 @@ public class BookItemMenu extends ItemMenu {
     }
 
     /**
-     * Returns the button bar size size.
+     * Returns the button bar size.
      *
      * <p>
      *
@@ -577,4 +576,5 @@ public class BookItemMenu extends ItemMenu {
         }
         return pages_amount;
     }
+
 }
