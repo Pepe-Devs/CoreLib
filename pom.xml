@@ -104,7 +104,7 @@
     <distributionManagement>
         <repository>
             <id>pepedevs</id>
-            <url>http://51.79.243.92:8081/repository/maven-releases/</url>
+            <url>https://repo.pepedevs.com/nexus/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 
