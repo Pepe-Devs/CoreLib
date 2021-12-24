@@ -1,6 +1,5 @@
-package com.pepedevs.corelib.adventure;
+package com.pepedevs.corelib.utils.itemstack;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -8,12 +7,14 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public final class ItemMetaBuilder {
+/**
+ * @deprecated See {@link ItemMetaBuilder}
+ */
+public final class LegacyItemMetaBuilder {
 
     private final Material material;
     private final ItemMeta result;
@@ -25,7 +26,7 @@ public final class ItemMetaBuilder {
      *
      * @param material Material for getting ItemMeta
      */
-    public ItemMetaBuilder(Material material) {
+    public LegacyItemMetaBuilder(Material material) {
         this.material = material;
         this.result = Bukkit.getItemFactory().getItemMeta(this.material);
         if (this.result == null) {
@@ -34,30 +35,30 @@ public final class ItemMetaBuilder {
     }
 
     /**
-     * Returns the instance of {@link ItemMetaBuilder} for the given ItemStack.
+     * Returns the instance of {@link LegacyItemMetaBuilder} for the given ItemStack.
      *
      * <p>
      *
      * @param stack ItemStack to get ItemMeta of
-     * @return {@link ItemMetaBuilder} instance
+     * @return {@link LegacyItemMetaBuilder} instance
      */
-    public static ItemMetaBuilder of(ItemStack stack) {
+    public static LegacyItemMetaBuilder of(ItemStack stack) {
         return stack.hasItemMeta()
                 ? of(stack.getType(), stack.getItemMeta())
-                : new ItemMetaBuilder(stack.getType());
+                : new LegacyItemMetaBuilder(stack.getType());
     }
 
     /**
-     * Returns the instance of {@link ItemMetaBuilder} for the given Material and ItemMeta.
+     * Returns the instance of {@link LegacyItemMetaBuilder} for the given Material and ItemMeta.
      *
      * <p>
      *
      * @param material Material of ItemStack
      * @param meta Meta of ItemStack
-     * @return {@link ItemMetaBuilder} instance
+     * @return {@link LegacyItemMetaBuilder} instance
      */
-    public static ItemMetaBuilder of(Material material, ItemMeta meta) {
-        ItemMetaBuilder builder = new ItemMetaBuilder(material);
+    public static LegacyItemMetaBuilder of(Material material, ItemMeta meta) {
+        LegacyItemMetaBuilder builder = new LegacyItemMetaBuilder(material);
         if (meta != null) {
             builder.withDisplayName(meta.getDisplayName());
             builder.withLore(meta.getLore());
@@ -81,21 +82,9 @@ public final class ItemMetaBuilder {
      * @param display_name Display name
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withDisplayName(String display_name) {
+    public LegacyItemMetaBuilder withDisplayName(String display_name) {
         result.setDisplayName(display_name);
         return this;
-    }
-
-    /**
-     * Sets the display name in ItemMeta.
-     *
-     * <p>
-     *
-     * @param display_name Display name component
-     * @return This Object, for chaining
-     */
-    public ItemMetaBuilder displayName(Component display_name) {
-        return this.withDisplayName(ReflectionUtils.fromComponent(display_name));
     }
 
     /**
@@ -106,7 +95,7 @@ public final class ItemMetaBuilder {
      * @param lore Lore
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withLore(List<String> lore) {
+    public LegacyItemMetaBuilder withLore(List<String> lore) {
         result.setLore(lore);
         return this;
     }
@@ -116,43 +105,11 @@ public final class ItemMetaBuilder {
      *
      * <p>
      *
-     * @param lore Lore components
-     * @return This Object, for chaining
-     */
-    public ItemMetaBuilder lore(List<Component> lore) {
-        List<String> stringLore = new ArrayList<>();
-        for (Component component : lore) {
-            stringLore.add(ReflectionUtils.fromComponent(component));
-        }
-        return this.withLore(stringLore);
-    }
-
-    /**
-     * Sets the lore in ItemMeta.
-     *
-     * <p>
-     *
      * @param lore Lore
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withLore(String... lore) {
+    public LegacyItemMetaBuilder withLore(String... lore) {
         return withLore(Arrays.asList(lore));
-    }
-
-    /**
-     * Sets the lore in ItemMeta.
-     *
-     * <p>
-     *
-     * @param lore Lore components
-     * @return This Object, for chaining
-     */
-    public ItemMetaBuilder lore(Component... lore) {
-        String[] bruh = new String[lore.length];
-        for (int i = 0; i < lore.length; i++) {
-            bruh[i] = ReflectionUtils.fromComponent(lore[i]);
-        }
-        return this.withLore(bruh);
     }
 
     /**
@@ -163,7 +120,7 @@ public final class ItemMetaBuilder {
      * @param line Line to append to lore
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder appendToLore(String line) {
+    public LegacyItemMetaBuilder appendToLore(String line) {
         List<String> lore = result.getLore();
         if (lore == null) {
             return withLore(line);
@@ -174,18 +131,6 @@ public final class ItemMetaBuilder {
     }
 
     /**
-     * Append line to the lore in ItemMeta.
-     *
-     * <p>
-     *
-     * @param line Line component to append to lore
-     * @return This Object, for chaining
-     */
-    public ItemMetaBuilder appendLore(Component line) {
-        return this.appendToLore(ReflectionUtils.fromComponent(line));
-    }
-
-    /**
      * Remove lore line from ItemMeta.
      *
      * <p>
@@ -193,25 +138,13 @@ public final class ItemMetaBuilder {
      * @param line Line to remove from lore
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder removeFromLore(String line) {
+    public LegacyItemMetaBuilder removeFromLore(String line) {
         List<String> lore = result.getLore();
         if (lore != null) {
             lore.remove(line);
             return withLore(lore);
         }
         return this;
-    }
-
-    /**
-     * Remove lore line from ItemMeta.
-     *
-     * <p>
-     *
-     * @param line Line component to remove from lore
-     * @return This Object, for chaining
-     */
-    public ItemMetaBuilder removeFromLore(Component line) {
-        return this.removeFromLore(ReflectionUtils.fromComponent(line));
     }
 
     /**
@@ -224,7 +157,7 @@ public final class ItemMetaBuilder {
      * @param ignore_max_level Ignore max level cap?
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withEnchantment(
+    public LegacyItemMetaBuilder withEnchantment(
             Enchantment enchantment, int level, boolean ignore_max_level) {
         result.addEnchant(enchantment, level, ignore_max_level);
         return this;
@@ -239,7 +172,7 @@ public final class ItemMetaBuilder {
      * @param level Level of enchantment
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withEnchantment(Enchantment enchantment, int level) {
+    public LegacyItemMetaBuilder withEnchantment(Enchantment enchantment, int level) {
         return withEnchantment(enchantment, level, true);
     }
 
@@ -251,7 +184,7 @@ public final class ItemMetaBuilder {
      * @param enchantment Enchantment
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withEnchantment(Enchantment enchantment) {
+    public LegacyItemMetaBuilder withEnchantment(Enchantment enchantment) {
         return withEnchantment(enchantment, 0);
     }
 
@@ -263,7 +196,7 @@ public final class ItemMetaBuilder {
      * @param enchantment Enchantment to remove
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withoutEnchantment(Enchantment enchantment) {
+    public LegacyItemMetaBuilder withoutEnchantment(Enchantment enchantment) {
         result.removeEnchant(enchantment);
         return this;
     }
@@ -276,7 +209,7 @@ public final class ItemMetaBuilder {
      * @param flag Item Flag
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withItemFlags(ItemFlag... flag) {
+    public LegacyItemMetaBuilder withItemFlags(ItemFlag... flag) {
         result.addItemFlags(flag);
         return this;
     }
@@ -289,7 +222,7 @@ public final class ItemMetaBuilder {
      * @param flag Item Flag
      * @return This Object, for chaining
      */
-    public ItemMetaBuilder withoutItemFlags(ItemFlag... flag) {
+    public LegacyItemMetaBuilder withoutItemFlags(ItemFlag... flag) {
         result.removeItemFlags(flag);
         return this;
     }
@@ -303,7 +236,7 @@ public final class ItemMetaBuilder {
      * @return This Object, for chaining
      */
     @SuppressWarnings("deprecation")
-    public ItemMetaBuilder unbreakable(boolean unbreakable) {
+    public LegacyItemMetaBuilder unbreakable(boolean unbreakable) {
         result.setUnbreakable(unbreakable);
         return this;
     }
@@ -362,5 +295,4 @@ public final class ItemMetaBuilder {
         stack.setItemMeta(result);
         return stack;
     }
-
 }

@@ -10,8 +10,16 @@ import java.util.List;
 
 public class MiniMessageUtils {
 
+    public static Component translate(String message) {
+        return translate(MiniMessage.get(), message);
+    }
+
     public static Component translate(MiniMessage miniMessage, String string) {
        return miniMessage.parse(string);
+    }
+
+    public static Component[] translate(String[] messages) {
+        return translate(MiniMessage.get(), messages);
     }
 
     public static Component[] translate(MiniMessage miniMessage, String... strings) {
@@ -22,6 +30,10 @@ public class MiniMessageUtils {
         return components;
     }
 
+    public static List<Component> translate(Collection<String> messages) {
+        return translate(MiniMessage.get(), messages);
+    }
+
     public static List<Component> translate(MiniMessage miniMessage, Collection<String> strings) {
         List<Component> components = new ArrayList<>(strings.size());
         for (String string : strings) {
@@ -30,8 +42,16 @@ public class MiniMessageUtils {
         return components;
     }
 
+    public static String untranslate(Component component) {
+        return untranslate(MiniMessage.get(), component);
+    }
+
     public static String untranslate(MiniMessage miniMessage, Component component) {
         return miniMessage.serialize(component);
+    }
+
+    public static String[] untranslate(Component... components) {
+        return untranslate(MiniMessage.get(), components);
     }
 
     public static String[] untranslate(MiniMessage miniMessage, Component... components) {
@@ -40,6 +60,10 @@ public class MiniMessageUtils {
             strings[i] = untranslate(miniMessage, components[i]);
         }
         return strings;
+    }
+
+    public static List<String> untranslate(List<Component> components) {
+        return untranslate(MiniMessage.get(), components);
     }
 
     public static List<String> untranslate(MiniMessage miniMessage, Collection<Component> components) {
