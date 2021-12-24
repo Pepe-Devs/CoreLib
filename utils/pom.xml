@@ -30,6 +30,16 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>reflection-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>adventure-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport</artifactId>
             <version>5.0.0.Alpha2</version>
@@ -43,11 +53,6 @@
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <dependency>
-            <groupId>com.pepedevs</groupId>
-            <artifactId>reflection-utils</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -63,7 +68,7 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>8.4.0</version>
+            <version>8.5.0.1</version>
         </dependency>
         <!-- Particle Lib -->
         <dependency>

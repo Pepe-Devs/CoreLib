@@ -10,7 +10,6 @@ import com.pepedevs.corelib.utils.reflection.bukkit.PlayerReflection;
 import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
 import com.pepedevs.corelib.utils.reflection.resolver.MethodResolver;
 import com.pepedevs.corelib.utils.reflection.resolver.wrapper.MethodWrapper;
-import com.pepedevs.corelib.utils.version.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -41,7 +40,7 @@ public class ItemStackUtils {
         boolean durability_field = false;
         try {
             durability_field =
-                    new ItemStack(Material.AIR).getClass().getDeclaredField("durability") != null;
+                    ItemStack.class.getDeclaredField("durability") != null;
         } catch (NoSuchFieldException | SecurityException e) {
             durability_field = false;
         }
@@ -50,42 +49,6 @@ public class ItemStackUtils {
         CRAFT_PLAYER_GET_GAMEPROFILE =
                 new MethodResolver(PlayerReflection.CRAFT_PLAYER_CLASS.getClazz())
                         .resolveWrapper("getProfile");
-    }
-
-    /**
-     * Gets the {@link ItemStack} with the given material and amount.
-     *
-     * <p>
-     *
-     * @param material Material of the ItemStack
-     * @param amount Amount of the ItemStack
-     * @return {@link ItemStack}
-     */
-    public static ItemStack ofMaterial(Material material, int amount) {
-        if (Version.SERVER_VERSION.isNewer(Version.v1_12_R1)) {
-            return new ItemStack(material);
-        }
-        return new ItemStack(material, amount);
-    }
-
-    /**
-     * Gets the {@link ItemStack} with the given material and amount.
-     *
-     * <p>
-     *
-     * @param material XMaterial for the ItemStack
-     * @param amount Amount of the ItemStack
-     * @return {@link ItemStack}
-     */
-    public static ItemStack ofUniversalMaterial(XMaterial material, int amount) {
-        if (material.parseMaterial() == null) {
-            return null;
-        }
-
-        if (Version.SERVER_VERSION.isNewer(Version.v1_12_R1)) {
-            return new ItemStack(material.parseMaterial());
-        }
-        return new ItemStack(material.parseMaterial(), amount);
     }
 
     /**
@@ -107,68 +70,13 @@ public class ItemStackUtils {
     }
 
     /**
-     * Convert {@link ItemStack} to Soulbound item.
-     *
-     * <p>
-     *
-     * @param stack ItemStack to convert
-     * @return SoulBound ItemStack
-     */
-    public static ItemStack addSoulbound(ItemStack stack) {
-        if (stack == null) {
-            return stack;
-        }
-
-        ItemMeta meta = stack.getItemMeta();
-        if (meta == null) {
-            meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
-        }
-
-        List<String> lore = meta.getLore();
-        if (lore == null) {
-            lore = new ArrayList<String>();
-        }
-
-        lore.add("Soulbound");
-        meta.setLore(lore);
-        stack.setItemMeta(meta);
-        return stack;
-    }
-
-    /**
-     * Check if {@link ItemStack} is SoulBound.
-     *
-     * <p>
-     *
-     * @param stack ItemStack to check
-     * @return true if is a SoulBound
-     */
-    public static boolean isSoulbound(ItemStack stack) {
-        if (stack == null) {
-            return false;
-        }
-
-        ItemMeta meta = stack.getItemMeta();
-        if (meta == null) {
-            return false;
-        }
-
-        List<String> lore = meta.getLore();
-        if (lore == null) {
-            return false;
-        }
-        return lore.contains("Soulbound");
-    }
-
-    /**
      * Extracts the name from the {@link ItemMeta} of an {@link ItemStack}.
      *
      * <p>
      *
      * @param stack {@link ItemStack} to extract
      * @param strip_colors Strip colors?
-     * @return Display name of the given {@link ItemStack} or an empty string if it doesn't have
-     *     name
+     * @return Display name of the given {@link ItemStack} or an empty string if it doesn't have a name
      */
     public static String extractName(ItemStack stack, boolean strip_colors) {
         if (stack == null || stack.getItemMeta() == null) {
@@ -304,13 +212,13 @@ public class ItemStackUtils {
     }
 
     /**
-     * Check two items have the the same lore.
+     * Check two items have the same lore.
      *
      * <p>
      *
      * @param i1 First ItemStack
      * @param i2 Second ItemStack
-     * @return true if have the same lore
+     * @return true if it has the same lore
      */
     public static boolean equalsLore(final ItemStack i1, final ItemStack i2) {
         // check not null.

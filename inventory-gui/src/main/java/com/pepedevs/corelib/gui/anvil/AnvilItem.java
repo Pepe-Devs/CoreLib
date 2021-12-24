@@ -4,7 +4,6 @@ import com.pepedevs.corelib.gui.anvil.action.AnvilItemClickAction;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
 import com.pepedevs.corelib.utils.itemstack.ItemStackUtils;
-import com.pepedevs.corelib.utils.material.MaterialUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -130,7 +129,7 @@ public abstract class AnvilItem {
     public ItemStack getDisplayIcon() {
         return this.getIcon().getType() == Material.AIR
                 ? this.icon
-                : (new ItemMetaBuilder(MaterialUtils.getRightMaterial(this.getIcon())))
+                : (new ItemMetaBuilder(this.getIcon().getType()))
                         .withDisplayName(StringUtils.translateAlternateColorCodes(this.getName()))
                         .withLore(this.getLore())
                         .applyTo(this.getIcon().clone());
