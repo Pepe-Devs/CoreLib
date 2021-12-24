@@ -138,11 +138,7 @@ public class Scoreboard {
 
     private final Map<UUID, String> shown;
 
-    public Scoreboard(String title, String... elements) {
-        this(title, Arrays.asList(elements));
-    }
-
-    public Scoreboard(String title, List<String> elements) {
+    public Scoreboard(String title) {
         Validate.isTrue(
                 !(title.length() > MAX_DISPLAY_NAME_LENGTH
                         && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
