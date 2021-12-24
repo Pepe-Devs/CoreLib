@@ -1,9 +1,10 @@
 package com.pepedevs.corelib.item;
 
 import com.google.common.base.Objects;
-import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.adventure.AdventureUtils;
 import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
 import com.pepedevs.corelib.utils.itemstack.ItemStackUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
@@ -15,10 +16,31 @@ import java.util.List;
 /** Abstract class to be used for creating Action Items. */
 public abstract class ActionItemBase implements ActionItem {
 
-    protected final String display_name;
-    protected final List<String> lore;
+    protected final Component display_name;
+    protected final List<Component> lore;
     protected final Material material;
     protected final EventPriority priority;
+
+    /**
+     * Constructs the Action Item.
+     *
+     * <p>
+     *
+     * @param display_name Display name of the Action Item
+     * @param lore Lore of the Action Item
+     * @param material Material of the Action Item
+     * @param priority {@link EventPriority} of the Action Item
+     */
+    public ActionItemBase(
+            Component display_name,
+            Collection<Component> lore,
+            Material material,
+            EventPriority priority) {
+        this.display_name = display_name;
+        this.lore = new ArrayList<>(lore);
+        this.material = material;
+        this.priority = priority;
+    }
 
     /**
      * Constructs the Action Item.
@@ -35,10 +57,8 @@ public abstract class ActionItemBase implements ActionItem {
             Collection<String> lore,
             Material material,
             EventPriority priority) {
-        this.display_name = StringUtils.translateAlternateColorCodes(display_name);
-        this.lore =
-                StringUtils.translateAlternateColorCodes(
-                        StringUtils.translateAlternateColorCodes(new ArrayList<>(lore)));
+        this.display_name = AdventureUtils.fromLegacyText(display_name);
+        this.lore = AdventureUtils.fromLegacyText(lore);
         this.material = material;
         this.priority = priority;
     }
@@ -52,17 +72,17 @@ public abstract class ActionItemBase implements ActionItem {
      * @param lore Lore of the Action Item
      * @param material Material of the Action Item
      */
-    public ActionItemBase(String display_name, Collection<String> lore, Material material) {
+    public ActionItemBase(Component display_name, Collection<Component> lore, Material material) {
         this(display_name, lore, material, EventPriority.NORMAL);
     }
 
     @Override
-    public String getDisplayName() {
+    public Component getDisplayName() {
         return display_name;
     }
 
     @Override
-    public List<String> getLore() {
+    public List<Component> getLore() {
         return lore;
     }
 
@@ -79,8 +99,8 @@ public abstract class ActionItemBase implements ActionItem {
     @Override
     public ItemStack toItemStack() {
         return new ItemMetaBuilder(getMaterial())
-                .withDisplayName(getDisplayName())
-                .withLore(getLore())
+                .displayName(getDisplayName())
+                .lore(getLore())
                 .toItemStack();
     }
 
@@ -88,8 +108,8 @@ public abstract class ActionItemBase implements ActionItem {
     public boolean isThis(ItemStack item) {
         if (item != null) {
             return item.getType() == getMaterial()
-                    && Objects.equal(ItemStackUtils.extractName(item, false), getDisplayName())
-                    && Objects.equal(ItemStackUtils.extractLore(item, false), getLore());
+                    && Objects.equal(ItemStackUtils.extractName(item), this.getDisplayName())
+                    && Objects.equal(ItemStackUtils.extractLore(item), this.getLore());
         } else {
             return false;
         }

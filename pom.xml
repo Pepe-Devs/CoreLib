@@ -10,6 +10,7 @@
     <version>1.1.1</version>
     <modules>
         <module>action-item</module>
+        <module>adventure-utils</module>
         <module>bungee-utils</module>
         <module>configuration-utils</module>
         <module>corelib</module>
@@ -26,7 +27,6 @@
         <module>task-utils</module>
         <module>utils</module>
         <module>vault-hook</module>
-        <module>adventure-utils</module>
     </modules>
 
     <properties>

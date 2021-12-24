@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.utils.reflection.bukkit;
 
+import com.mojang.authlib.GameProfile;
 import com.pepedevs.corelib.utils.reflection.accessor.FieldAccessor;
 import com.pepedevs.corelib.utils.reflection.resolver.FieldResolver;
 import com.pepedevs.corelib.utils.reflection.resolver.MethodResolver;
@@ -22,6 +23,7 @@ public class PlayerReflection {
     public static final FieldAccessor NETWORK_MANAGER_FIELD;
     public static final FieldAccessor CHANNEL_FIELD;
     public static final MethodWrapper CRAFT_PLAYER_GET_HANDLE;
+    public static final MethodWrapper CRAFT_PLAYER_GET_GAMEPROFILE;
 
     static {
         NMSClassResolver nmsClassResolver = new NMSClassResolver();
@@ -62,6 +64,10 @@ public class PlayerReflection {
                                         .build());
         CRAFT_PLAYER_GET_HANDLE =
                 new MethodResolver(CRAFT_PLAYER_CLASS.getClazz()).resolveWrapper("getHandle");
+
+        CRAFT_PLAYER_GET_GAMEPROFILE =
+                new MethodResolver(PlayerReflection.CRAFT_PLAYER_CLASS.getClazz())
+                        .resolveWrapper("getProfile");
     }
 
     /**
@@ -111,5 +117,17 @@ public class PlayerReflection {
      */
     public static Channel getChannel(Player player) {
         return CHANNEL_FIELD.get(PlayerReflection.getNetworkManager(player));
+    }
+
+    /**
+     * Gets the player's game profile.
+     *
+     * <p>
+     *
+     * @param player Player to get
+     * @return Player's Game profile
+     */
+    public static GameProfile getGameProfile(Player player) {
+        return (GameProfile) CRAFT_PLAYER_GET_GAMEPROFILE.invoke(player);
     }
 }

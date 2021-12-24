@@ -168,14 +168,4 @@ public final class StainedGlassItemStack extends CustomItemStack {
         }
     }
 
-    //	private void createData(final byte data) {
-    //	try {
-    //		Method method = this.getClass().getDeclaredMethod("createData", byte.class);
-    //		method.setAccessible(true); method.invoke(this, data);
-    //	} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-    //			| IllegalArgumentException | InvocationTargetException e) {
-    //		e.printStackTrace();
-    //	}
-    // }
-
 }

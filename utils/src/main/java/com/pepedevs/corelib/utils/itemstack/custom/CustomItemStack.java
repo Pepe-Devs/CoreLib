@@ -1,5 +1,7 @@
 package com.pepedevs.corelib.utils.itemstack.custom;
 
+import com.pepedevs.corelib.utils.itemstack.ItemStackUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +37,17 @@ public class CustomItemStack extends ItemStack {
     }
 
     /**
+     * Returns the display name of this item.
+     *
+     * <p>
+     *
+     * @return Display name of this item
+     */
+    public Component displayName() {
+        return ItemStackUtils.extractName(this);
+    }
+
+    /**
      * Sets the display name of this item.
      *
      * <p>
@@ -43,7 +56,20 @@ public class CustomItemStack extends ItemStack {
      * @return This Object, for chaining
      */
     public CustomItemStack setDisplayName(String name) {
-        this.getItemMeta().setDisplayName(name);
+        ItemStackUtils.setName(this, name);
+        return this;
+    }
+
+    /**
+     * Sets the display name of this item.
+     *
+     * <p>
+     *
+     * @param name Display name
+     * @return This Object, for chaining
+     */
+    public CustomItemStack displayName(Component name) {
+        ItemStackUtils.setName(this, name);
         return this;
     }
 
@@ -70,6 +96,17 @@ public class CustomItemStack extends ItemStack {
     }
 
     /**
+     * Returns the lore of this item.
+     *
+     * <p>
+     *
+     * @return Lore of this item
+     */
+    public List<Component> lore() {
+        return ItemStackUtils.extractLore(this);
+    }
+
+    /**
      * Sets the lore of this item.
      *
      * <p>
@@ -78,7 +115,7 @@ public class CustomItemStack extends ItemStack {
      * @return This Object, for chaining
      */
     public CustomItemStack setLore(List<String> lore) {
-        this.getItemMeta().setLore(lore);
+        ItemStackUtils.setLore(this, lore);
         return this;
     }
 
@@ -92,6 +129,31 @@ public class CustomItemStack extends ItemStack {
      */
     public CustomItemStack setLore(String[] lore) {
         return this.setLore(Arrays.asList(lore));
+    }
+
+    /**
+     * Sets the lore of this item.
+     *
+     * <p>
+     *
+     * @param lore Lore
+     * @return This Object, for chaining
+     */
+    public CustomItemStack lore(List<Component> lore) {
+        ItemStackUtils.setLoreComponent(this, lore);
+        return this;
+    }
+
+    /**
+     * Sets the lore of this item.
+     *
+     * <p>
+     *
+     * @param lore Lore
+     * @return This Object, for chaining
+     */
+    public CustomItemStack lore(Component... lore) {
+        return this.lore(Arrays.asList(lore));
     }
 
     /**
