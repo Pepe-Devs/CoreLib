@@ -26,6 +26,7 @@
         <module>task-utils</module>
         <module>utils</module>
         <module>vault-hook</module>
+        <module>adventure-utils</module>
     </modules>
 
     <properties>

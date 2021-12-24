@@ -1,6 +1,6 @@
-package com.pepedevs.corelib.utils.itemstack;
+package com.pepedevs.corelib.adventure;
 
-import com.pepedevs.corelib.utils.material.MaterialUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -8,15 +8,11 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/** Represents a class for building {@link ItemMeta} */
-
-/**
- * @deprecated See com.pepedevs.corelib.adventure.ItemMetaBuilder
- */
 public final class ItemMetaBuilder {
 
     private final Material material;
@@ -91,6 +87,18 @@ public final class ItemMetaBuilder {
     }
 
     /**
+     * Sets the display name in ItemMeta.
+     *
+     * <p>
+     *
+     * @param display_name Display name component
+     * @return This Object, for chaining
+     */
+    public ItemMetaBuilder displayName(Component display_name) {
+        return this.withDisplayName(ReflectionUtils.fromComponent(display_name));
+    }
+
+    /**
      * Sets the lore in ItemMeta.
      *
      * <p>
@@ -108,11 +116,43 @@ public final class ItemMetaBuilder {
      *
      * <p>
      *
+     * @param lore Lore components
+     * @return This Object, for chaining
+     */
+    public ItemMetaBuilder lore(List<Component> lore) {
+        List<String> stringLore = new ArrayList<>();
+        for (Component component : lore) {
+            stringLore.add(ReflectionUtils.fromComponent(component));
+        }
+        return this.withLore(stringLore);
+    }
+
+    /**
+     * Sets the lore in ItemMeta.
+     *
+     * <p>
+     *
      * @param lore Lore
      * @return This Object, for chaining
      */
     public ItemMetaBuilder withLore(String... lore) {
         return withLore(Arrays.asList(lore));
+    }
+
+    /**
+     * Sets the lore in ItemMeta.
+     *
+     * <p>
+     *
+     * @param lore Lore components
+     * @return This Object, for chaining
+     */
+    public ItemMetaBuilder lore(Component... lore) {
+        String[] bruh = new String[lore.length];
+        for (int i = 0; i < lore.length; i++) {
+            bruh[i] = ReflectionUtils.fromComponent(lore[i]);
+        }
+        return this.withLore(bruh);
     }
 
     /**
@@ -134,6 +174,18 @@ public final class ItemMetaBuilder {
     }
 
     /**
+     * Append line to the lore in ItemMeta.
+     *
+     * <p>
+     *
+     * @param line Line component to append to lore
+     * @return This Object, for chaining
+     */
+    public ItemMetaBuilder appendLore(Component line) {
+        return this.appendToLore(ReflectionUtils.fromComponent(line));
+    }
+
+    /**
      * Remove lore line from ItemMeta.
      *
      * <p>
@@ -148,6 +200,18 @@ public final class ItemMetaBuilder {
             return withLore(lore);
         }
         return this;
+    }
+
+    /**
+     * Remove lore line from ItemMeta.
+     *
+     * <p>
+     *
+     * @param line Line component to remove from lore
+     * @return This Object, for chaining
+     */
+    public ItemMetaBuilder removeFromLore(Component line) {
+        return this.removeFromLore(ReflectionUtils.fromComponent(line));
     }
 
     /**
@@ -298,4 +362,5 @@ public final class ItemMetaBuilder {
         stack.setItemMeta(result);
         return stack;
     }
+
 }
