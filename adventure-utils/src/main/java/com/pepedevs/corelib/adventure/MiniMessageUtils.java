@@ -51,7 +51,7 @@ public class MiniMessageUtils {
     }
 
     public static String strip(Component component) {
-        PlainComponentSerializer.plain().serialize(component);
+        return PlainComponentSerializer.plain().serialize(component);
     }
 
 }
