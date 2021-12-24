@@ -3,13 +3,13 @@ package com.pepedevs.corelib.utils.itemstack;
 import com.cryptomorin.xseries.XMaterial;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import com.pepedevs.corelib.adventure.AdventureUtils;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.io.GameProfileBuilder;
 import com.pepedevs.corelib.utils.io.UUIDFetcher;
 import com.pepedevs.corelib.utils.reflection.bukkit.PlayerReflection;
 import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
-import com.pepedevs.corelib.utils.reflection.resolver.MethodResolver;
-import com.pepedevs.corelib.utils.reflection.resolver.wrapper.MethodWrapper;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -33,8 +33,6 @@ public class ItemStackUtils {
      */
     public static final boolean AVAILABLE_DURABILITY_FIELD;
 
-    public static final MethodWrapper CRAFT_PLAYER_GET_GAMEPROFILE;
-
     static {
         /* durability field */
         boolean durability_field = false;
@@ -45,10 +43,6 @@ public class ItemStackUtils {
             durability_field = false;
         }
         AVAILABLE_DURABILITY_FIELD = durability_field;
-
-        CRAFT_PLAYER_GET_GAMEPROFILE =
-                new MethodResolver(PlayerReflection.CRAFT_PLAYER_CLASS.getClazz())
-                        .resolveWrapper("getProfile");
     }
 
     /**
@@ -90,6 +84,25 @@ public class ItemStackUtils {
     }
 
     /**
+     * Extracts the name from the {@link ItemMeta} of an {@link ItemStack}.
+     *
+     * <p>
+     *
+     * @param stack {@link ItemStack} to extract
+     * @return Display name of the given {@link ItemStack} or an empty string if it doesn't have a name
+     */
+    public static Component extractName(ItemStack stack) {
+        if (stack == null || stack.getItemMeta() == null) {
+            return Component.empty();
+        }
+
+        String displayName = stack.getItemMeta().getDisplayName();
+        return displayName == null
+                ? Component.empty()
+                : AdventureUtils.toComponent(displayName);
+    }
+
+    /**
      * Extracts the lore from the {@link ItemMeta} of an {@link ItemStack}.
      *
      * <p>
@@ -106,6 +119,24 @@ public class ItemStackUtils {
                 for (int i = 0; i < lore.size(); i++) {
                     lore.set(i, StringUtils.stripColors(lore.get(i)));
                 }
+            }
+        }
+        return lore;
+    }
+
+    /**
+     * Extracts the lore from the {@link ItemMeta} of an {@link ItemStack}.
+     *
+     * <p>
+     *
+     * @param stack {@link ItemStack} to extract
+     * @return Lore of the given {@link ItemStack} or an empty list if it doesn't have lore
+     */
+    public static List<Component> extractLore(ItemStack stack) {
+        List<Component> lore = new ArrayList<>();
+        if (stack != null && stack.getItemMeta() != null && stack.getItemMeta().getLore() != null) {
+            for (String str : stack.getItemMeta().getLore()) {
+                lore.add(AdventureUtils.toComponent(str));
             }
         }
         return lore;
@@ -130,6 +161,24 @@ public class ItemStackUtils {
     }
 
     /**
+     * Set {@link ItemStack} name and lore.
+     *
+     * <p>
+     *
+     * @param itemStack ItemStack to modify
+     * @param name New name
+     * @param lore New lore
+     * @return Modified ItemStack
+     */
+    public static ItemStack setNameLore(ItemStack itemStack, Component name, List<Component> lore) {
+        ItemStack ot = itemStack;
+        if (name != null) {
+            ot = setName(itemStack, name);
+        }
+        return setLoreComponent(ot, lore);
+    }
+
+    /**
      * Set {@link ItemStack} set ItemStack name.
      *
      * <p>
@@ -149,6 +198,30 @@ public class ItemStackUtils {
         }
 
         meta.setDisplayName(StringUtils.translateAlternateColorCodes(name));
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
+
+    /**
+     * Set {@link ItemStack} set ItemStack name.
+     *
+     * <p>
+     *
+     * @param itemStack ItemStack to modify
+     * @param name New name
+     * @return Modified ItemStack
+     */
+    public static ItemStack setName(ItemStack itemStack, Component name) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) {
+            meta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        }
+
+        if (meta == null) {
+            return itemStack;
+        }
+
+        meta.setDisplayName(AdventureUtils.fromComponent(name));
         itemStack.setItemMeta(meta);
         return itemStack;
     }
@@ -186,6 +259,39 @@ public class ItemStackUtils {
     }
 
     /**
+     * Set {@link ItemStack} set ItemStack lore.
+     *
+     * <p>
+     *
+     * @param itemStack ItemStack to modify
+     * @param lore New lore
+     * @return Modified ItemStack
+     */
+    public static ItemStack setLoreComponent(ItemStack itemStack, List<Component> lore) {
+        if (lore == null || lore.isEmpty()) {
+            return itemStack;
+        }
+
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) {
+            meta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        }
+
+        if (meta == null) {
+            return itemStack;
+        }
+
+        List<String> loreString = new ArrayList<>();
+        for (Component component : lore) {
+            loreString.add(AdventureUtils.fromComponent(component));
+        }
+
+        meta.setLore(loreString);
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
+
+    /**
      * Add enchant to {@link ItemStack}.
      *
      * <p>
@@ -195,8 +301,7 @@ public class ItemStackUtils {
      * @param level Enchant level
      * @return Enchanted ItemStack
      */
-    public static ItemStack addEnchantment(
-            final ItemStack stack, final Enchantment enchant, int level) {
+    public static ItemStack addEnchantment(final ItemStack stack, final Enchantment enchant, int level) {
         // get item meta.
         ItemMeta meta = stack.getItemMeta();
         if (meta == null) {
@@ -348,7 +453,7 @@ public class ItemStackUtils {
 
     private static String getTexture(Player owner) {
         // get Game Profile and return property.
-        GameProfile profile = (GameProfile) CRAFT_PLAYER_GET_GAMEPROFILE.invoke(owner);
+        GameProfile profile = PlayerReflection.getGameProfile(owner);
         return profile.getProperties().get("textures").iterator().next().getValue();
     }
 

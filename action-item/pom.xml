@@ -27,6 +27,11 @@
             <artifactId>event-utils</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>adventure-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

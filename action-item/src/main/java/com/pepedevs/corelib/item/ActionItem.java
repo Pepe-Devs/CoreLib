@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.item;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -17,7 +18,7 @@ public interface ActionItem {
      *
      * @return Display name of the Action Item
      */
-    public String getDisplayName();
+    public Component getDisplayName();
 
     /**
      * Gets the lore of the Action Item.
@@ -26,7 +27,7 @@ public interface ActionItem {
      *
      * @return Lore of the Action Item
      */
-    public List<String> getLore();
+    public List<Component> getLore();
 
     /**
      * Gets the material of the Action Item.
