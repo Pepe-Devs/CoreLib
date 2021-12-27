@@ -76,6 +76,19 @@ public abstract class ActionItemBase implements ActionItem {
         this(display_name, lore, material, EventPriority.NORMAL);
     }
 
+    /**
+     * Constructs the Action Item.
+     *
+     * <p>
+     *
+     * @param display_name Display name of the Action Item
+     * @param lore Lore of the Action Item
+     * @param material Material of the Action Item
+     */
+    public ActionItemBase(String display_name, Collection<String> lore, Material material) {
+        this(display_name, lore, material, EventPriority.NORMAL);
+    }
+
     @Override
     public Component getDisplayName() {
         return display_name;
