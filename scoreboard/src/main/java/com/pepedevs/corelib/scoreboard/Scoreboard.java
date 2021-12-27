@@ -209,6 +209,10 @@ public class Scoreboard {
         this.elements.remove(index);
     }
 
+    public Collection<UUID> getViewers() {
+        return this.shown.keySet();
+    }
+
     public void show(Player... players) {
         for (Player player : players) {
             if (this.shown.containsKey(player.getUniqueId())) continue;
@@ -234,6 +238,15 @@ public class Scoreboard {
             }
             this.sendObjectivePacket(ObjectiveMode.REMOVE, player, id);
             this.shown.remove(player.getUniqueId());
+        }
+    }
+
+    public void hideAll() {
+        for (UUID uuid : this.getViewers()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                this.hide(player);
+            }
         }
     }
 
@@ -492,4 +505,5 @@ public class Scoreboard {
         UPDATE,
         ;
     }
+
 }
