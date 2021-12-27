@@ -2,9 +2,12 @@ package com.pepedevs.corelib.utils.itemstack.custom;
 
 import com.pepedevs.corelib.utils.itemstack.ItemStackUtils;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +16,30 @@ import java.util.Set;
 
 /** Class to interact with custom ItemStack. */
 public class CustomItemStack extends ItemStack {
+
+    protected CustomItemStack() {
+        super();
+    }
+
+    public CustomItemStack(@NotNull Material type) {
+        super(type);
+    }
+
+    public CustomItemStack(@NotNull Material type, int amount) {
+        super(type, amount);
+    }
+
+    public CustomItemStack(@NotNull Material type, int amount, short damage) {
+        super(type, amount, damage);
+    }
+
+    public CustomItemStack(@NotNull Material type, int amount, short damage, @Nullable Byte data) {
+        super(type, amount, damage, data);
+    }
+
+    public CustomItemStack(@NotNull ItemStack stack) throws IllegalArgumentException {
+        super(stack);
+    }
 
     /**
      * Checks whether this item has display name.

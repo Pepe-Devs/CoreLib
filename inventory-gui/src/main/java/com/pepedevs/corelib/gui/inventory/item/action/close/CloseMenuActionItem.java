@@ -4,7 +4,7 @@ import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
 import com.pepedevs.corelib.gui.inventory.item.action.ActionItem;
 import com.pepedevs.corelib.gui.inventory.item.action.ItemAction;
 import com.pepedevs.corelib.gui.inventory.item.action.ItemActionPriority;
-import com.pepedevs.corelib.utils.itemstack.safe.SafeItemStack;
+import com.pepedevs.corelib.utils.itemstack.custom.CustomItemStack;
 import com.pepedevs.corelib.utils.itemstack.stainedglass.StainedGlassColor;
 import com.pepedevs.corelib.utils.itemstack.stainedglass.StainedGlassItemStack;
 import com.pepedevs.corelib.utils.reflection.general.EnumReflection;
@@ -18,7 +18,7 @@ public class CloseMenuActionItem extends ActionItem {
     @Deprecated // Compatibility with server versions <= 1.8
     public static final ItemStack DEFAULT_ICON =
             EnumReflection.getEnumConstant(Material.class, "BARRIER") != null
-                    ? new SafeItemStack(Material.BARRIER)
+                    ? new CustomItemStack(Material.BARRIER)
                     : new StainedGlassItemStack(StainedGlassColor.RED, true);
 
     /**
