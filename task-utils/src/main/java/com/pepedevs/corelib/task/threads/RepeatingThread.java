@@ -68,15 +68,14 @@ public class RepeatingThread implements Runnable, Task {
     @SuppressWarnings("unchecked")
     @Override
     public void run() {
-        this.task =
-                (Future<Void>)
-                        this.executor.submit(
+        this.task = (Future<Void>) this.executor.submit(
                                 () -> {
                                     long nextLoop = System.currentTimeMillis() - this.interval;
                                     while (true) {
                                         try {
                                             nextLoop += this.interval;
                                             long sleep = nextLoop - System.currentTimeMillis();
+                                            if (sleep > interval) sleep = interval;
                                             if (sleep > 0) Thread.sleep(sleep);
                                             runnable.run();
                                         } catch (InterruptedException pluginDisabled) {

@@ -35,7 +35,7 @@ public class TaskQueueHandler {
         if (constrainNanos >= MAX_QUEUING_POOL_CONSTRAIN)
             throw new IllegalArgumentException("Pool constrain cannot be larger than 50ms.");
 
-        WorkloadDistributor distributor = new WorkloadDistributor(this, queueID++);
+        WorkloadDistributor distributor = new WorkloadDistributor(this, ++this.queueID);
         for (int i = 0; i < poolCapacity; i++) {
             distributor.createThread(constrainNanos);
         }

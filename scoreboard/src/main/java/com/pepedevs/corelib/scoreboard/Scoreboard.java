@@ -217,7 +217,7 @@ public class Scoreboard {
         for (Player player : players) {
             if (this.shown.containsKey(player.getUniqueId())) continue;
 
-            String id = "coreboard-" + Integer.toHexString(ThreadLocalRandom.current().nextInt());
+            String id = "coreboard-" + ThreadLocalRandom.current().nextInt(99999);
             this.sendObjectivePacket(ObjectiveMode.CREATE, player, id);
             this.sendDisplayObjectivePacket(player, id);
             for (int i = 0; i < this.elements.size(); i++) {
