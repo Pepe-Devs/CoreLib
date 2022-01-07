@@ -2,7 +2,7 @@ package com.pepedevs.corelib.adventure;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,15 +11,15 @@ import java.util.List;
 public class MiniMessageUtils {
 
     public static Component translate(String message) {
-        return translate(MiniMessage.get(), message);
+        return translate(MiniMessage.miniMessage(), message);
     }
 
     public static Component translate(MiniMessage miniMessage, String string) {
        return miniMessage.parse(string);
     }
 
-    public static Component[] translate(String[] messages) {
-        return translate(MiniMessage.get(), messages);
+    public static Component[] translate(String... messages) {
+        return translate(MiniMessage.miniMessage(), messages);
     }
 
     public static Component[] translate(MiniMessage miniMessage, String... strings) {
@@ -31,7 +31,7 @@ public class MiniMessageUtils {
     }
 
     public static List<Component> translate(Collection<String> messages) {
-        return translate(MiniMessage.get(), messages);
+        return translate(MiniMessage.miniMessage(), messages);
     }
 
     public static List<Component> translate(MiniMessage miniMessage, Collection<String> strings) {
@@ -43,7 +43,7 @@ public class MiniMessageUtils {
     }
 
     public static String untranslate(Component component) {
-        return untranslate(MiniMessage.get(), component);
+        return untranslate(MiniMessage.miniMessage(), component);
     }
 
     public static String untranslate(MiniMessage miniMessage, Component component) {
@@ -51,7 +51,7 @@ public class MiniMessageUtils {
     }
 
     public static String[] untranslate(Component... components) {
-        return untranslate(MiniMessage.get(), components);
+        return untranslate(MiniMessage.miniMessage(), components);
     }
 
     public static String[] untranslate(MiniMessage miniMessage, Component... components) {
@@ -63,7 +63,7 @@ public class MiniMessageUtils {
     }
 
     public static List<String> untranslate(List<Component> components) {
-        return untranslate(MiniMessage.get(), components);
+        return untranslate(MiniMessage.miniMessage(), components);
     }
 
     public static List<String> untranslate(MiniMessage miniMessage, Collection<Component> components) {
@@ -75,7 +75,7 @@ public class MiniMessageUtils {
     }
 
     public static String strip(Component component) {
-        return PlainComponentSerializer.plain().serialize(component);
+        return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
 }
