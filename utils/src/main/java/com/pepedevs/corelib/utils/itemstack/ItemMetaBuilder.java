@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.utils.itemstack;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.corelib.adventure.AdventureUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -48,6 +49,18 @@ public final class ItemMetaBuilder {
         return stack.hasItemMeta()
                 ? of(stack.getType(), stack.getItemMeta())
                 : new ItemMetaBuilder(stack.getType());
+    }
+
+    /**
+     * Returns the instance of {@link ItemMetaBuilder} for the given ItemStack.
+     *
+     * <p>
+     *
+     * @param material Material to get ItemMeta of
+     * @return {@link ItemMetaBuilder} instance
+     */
+    public static ItemMetaBuilder of(XMaterial material) {
+        return of(material.parseItem());
     }
 
     /**
