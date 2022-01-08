@@ -111,7 +111,7 @@ public final class ItemMetaBuilder {
      * @return This Object, for chaining
      */
     public ItemMetaBuilder displayName(Component display_name) {
-        return this.withDisplayName(AdventureUtils.fromComponent(display_name));
+        return this.withDisplayName(AdventureUtils.toVanillaString(display_name));
     }
 
     /**
@@ -138,7 +138,7 @@ public final class ItemMetaBuilder {
     public ItemMetaBuilder lore(List<Component> lore) {
         List<String> stringLore = new ArrayList<>();
         for (Component component : lore) {
-            stringLore.add(AdventureUtils.fromComponent(component));
+            stringLore.add(AdventureUtils.toVanillaString(component));
         }
         return this.withLore(stringLore);
     }
@@ -166,7 +166,7 @@ public final class ItemMetaBuilder {
     public ItemMetaBuilder lore(Component... lore) {
         String[] str = new String[lore.length];
         for (int i = 0; i < lore.length; i++) {
-            str[i] = AdventureUtils.fromComponent(lore[i]);
+            str[i] = AdventureUtils.toVanillaString(lore[i]);
         }
         return this.withLore(str);
     }
@@ -198,7 +198,7 @@ public final class ItemMetaBuilder {
      * @return This Object, for chaining
      */
     public ItemMetaBuilder appendLore(Component line) {
-        return this.appendToLore(AdventureUtils.fromComponent(line));
+        return this.appendToLore(AdventureUtils.toVanillaString(line));
     }
 
     /**
@@ -227,7 +227,7 @@ public final class ItemMetaBuilder {
      * @return This Object, for chaining
      */
     public ItemMetaBuilder removeFromLore(Component line) {
-        return this.removeFromLore(AdventureUtils.fromComponent(line));
+        return this.removeFromLore(AdventureUtils.toVanillaString(line));
     }
 
     /**

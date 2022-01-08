@@ -99,7 +99,7 @@ public class ItemStackUtils {
         String displayName = stack.getItemMeta().getDisplayName();
         return displayName == null
                 ? Component.empty()
-                : AdventureUtils.toComponent(displayName);
+                : AdventureUtils.fromVanillaString(displayName);
     }
 
     /**
@@ -136,7 +136,7 @@ public class ItemStackUtils {
         List<Component> lore = new ArrayList<>();
         if (stack != null && stack.getItemMeta() != null && stack.getItemMeta().getLore() != null) {
             for (String str : stack.getItemMeta().getLore()) {
-                lore.add(AdventureUtils.toComponent(str));
+                lore.add(AdventureUtils.fromVanillaString(str));
             }
         }
         return lore;
@@ -221,7 +221,7 @@ public class ItemStackUtils {
             return itemStack;
         }
 
-        meta.setDisplayName(AdventureUtils.fromComponent(name));
+        meta.setDisplayName(AdventureUtils.toVanillaString(name));
         itemStack.setItemMeta(meta);
         return itemStack;
     }
@@ -283,7 +283,7 @@ public class ItemStackUtils {
 
         List<String> loreString = new ArrayList<>();
         for (Component component : lore) {
-            loreString.add(AdventureUtils.fromComponent(component));
+            loreString.add(AdventureUtils.toVanillaString(component));
         }
 
         meta.setLore(loreString);
