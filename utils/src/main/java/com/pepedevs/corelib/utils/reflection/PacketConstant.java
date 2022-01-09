@@ -76,7 +76,7 @@ public class PacketConstant {
                         "PacketPlayOutBoss", packetPackageV17 + "PacketPlayOutBoss");
         PACKET_PLAY_OUT_CHAT =
                 nmsClassResolver.resolveWrapper(
-                        "PacketPlayOutChat", packetPackageV17 + "PacketPlayOutChat");
+                        "WrappedPacketPlayOutChat", packetPackageV17 + "WrappedPacketPlayOutChat");
         PACKET_PLAY_OUT_CUSTOM_SOUND_EFFECT =
                 nmsClassResolver.resolveWrapper(
                         "PacketPlayOutCustomSoundEffect",

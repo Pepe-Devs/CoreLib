@@ -3,6 +3,7 @@ package com.pepedevs.corelib.gui.anvil;
 import com.pepedevs.corelib.gui.anvil.action.AnvilItemClickAction;
 import com.pepedevs.corelib.gui.anvil.action.AnvilMenuClickAction;
 import com.pepedevs.corelib.gui.anvil.handler.AnvilMenuHandler;
+import com.pepedevs.corelib.nms.NMSProvider;
 import com.pepedevs.corelib.utils.reflection.bukkit.BukkitReflection;
 import com.pepedevs.corelib.utils.reflection.bukkit.PlayerReflection;
 import com.pepedevs.corelib.utils.reflection.general.ClassReflection;
@@ -23,7 +24,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /** Class for creating custom Anvil Inventory menus. */
+@SuppressWarnings("all")
 public class AnvilMenu {
+
+    static {
+
+    }
 
     private final Set<OpenAnvilGui> openMenus;
 
@@ -335,45 +341,27 @@ public class AnvilMenu {
     }
 
     private int getNextContainer(Player player) {
-        try {
-            return (int)
-                    MethodReflection.invoke(
-                            PlayerReflection.getHandle(player), "nextContainerCounter");
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return -1;
+        return NMSProvider.getNMSPlayer(player).getNextContainerCounter();
     }
 
     private void handleInventoryClose(Player player) {
-        try {
-            Object ePlayer = PlayerReflection.getHandle(player);
-            Class<?> craftEventFactory =
-                    ClassReflection.getCraftClass("CraftEventFactory", "event");
-            Class<?> entityHuman =
-                    ClassReflection.getNmsClass("EntityHuman", "world.entity.player");
-            MethodReflection.get(craftEventFactory, "handleInventoryCloseEvent", entityHuman)
-                    .invoke(craftEventFactory, ePlayer);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        NMSProvider.getNMSImpl().craftEventFactoryHandleInventoryClose(player);
     }
 
     private void sendOpenWindowPacket(Player player, int containerId) {
+
         try {
             Class<?> iChatComponent =
                     ClassReflection.getNmsClass("IChatBaseComponent", "network.chat");
             Class<?> packetPlayOutOpenWindow =
-                    ClassReflection.getNmsClass("PacketPlayOutOpenWindow", "network.protocol.game");
+                    ClassReflection.getNmsClass("WrappedPacketPlayOutOpenWindow", "network.protocol.game");
             Class<?> chatMessage = ClassReflection.getNmsClass("ChatMessage", "network.chat");
             Class<?> block = ClassReflection.getNmsClass("Blocks", "world.level.block");
             Object blockAnvil = FieldReflection.get(block, "ANVIL").get(null);
             String blockAnvilA = (String) MethodReflection.invoke(blockAnvil, "a");
 
-            Object packet =
-                    ConstructorReflection.newInstance(
-                            packetPlayOutOpenWindow,
-                            new Class[] {int.class, String.class, iChatComponent},
+            Object packet = ConstructorReflection.newInstance(packetPlayOutOpenWindow,
+                    new Class[] {int.class, String.class, iChatComponent},
                             containerId,
                             "minecraft:anvil",
                             ConstructorReflection.newInstance(
@@ -381,7 +369,6 @@ public class AnvilMenu {
                                     new Class[] {String.class, Object[].class},
                                     blockAnvilA + ".name",
                                     new Object[0]));
-
             BukkitReflection.sendPacket(player, packet);
         } catch (IllegalAccessException
                 | InvocationTargetException

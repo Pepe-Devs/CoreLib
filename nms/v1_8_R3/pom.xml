@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>CoreLib</artifactId>
+        <artifactId>nms</artifactId>
         <groupId>com.pepedevs</groupId>
         <version>1.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>inventory-gui</artifactId>
+    <artifactId>nms.v1_8_R3</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -18,16 +18,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.pepedevs</groupId>
-            <artifactId>utils</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.pepedevs</groupId>
-            <artifactId>reflection-utils</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.pepedevs</groupId>
             <artifactId>nms</artifactId>

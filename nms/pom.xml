@@ -9,7 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>inventory-gui</artifactId>
+    <artifactId>nms</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>v1_8_R3</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,19 +23,27 @@
     <dependencies>
         <dependency>
             <groupId>com.pepedevs</groupId>
-            <artifactId>utils</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.pepedevs</groupId>
-            <artifactId>reflection-utils</artifactId>
+            <artifactId>minecraft-version</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.pepedevs</groupId>
-            <artifactId>nms</artifactId>
+            <artifactId>nms.v1_8_R3</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>adventure-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport</artifactId>
+            <version>5.0.0.Alpha2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

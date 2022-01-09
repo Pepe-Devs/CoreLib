@@ -23,6 +23,12 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>nms</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
         <!-- Adventure -->
         <dependency>
             <groupId>net.kyori</groupId>

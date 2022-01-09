@@ -27,6 +27,7 @@
         <module>task-utils</module>
         <module>utils</module>
         <module>vault-hook</module>
+        <module>nms</module>
     </modules>
 
     <properties>
