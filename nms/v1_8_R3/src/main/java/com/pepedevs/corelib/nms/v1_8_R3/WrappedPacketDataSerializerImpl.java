@@ -86,7 +86,7 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
     }
 
     @Override
-    public WrappedPacketDataSerializer serializeSize(int size) {
+    public WrappedPacketDataSerializer serializeIntToByte(int size) {
         super.b(size);
         return this;
     }
@@ -110,7 +110,7 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
     }
 
     @Override
-    public WrappedPacketDataSerializer serializeShort(short s) {
+    public WrappedPacketDataSerializer serializeShort(int s) {
         super.writeShort(s);
         return this;
     }

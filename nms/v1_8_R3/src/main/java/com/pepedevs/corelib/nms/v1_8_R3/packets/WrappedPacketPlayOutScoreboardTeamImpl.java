@@ -15,19 +15,19 @@ public class WrappedPacketPlayOutScoreboardTeamImpl extends PacketPlayOutScorebo
 
     public WrappedPacketPlayOutScoreboardTeamImpl(String teamName, String displayName, String prefix, String suffix, Set<String> playerNames, TeamMode mode, TagVisibility visibility, PacketOptionData data, ChatColor color) {
         WrappedPacketDataSerializer dataSerializer = NMSImpl.INSTANCE.getDataSerializer();
-        dataSerializer.serializeString(teamName);
-        dataSerializer.serializeByte(mode.ordinal());
+        dataSerializer.serializeString(teamName)
+                .serializeByte(mode.ordinal());
         if (mode == TeamMode.CREATE || mode == TeamMode.UPDATE) {
-            dataSerializer.serializeString(displayName);
-            dataSerializer.serializeString(prefix);
-            dataSerializer.serializeString(suffix);
-            dataSerializer.serializeByte(data.ordinal());
-            dataSerializer.serializeString(visibility.ID);
-            dataSerializer.serializeByte(EnumChatFormat.valueOf(color.name()).b());
+            dataSerializer.serializeString(displayName)
+                    .serializeString(prefix)
+                    .serializeString(suffix)
+                    .serializeByte(data.ordinal())
+                    .serializeString(visibility.ID)
+                    .serializeByte(EnumChatFormat.valueOf(color.name()).b());
         }
 
         if (mode == TeamMode.CREATE || mode == TeamMode.ADD_PLAYERS || mode == TeamMode.REMOVE_PLAYERS) {
-            dataSerializer.serializeSize(playerNames.size());
+            dataSerializer.serializeIntToByte(playerNames.size());
             for (String playerName : playerNames) {
                 dataSerializer.serializeString(playerName);
             }
