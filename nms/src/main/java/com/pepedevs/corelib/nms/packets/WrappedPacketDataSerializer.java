@@ -1,4 +1,4 @@
-package com.pepedevs.corelib.nms;
+package com.pepedevs.corelib.nms.packets;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -28,9 +28,11 @@ public interface WrappedPacketDataSerializer {
 
     WrappedPacketDataSerializer serializeEnum(Enum<?> e);
 
+    WrappedPacketDataSerializer serializeSize(int size);
+
     WrappedPacketDataSerializer serializeBytes(byte[] array);
 
-    WrappedPacketDataSerializer serializeByte(byte b);
+    WrappedPacketDataSerializer serializeByte(int b);
 
     WrappedPacketDataSerializer serializeBoolean(boolean b);
 

@@ -1,4 +1,4 @@
 package com.pepedevs.corelib.nms.packets;
 
-public interface WrappedPacketPlayOutCloseWindow {
+public interface WrappedPacketPlayOutCloseWindow extends WrappedPacket {
 }

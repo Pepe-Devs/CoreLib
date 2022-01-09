@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.nms;
 
+import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import io.netty.buffer.ByteBuf;
 import org.bukkit.entity.Player;
 

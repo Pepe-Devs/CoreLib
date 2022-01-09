@@ -2,7 +2,7 @@ package com.pepedevs.corelib.nms.v1_8_R3;
 
 import com.pepedevs.corelib.nms.NMSBridge;
 import com.pepedevs.corelib.nms.NMSPlayer;
-import com.pepedevs.corelib.nms.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;

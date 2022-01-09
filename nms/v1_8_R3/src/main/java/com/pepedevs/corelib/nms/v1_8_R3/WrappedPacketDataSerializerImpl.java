@@ -1,7 +1,7 @@
 package com.pepedevs.corelib.nms.v1_8_R3;
 
 import com.pepedevs.corelib.adventure.AdventureUtils;
-import com.pepedevs.corelib.nms.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
 import net.minecraft.server.v1_8_R3.BlockPosition;
@@ -86,13 +86,19 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
     }
 
     @Override
+    public WrappedPacketDataSerializer serializeSize(int size) {
+        super.b(size);
+        return this;
+    }
+
+    @Override
     public WrappedPacketDataSerializer serializeBytes(byte[] array) {
         super.writeBytes(array);
         return this;
     }
 
     @Override
-    public WrappedPacketDataSerializer serializeByte(byte b) {
+    public WrappedPacketDataSerializer serializeByte(int b) {
         super.writeByte(b);
         return this;
     }

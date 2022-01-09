@@ -16,4 +16,5 @@ public class WrappedPacketPlayOutChatImpl extends PacketPlayOutChat implements W
     public WrappedPacketPlayOutChatImpl(Component component) {
         super((IChatBaseComponent) AdventureUtils.asVanilla(component));
     }
+
 }

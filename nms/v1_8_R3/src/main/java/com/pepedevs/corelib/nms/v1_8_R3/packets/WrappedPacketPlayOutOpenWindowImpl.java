@@ -1,7 +1,7 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
 import com.pepedevs.corelib.nms.InventoryType;
-import com.pepedevs.corelib.nms.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutOpenWindow;
 import com.pepedevs.corelib.nms.v1_8_R3.Converters;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
@@ -47,7 +47,7 @@ public class WrappedPacketPlayOutOpenWindowImpl extends PacketPlayOutOpenWindow 
 
     private PacketDataSerializer getSerializer(int nextContainerCounter, String title, InventoryType type, byte size) {
         WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
-        serializer.serializeByte((byte) nextContainerCounter);
+        serializer.serializeByte(nextContainerCounter);
         serializer.serializeString(Converters.convertInventory(type));
         serializer.serializeComponent(title);
         serializer.serializeByte(size);
@@ -56,7 +56,7 @@ public class WrappedPacketPlayOutOpenWindowImpl extends PacketPlayOutOpenWindow 
 
     private PacketDataSerializer getSerializer(int nextContainerCounter, Component title, InventoryType type, byte size) {
         WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
-        serializer.serializeByte((byte) nextContainerCounter);
+        serializer.serializeByte(nextContainerCounter);
         serializer.serializeString(Converters.convertInventory(type));
         serializer.serializeComponent(title);
         serializer.serializeByte(size);
