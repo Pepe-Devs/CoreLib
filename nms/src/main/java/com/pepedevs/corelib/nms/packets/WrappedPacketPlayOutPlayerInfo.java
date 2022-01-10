@@ -1,6 +1,7 @@
 package com.pepedevs.corelib.nms.packets;
 
 import com.mojang.authlib.GameProfile;
+import com.pepedevs.corelib.nms.EnumGameMode;
 import net.kyori.adventure.text.Component;
 
 public interface WrappedPacketPlayOutPlayerInfo {
@@ -29,14 +30,6 @@ public interface WrappedPacketPlayOutPlayerInfo {
         UPDATE_LATENCY,
         UPDATE_DISPLAY_NAME,
         REMOVE_PLAYER;
-    }
-
-    enum EnumGameMode {
-        NOT_SET,
-        SURVIVAL,
-        CREATIVE,
-        ADVENTURE,
-        SPECTATOR;
     }
 
 }

@@ -3,6 +3,7 @@ package com.pepedevs.corelib.nms.v1_8_R3.packets;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.pepedevs.corelib.adventure.AdventureUtils;
+import com.pepedevs.corelib.nms.EnumGameMode;
 import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
