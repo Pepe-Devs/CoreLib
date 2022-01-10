@@ -9,8 +9,10 @@ import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
 import com.pepedevs.corelib.nms.v1_8_R3.packets.WrappedPacketPlayOutPlayerInfoImpl;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.server.v1_8_R3.EnumChatFormat;
 import net.kyori.adventure.text.Component;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
@@ -70,4 +72,13 @@ public class NMSImpl implements NMSProvider {
     public void craftEventFactoryHandleInventoryClose(Player player) {
         CraftEventFactory.handleInventoryCloseEvent(((CraftPlayer) player).getHandle());
     }
+
+    @Override
+    public Object getEnumChatFormat(ChatColor color) {
+        if (color == ChatColor.MAGIC)
+            return EnumChatFormat.OBFUSCATED;
+
+        return EnumChatFormat.valueOf(color.name());
+    }
+
 }

@@ -5,6 +5,7 @@ import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public interface NMSProvider {
@@ -26,4 +27,7 @@ public interface NMSProvider {
     WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name);
 
     void craftEventFactoryHandleInventoryClose(Player player);
+
+    Object getEnumChatFormat(ChatColor color);
+
 }

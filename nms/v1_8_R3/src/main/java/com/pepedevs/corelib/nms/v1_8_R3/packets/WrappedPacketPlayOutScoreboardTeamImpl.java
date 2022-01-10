@@ -23,7 +23,7 @@ public class WrappedPacketPlayOutScoreboardTeamImpl extends PacketPlayOutScorebo
                     .serializeString(suffix)
                     .serializeByte(data.ordinal())
                     .serializeString(visibility.ID)
-                    .serializeByte(EnumChatFormat.valueOf(color.name()).b());
+                    .serializeByte(((EnumChatFormat) NMSImpl.INSTANCE.getEnumChatFormat(color)).b());
         }
 
         if (mode == TeamMode.CREATE || mode == TeamMode.ADD_PLAYERS || mode == TeamMode.REMOVE_PLAYERS) {
