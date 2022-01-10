@@ -33,4 +33,12 @@ public class WrappedPacketPlayOutEntityTeleportImpl extends PacketPlayOutEntityT
         this(entityId, location, true);
     }
 
+    public WrappedPacketPlayOutEntityTeleportImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -26,4 +26,12 @@ public class WrappedPacketPlayOutScoreboardScoreImpl extends PacketPlayOutScoreb
         }
     }
 
+    public WrappedPacketPlayOutScoreboardScoreImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -24,4 +24,12 @@ public class WrappedPacketPlayOutEntityStatusImpl extends PacketPlayOutEntitySta
         }
     }
 
+    public WrappedPacketPlayOutEntityStatusImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

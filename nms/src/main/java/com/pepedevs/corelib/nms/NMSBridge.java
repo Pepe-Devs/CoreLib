@@ -1,20 +1,50 @@
 package com.pepedevs.corelib.nms;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
-import io.netty.buffer.ByteBuf;
+import com.pepedevs.corelib.utils.version.Version;
 import org.bukkit.entity.Player;
 
-public interface NMSBridge {
+public class NMSBridge {
 
-    String craftChatMessageFromComponent(Object component);
+    private static final NMSProvider SERVER_NMS_ADAPTOR;
+    private static final PacketProvider SERVER_PACKET_PROVIDER;
 
-    Object[] craftChatMessageFromString(String message);
+    static {
+        SERVER_NMS_ADAPTOR = getNMSProvider(Version.SERVER_VERSION);
+        SERVER_PACKET_PROVIDER = getPacketProvider(Version.SERVER_VERSION);
+    }
 
-    NMSPlayer getPlayer(Player player);
+    public static NMSProvider getNMSProvider() {
+        return SERVER_NMS_ADAPTOR;
+    }
 
-    WrappedPacketDataSerializer getDataSerializer();
+    public static NMSProvider getNMSProvider(Version version) {
+        switch (version) {
+            case v1_8_R3: {
+                return com.pepedevs.corelib.nms.v1_8_R3.NMSImpl.INSTANCE;
+            }
+            default: {
+                return null;
+            }
+        }
+    }
 
-    WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf);
+    public static PacketProvider getPacketProvider() {
+        return SERVER_PACKET_PROVIDER;
+    }
 
-    void craftEventFactoryHandleInventoryClose(Player player);
+    public static PacketProvider getPacketProvider(Version version) {
+        switch (version) {
+            case v1_8_R3: {
+                return com.pepedevs.corelib.nms.v1_8_R3.PacketProviderImpl.INSTANCE;
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+
+    public static NMSPlayer getNMSPlayer(Player player) {
+        return SERVER_NMS_ADAPTOR.getPlayer(player);
+    }
+
 }

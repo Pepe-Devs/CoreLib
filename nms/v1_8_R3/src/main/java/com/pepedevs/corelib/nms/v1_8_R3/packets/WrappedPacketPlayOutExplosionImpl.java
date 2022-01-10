@@ -4,11 +4,13 @@ import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutExplosion;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
 import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutExplosion;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -75,6 +77,14 @@ public class WrappedPacketPlayOutExplosionImpl extends PacketPlayOutExplosion im
                 .serializeFloat((float) location.getZ())
                 .serializeFloat(power)
                 .serializeInt(0);
+    }
+
+    public WrappedPacketPlayOutExplosionImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

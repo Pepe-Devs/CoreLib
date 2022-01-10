@@ -11,9 +11,17 @@ import java.io.IOException;
 
 public class WrappedPacketPlayOutEntityEquipmentImpl extends PacketPlayOutEntityEquipment implements WrappedPacketPlayOutEntityEquipment {
 
-    public WrappedPacketPlayOutEntityEquipmentImpl(int entityId, int slot, ItemStack itemStack) {
+    public WrappedPacketPlayOutEntityEquipmentImpl(int entityID, int slot, ItemStack itemStack) {
         WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityId).serializeShort((short) slot).serializeItemStack(itemStack);
+        serializer.serializeIntToByte(entityID).serializeShort((short) slot).serializeItemStack(itemStack);
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public WrappedPacketPlayOutEntityEquipmentImpl(WrappedPacketDataSerializer serializer) {
         try {
             this.a((PacketDataSerializer) serializer);
         } catch (IOException e) {

@@ -35,4 +35,12 @@ public class WrappedPacketPlayOutNamedEntitySpawnImpl extends PacketPlayOutNamed
         this(entityId, uuid, location, null, dataWatcher);
     }
 
+    public WrappedPacketPlayOutNamedEntitySpawnImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

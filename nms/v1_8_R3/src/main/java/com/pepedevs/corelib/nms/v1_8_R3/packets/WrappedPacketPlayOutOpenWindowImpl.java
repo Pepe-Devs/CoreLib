@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class WrappedPacketPlayOutOpenWindowImpl extends PacketPlayOutOpenWindow implements WrappedPacketPlayOutOpenWindow {
 
-    public WrappedPacketPlayOutOpenWindowImpl(int nextContainerCounter, InventoryType type, String title) {
+    public WrappedPacketPlayOutOpenWindowImpl(int nextContainerCounter, String title, InventoryType type) {
         try {
             this.a(getSerializer(nextContainerCounter, title, type, type.SIZE));
         } catch (IOException e) {
@@ -61,6 +61,14 @@ public class WrappedPacketPlayOutOpenWindowImpl extends PacketPlayOutOpenWindow 
         serializer.serializeComponent(title);
         serializer.serializeByte(size);
         return (PacketDataSerializer) serializer;
+    }
+
+    public WrappedPacketPlayOutOpenWindowImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

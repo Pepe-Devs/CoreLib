@@ -1,37 +1,29 @@
 package com.pepedevs.corelib.nms;
 
-import com.pepedevs.corelib.utils.version.Version;
+import com.mojang.authlib.GameProfile;
+import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
+import io.netty.buffer.ByteBuf;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
-public class NMSProvider {
+public interface NMSProvider {
 
-    private static final NMSBridge SERVER_NMS_ADAPTOR;
+    String craftChatMessageFromComponent(Object component);
 
-    static {
-        SERVER_NMS_ADAPTOR = getNmsBridge(Version.SERVER_VERSION);
-    }
+    Object[] craftChatMessageFromString(String message);
 
-    public static NMSBridge getNMSImpl() {
-        return SERVER_NMS_ADAPTOR;
-    }
+    NMSPlayer getPlayer(Player player);
 
-    public static NMSPlayer getNMSPlayer(Player player) {
-        return SERVER_NMS_ADAPTOR.getPlayer(player);
-    }
+    WrappedPacketDataSerializer getDataSerializer();
 
-    public static NMSBridge getNMSImpl(Version version) {
-        return getNmsBridge(version);
-    }
+    WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf);
 
-    private static NMSBridge getNmsBridge(Version version) {
-        switch (version) {
-            case v1_8_R3: {
-                return com.pepedevs.corelib.nms.v1_8_R3.NMSImpl.INSTANCE;
-            }
-            default: {
-                return null;
-            }
-        }
-    }
+    WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name);
 
+    WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name);
+
+    WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name);
+
+    void craftEventFactoryHandleInventoryClose(Player player);
 }

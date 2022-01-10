@@ -41,4 +41,11 @@ public class WrappedPacketPlayOutSpawnEntityLivingImpl extends PacketPlayOutSpaw
         this(entityId, entity, location, headPitch, new Vector(0, 0, 0), dataWatcher);
     }
 
+    public WrappedPacketPlayOutSpawnEntityLivingImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -41,4 +41,12 @@ public class WrappedPacketPlayOutPlayerListHeaderFooterImpl extends PacketPlayOu
         }
     }
 
+    public WrappedPacketPlayOutPlayerListHeaderFooterImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

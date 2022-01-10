@@ -25,4 +25,12 @@ public class WrappedPacketPlayOutEntityMetadataImpl extends PacketPlayOutEntityM
         }
     }
 
+    public WrappedPacketPlayOutEntityMetadataImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

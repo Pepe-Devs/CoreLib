@@ -1,4 +1,4 @@
-package com.pepedevs.corelib.nms.v1_8_R3.packets;
+package com.pepedevs.corelib.nms.packets;
 
 public interface WrappedPacketPlayOutUpdateSign {
 }

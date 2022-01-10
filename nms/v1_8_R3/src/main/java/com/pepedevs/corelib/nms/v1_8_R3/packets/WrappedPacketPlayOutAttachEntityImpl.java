@@ -24,4 +24,12 @@ public class WrappedPacketPlayOutAttachEntityImpl extends PacketPlayOutAttachEnt
         this(type, riderID, -1);
     }
 
+    public WrappedPacketPlayOutAttachEntityImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

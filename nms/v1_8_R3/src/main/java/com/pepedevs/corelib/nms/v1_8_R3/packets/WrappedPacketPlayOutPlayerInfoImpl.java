@@ -79,6 +79,8 @@ public class WrappedPacketPlayOutPlayerInfoImpl extends PacketPlayOutPlayerInfo 
         }
     }
 
+    public WrappedPacketPlayOutPlayerInfoImpl() {}
+
     public class WrappedPlayerInfoDataImpl extends PlayerInfoData implements WrappedPlayerInfoData {
 
         public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name) {
@@ -128,6 +130,14 @@ public class WrappedPacketPlayOutPlayerInfoImpl extends PacketPlayOutPlayerInfo 
             return this.d() == null ? null : AdventureUtils.asAdventure(this.d());
         }
 
+    }
+
+    public WrappedPacketPlayOutPlayerInfoImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

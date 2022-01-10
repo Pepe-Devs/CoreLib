@@ -34,4 +34,12 @@ public class WrappedPacketPlayOutRespawnImpl extends PacketPlayOutRespawn implem
     public WrappedPacketPlayOutRespawnImpl(World world, Difficulty difficulty, EnumGameMode gameMode) {
         this(world, difficulty, gameMode, WorldType.NORMAL);
     }
+
+    public WrappedPacketPlayOutRespawnImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

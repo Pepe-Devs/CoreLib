@@ -1,7 +1,7 @@
 package com.pepedevs.corelib.adventure;
 
 import com.google.gson.Gson;
-import com.pepedevs.corelib.nms.NMSProvider;
+import com.pepedevs.corelib.nms.NMSBridge;
 import com.pepedevs.corelib.utils.reflection.resolver.FieldResolver;
 import com.pepedevs.corelib.utils.reflection.resolver.minecraft.NMSClassResolver;
 import com.pepedevs.corelib.utils.reflection.resolver.wrapper.ClassWrapper;
@@ -71,7 +71,7 @@ public class AdventureUtils {
 
     public static String toVanillaString(Component component) {
         Object chatComponent = asVanilla(component);
-        return NMSProvider.getNMSImpl().craftChatMessageFromComponent(chatComponent);
+        return NMSBridge.getNMSProvider().craftChatMessageFromComponent(chatComponent);
     }
 
     public static List<String> toVanillaString(List<Component> components) {
@@ -85,7 +85,7 @@ public class AdventureUtils {
     public static Component fromVanillaString(String text) {
         if (text == null || text.isEmpty())
             return null;
-        Object chatComponent = NMSProvider.getNMSImpl().craftChatMessageFromString(text)[0];
+        Object chatComponent = NMSBridge.getNMSProvider().craftChatMessageFromString(text)[0];
         return asAdventure(chatComponent);
     }
 

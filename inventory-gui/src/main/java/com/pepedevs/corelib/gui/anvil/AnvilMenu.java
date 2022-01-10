@@ -3,7 +3,7 @@ package com.pepedevs.corelib.gui.anvil;
 import com.pepedevs.corelib.gui.anvil.action.AnvilItemClickAction;
 import com.pepedevs.corelib.gui.anvil.action.AnvilMenuClickAction;
 import com.pepedevs.corelib.gui.anvil.handler.AnvilMenuHandler;
-import com.pepedevs.corelib.nms.NMSProvider;
+import com.pepedevs.corelib.nms.NMSBridge;
 import com.pepedevs.corelib.utils.reflection.bukkit.BukkitReflection;
 import com.pepedevs.corelib.utils.reflection.bukkit.PlayerReflection;
 import com.pepedevs.corelib.utils.reflection.general.ClassReflection;
@@ -341,11 +341,11 @@ public class AnvilMenu {
     }
 
     private int getNextContainer(Player player) {
-        return NMSProvider.getNMSPlayer(player).getNextContainerCounter();
+        return NMSBridge.getNMSPlayer(player).getNextContainerCounter();
     }
 
     private void handleInventoryClose(Player player) {
-        NMSProvider.getNMSImpl().craftEventFactoryHandleInventoryClose(player);
+        NMSBridge.getNMSProvider().craftEventFactoryHandleInventoryClose(player);
     }
 
     private void sendOpenWindowPacket(Player player, int containerId) {

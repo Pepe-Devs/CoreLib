@@ -42,4 +42,12 @@ public class WrappedPacketPlayOutScoreboardDisplayObjectiveImpl extends PacketPl
         }
     }
 
+    public WrappedPacketPlayOutScoreboardDisplayObjectiveImpl(WrappedPacketDataSerializer serializer) {
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

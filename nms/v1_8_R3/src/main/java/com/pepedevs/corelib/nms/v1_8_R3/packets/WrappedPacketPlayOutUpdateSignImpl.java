@@ -1,6 +1,7 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
 import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutUpdateSign;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutUpdateSign;
@@ -32,6 +33,14 @@ public class WrappedPacketPlayOutUpdateSignImpl extends PacketPlayOutUpdateSign 
                 .serializeComponent(second)
                 .serializeComponent(third)
                 .serializeComponent(fourth);
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public WrappedPacketPlayOutUpdateSignImpl(WrappedPacketDataSerializer serializer) {
         try {
             this.a((PacketDataSerializer) serializer);
         } catch (IOException e) {
