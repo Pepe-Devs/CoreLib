@@ -1,11 +1,11 @@
-package com.pepedevs.corelib.nms.v1_8_R3;
+package com.pepedevs.corelib.nms.v1_12_R1;
 
 import com.pepedevs.corelib.nms.EntityStatus;
 import com.pepedevs.corelib.nms.EnumGameMode;
 import com.pepedevs.corelib.nms.InventoryType;
 import com.pepedevs.corelib.nms.PacketProvider;
 import com.pepedevs.corelib.nms.packets.*;
-import com.pepedevs.corelib.nms.v1_8_R3.packets.*;
+import com.pepedevs.corelib.nms.v1_12_R1.packets.*;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -39,16 +39,6 @@ public class PacketProviderImpl implements PacketProvider {
     @Override
     public WrappedPacketPlayOutChat getNewChatPacket(Component chatMessage) {
         return new WrappedPacketPlayOutChatImpl(chatMessage);
-    }
-
-    @Override
-    public WrappedPacketPlayOutChat getNewChatPacket(String chatMessage, WrappedPacketPlayOutChat.ChatMessageType type) {
-        return new WrappedPacketPlayOutChatImpl(chatMessage, type);
-    }
-
-    @Override
-    public WrappedPacketPlayOutChat getNewChatPacket(Component chatMessage, WrappedPacketPlayOutChat.ChatMessageType type) {
-        return new WrappedPacketPlayOutChatImpl(chatMessage, type);
     }
 
     @Override
@@ -228,12 +218,12 @@ public class PacketProviderImpl implements PacketProvider {
 
     @Override
     public WrappedPacketPlayOutUpdateSign getNewUpdateSignPacket(Location location, String... lines) {
-        return new WrappedPacketPlayOutUpdateSignImpl(location, lines);
+        return null;
     }
 
     @Override
     public WrappedPacketPlayOutUpdateSign getNewUpdateSignPacket(Location location, String first, String second, String third, String fourth) {
-        return new WrappedPacketPlayOutUpdateSignImpl(location, first, second, third, fourth);
+        return null;
     }
 
 }

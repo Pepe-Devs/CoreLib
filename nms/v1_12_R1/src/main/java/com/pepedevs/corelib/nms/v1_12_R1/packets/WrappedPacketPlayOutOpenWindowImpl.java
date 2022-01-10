@@ -1,12 +1,12 @@
-package com.pepedevs.corelib.nms.v1_8_R3.packets;
+package com.pepedevs.corelib.nms.v1_12_R1.packets;
 
 import com.pepedevs.corelib.nms.InventoryType;
 import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutOpenWindow;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.NMSImpl;
 import net.kyori.adventure.text.Component;
-import net.minecraft.server.v1_8_R3.PacketDataSerializer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_12_R1.PacketDataSerializer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutOpenWindow;
 
 import java.io.IOException;
 

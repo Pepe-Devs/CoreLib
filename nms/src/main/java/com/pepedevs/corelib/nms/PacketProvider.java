@@ -21,6 +21,10 @@ public interface PacketProvider {
 
     WrappedPacketPlayOutChat getNewChatPacket(Component chatMessage);
 
+    WrappedPacketPlayOutChat getNewChatPacket(String chatMessage, WrappedPacketPlayOutChat.ChatMessageType type);
+
+    WrappedPacketPlayOutChat getNewChatPacket(Component chatMessage, WrappedPacketPlayOutChat.ChatMessageType type);
+
     WrappedPacketPlayOutCloseWindow getNewCloseWindowPacket(int containerID);
 
     WrappedPacketPlayOutEntityDestroy getNewEntityDestroyPacket(int... entityIDs);

@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>v1_8_R3</module>
+        <module>v1_12_R1</module>
     </modules>
 
     <properties>
@@ -31,12 +32,6 @@
         <dependency>
             <groupId>com.pepedevs</groupId>
             <artifactId>minecraft-version</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.pepedevs</groupId>
-            <artifactId>nms.v1_8_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

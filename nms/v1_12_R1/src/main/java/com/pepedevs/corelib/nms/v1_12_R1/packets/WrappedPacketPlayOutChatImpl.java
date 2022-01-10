@@ -1,13 +1,14 @@
-package com.pepedevs.corelib.nms.v1_8_R3.packets;
+package com.pepedevs.corelib.nms.v1_12_R1.packets;
 
 import com.pepedevs.corelib.adventure.AdventureUtils;
 import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutChat;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.NMSImpl;
 import net.kyori.adventure.text.Component;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketDataSerializer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
+import net.minecraft.server.v1_12_R1.ChatMessageType;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.PacketDataSerializer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 
 import java.io.IOException;
 
@@ -22,11 +23,11 @@ public class WrappedPacketPlayOutChatImpl extends PacketPlayOutChat implements W
     }
 
     public WrappedPacketPlayOutChatImpl(String component, ChatMessageType type) {
-        super((IChatBaseComponent) NMSImpl.INSTANCE.craftChatMessageFromString(component)[0], type.BYTE);
+        super((IChatBaseComponent) NMSImpl.INSTANCE.craftChatMessageFromString(component)[0], net.minecraft.server.v1_12_R1.ChatMessageType.a(type.BYTE));
     }
 
     public WrappedPacketPlayOutChatImpl(Component component, ChatMessageType type) {
-        super((IChatBaseComponent) AdventureUtils.asVanilla(component), type.BYTE);
+        super((IChatBaseComponent) AdventureUtils.asVanilla(component), net.minecraft.server.v1_12_R1.ChatMessageType.a(type.BYTE));
     }
 
     public WrappedPacketPlayOutChatImpl(WrappedPacketDataSerializer serializer) {
