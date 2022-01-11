@@ -5,7 +5,7 @@
     <parent>
         <artifactId>CoreLib</artifactId>
         <groupId>com.pepedevs</groupId>
-        <version>1.2.0-BETA-1.0-SNAPSHOT</version>
+        <version>1.2.0-BETA-1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
