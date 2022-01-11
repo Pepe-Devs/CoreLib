@@ -7,6 +7,7 @@ import com.pepedevs.corelib.nms.PacketProvider;
 import com.pepedevs.corelib.nms.packets.*;
 import com.pepedevs.corelib.utils.version.Version;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Function;
 
 public class Scoreboard {
 
@@ -28,6 +30,7 @@ public class Scoreboard {
     private List<Component> elements;
     private Component oldTitle;
     private List<Component> oldElements;
+    private List<Placeholder> placeholders;
 
     private final Map<UUID, String> shown;
 
@@ -38,6 +41,7 @@ public class Scoreboard {
         this.oldTitle = this.title;
         this.elements = new ArrayList<>();
         this.oldElements = new ArrayList<>();
+        this.placeholders = new ArrayList<>();
         this.shown = new ConcurrentHashMap<>();
     }
 
@@ -116,6 +120,14 @@ public class Scoreboard {
         this.checkLineNumber(index, true, false);
         this.oldElements = new ArrayList<>(this.elements);
         this.elements.remove(index);
+    }
+
+    public void addPlaceholders(Placeholder... placeholders) {
+        this.placeholders.addAll(Arrays.asList(placeholders));
+    }
+
+    public void removePlaceholders(Placeholder... placeholders) {
+        this.placeholders.removeAll(Arrays.asList(placeholders));
     }
 
     public Collection<UUID> getViewers() {
@@ -228,7 +240,7 @@ public class Scoreboard {
 
     private void sendObjectivePacket(WrappedPacketPlayOutScoreboardObjective.ObjectiveMode mode, Player player, String id) {
         WrappedPacket packet = PROVIDER.getNewScoreboardObjectivePacket(id,
-                AdventureUtils.toVanillaString(title),
+                AdventureUtils.toVanillaString(this.formatComponent(this.title, player)),
                 WrappedPacketPlayOutScoreboardObjective.HealthDisplay.INTEGER,
                 mode);
         NMS_PROVIDER.getPlayer(player).sendPacket(packet);
@@ -243,7 +255,7 @@ public class Scoreboard {
 
     private void sendScorePacket(int score, WrappedPacketPlayOutScoreboardScore.ScoreboardAction action, Player player, String id) {
         WrappedPacket packet = PROVIDER.getNewScoreboardScorePacket(
-                COLOR_CODES[score].name().toLowerCase(), id, score, action);
+                COLOR_CODES[score].toString(), id, score, action);
         NMS_PROVIDER.getPlayer(player).sendPacket(packet);
     }
 
@@ -254,7 +266,7 @@ public class Scoreboard {
 
         int maxLength = Version.SERVER_VERSION.isOlder(Version.v1_13_R1) ? 16 : 1024;
 
-        String line = AdventureUtils.toVanillaString(this.elements.get(this.elements.size() - 1 - score));
+        String line = AdventureUtils.toVanillaString(this.formatComponent(this.elements.get(this.elements.size() - 1 - score), player));
         String prefix;
         String suffix = null;
 
@@ -316,5 +328,38 @@ public class Scoreboard {
 
     private int getLength(Component component) {
         return AdventureUtils.toVanillaString(component).length();
+    }
+
+    private Component formatComponent(final Component component, Player player) {
+        Component formatted = component;
+        for (Placeholder placeholder : this.placeholders) {
+            formatted = formatted.replaceText(TextReplacementConfig.builder()
+                    .replacement(placeholder.getReplacement().apply(player))
+                    .matchLiteral(placeholder.getId())
+                    .build());
+        }
+        return formatted;
+    }
+
+    public interface Placeholder {
+
+        static Placeholder of(String id, Function<Player, String> resolver) {
+            return new Placeholder() {
+                @Override
+                public String getId() {
+                    return id;
+                }
+
+                @Override
+                public Function<Player, String> getReplacement() {
+                    return resolver;
+                }
+            };
+        }
+
+        String getId();
+
+        Function<Player, String> getReplacement();
+
     }
 }
