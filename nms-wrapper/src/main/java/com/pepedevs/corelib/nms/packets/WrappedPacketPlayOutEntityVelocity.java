@@ -1,4 +1,4 @@
 package com.pepedevs.corelib.nms.packets;
 
-public interface WrappedPacketPlayOutEntityVelocity {
+public interface WrappedPacketPlayOutEntityVelocity extends WrappedPacket {
 }

@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.pepedevs.corelib.nms.EnumGameMode;
 import net.kyori.adventure.text.Component;
 
-public interface WrappedPacketPlayOutPlayerInfo {
+public interface WrappedPacketPlayOutPlayerInfo extends WrappedPacket {
 
     interface WrappedPlayerInfoData {
 

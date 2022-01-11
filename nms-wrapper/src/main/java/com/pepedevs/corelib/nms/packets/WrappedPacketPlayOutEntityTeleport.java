@@ -1,5 +1,5 @@
 package com.pepedevs.corelib.nms.packets;
 
-public interface WrappedPacketPlayOutEntityTeleport {
+public interface WrappedPacketPlayOutEntityTeleport extends WrappedPacket {
 
 }

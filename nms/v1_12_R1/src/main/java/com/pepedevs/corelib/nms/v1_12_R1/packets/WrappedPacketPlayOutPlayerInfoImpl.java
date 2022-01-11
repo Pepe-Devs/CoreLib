@@ -107,7 +107,7 @@ public class WrappedPacketPlayOutPlayerInfoImpl extends PacketPlayOutPlayerInfo 
 
         public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component nameComponent) {
             this.latency = latency;
-            this.name = (IChatBaseComponent) nameComponent;
+            this.name = (IChatBaseComponent) AdventureUtils.asVanilla(nameComponent);
             this.gamemode = EnumGamemode.valueOf(gamemode.name());
             this.gameProfile = gameProfile;
         }

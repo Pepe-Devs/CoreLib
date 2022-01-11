@@ -1,4 +1,4 @@
 package com.pepedevs.corelib.nms.packets;
 
-public interface WrappedPacketPlayOutTabComplete {
+public interface WrappedPacketPlayOutTabComplete extends WrappedPacket {
 }

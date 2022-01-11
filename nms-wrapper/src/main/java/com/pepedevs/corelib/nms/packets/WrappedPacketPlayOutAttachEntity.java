@@ -1,6 +1,6 @@
 package com.pepedevs.corelib.nms.packets;
 
-public interface WrappedPacketPlayOutAttachEntity {
+public interface WrappedPacketPlayOutAttachEntity extends WrappedPacket {
 
     enum AttachmentType {
         MOUNT,

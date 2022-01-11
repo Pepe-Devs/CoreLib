@@ -1,6 +1,6 @@
 package com.pepedevs.corelib.nms.packets;
 
-public interface WrappedPacketPlayOutScoreboardDisplayObjective extends WrappedPacket{
+public interface WrappedPacketPlayOutScoreboardDisplayObjective extends WrappedPacket {
 
     enum ScoreboardPosition {
         NONE,
