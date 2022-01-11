@@ -1,28 +1,29 @@
-package com.pepedevs.corelib.nms.v1_8_R3;
+package com.pepedevs.corelib.nms.v1_12_R1;
 
 import com.mojang.authlib.GameProfile;
 import com.pepedevs.corelib.nms.EnumGameMode;
-import com.pepedevs.corelib.nms.NMSProvider;
 import com.pepedevs.corelib.nms.NMSPlayer;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.NMSProvider;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
-import com.pepedevs.corelib.nms.v1_8_R3.packets.WrappedPacketPlayOutPlayerInfoImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.objects.WrappedPacketDataSerializerImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.packets.WrappedPacketPlayOutPlayerInfoImpl;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.server.v1_8_R3.EnumChatFormat;
 import net.kyori.adventure.text.Component;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.EnumChatFormat;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_12_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
-public class NMSImpl implements NMSProvider {
+public class NMSProviderImpl implements NMSProvider {
 
-    public static final NMSImpl INSTANCE = new NMSImpl();
+    public static final NMSProviderImpl INSTANCE = new NMSProviderImpl();
 
-    private NMSImpl(){}
+    private NMSProviderImpl(){}
 
     @Override
     public String craftChatMessageFromComponent(Object component) {
@@ -37,7 +38,7 @@ public class NMSImpl implements NMSProvider {
 
     @Override
     public NMSPlayer getPlayer(Player player) {
-        return new com.pepedevs.corelib.nms.v1_8_R3.NMSPlayer(player);
+        return new com.pepedevs.corelib.nms.v1_12_R1.NMSPlayer(player);
     }
 
     @Override
@@ -52,20 +53,17 @@ public class NMSImpl implements NMSProvider {
 
     @Override
     public WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name) {
-        WrappedPacketPlayOutPlayerInfoImpl uselessShit = new WrappedPacketPlayOutPlayerInfoImpl();
-        return uselessShit.new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
+        return new WrappedPacketPlayOutPlayerInfoImpl.WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
     }
 
     @Override
     public WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name) {
-        WrappedPacketPlayOutPlayerInfoImpl uselessShit = new WrappedPacketPlayOutPlayerInfoImpl();
-        return uselessShit.new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
+        return new WrappedPacketPlayOutPlayerInfoImpl.WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
     }
 
     @Override
     public WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name) {
-        WrappedPacketPlayOutPlayerInfoImpl uselessShit = new WrappedPacketPlayOutPlayerInfoImpl();
-        return uselessShit.new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
+        return new WrappedPacketPlayOutPlayerInfoImpl.WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
     }
 
     @Override

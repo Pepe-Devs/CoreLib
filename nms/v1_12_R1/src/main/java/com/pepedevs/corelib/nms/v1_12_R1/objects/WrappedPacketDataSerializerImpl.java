@@ -1,19 +1,18 @@
-package com.pepedevs.corelib.nms.v1_8_R3;
+package com.pepedevs.corelib.nms.v1_12_R1.objects;
 
 import com.pepedevs.corelib.adventure.AdventureUtils;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import net.minecraft.server.v1_8_R3.PacketDataSerializer;
+import net.minecraft.server.v1_12_R1.BlockPosition;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_12_R1.util.CraftChatMessage;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implements WrappedPacketDataSerializer {
@@ -24,17 +23,13 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
 
     @Override
     public WrappedPacketDataSerializer serializeComponent(Component component) {
-        super.a(AdventureUtils.toVanillaString(component));
+        this.serializeComponent(AdventureUtils.asVanilla(component));
         return this;
     }
 
     @Override
     public WrappedPacketDataSerializer serializeComponent(Object iChatBaseComponent) {
-        try {
-            super.a((IChatBaseComponent) iChatBaseComponent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        super.a((IChatBaseComponent) iChatBaseComponent);
         return this;
     }
 
@@ -69,7 +64,7 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
 
     @Override
     public WrappedPacketDataSerializer serializeItemStack(Object itemStack) {
-        super.a((net.minecraft.server.v1_8_R3.ItemStack) itemStack);
+        super.a((net.minecraft.server.v1_12_R1.ItemStack) itemStack);
         return this;
     }
 

@@ -4,9 +4,9 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.pepedevs.corelib.adventure.AdventureUtils;
 import com.pepedevs.corelib.nms.EnumGameMode;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.kyori.adventure.text.Component;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
@@ -19,7 +19,7 @@ import java.util.List;
 public class WrappedPacketPlayOutPlayerInfoImpl extends PacketPlayOutPlayerInfo implements WrappedPacketPlayOutPlayerInfo {
 
     public WrappedPacketPlayOutPlayerInfoImpl(PlayerInfoAction action, List<WrappedPlayerInfoData> data) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeEnum(EnumPlayerInfoAction.valueOf(action.name()))
                 .serializeIntToByte(data.size());
         for (WrappedPlayerInfoData infoData : data) {
@@ -79,65 +79,77 @@ public class WrappedPacketPlayOutPlayerInfoImpl extends PacketPlayOutPlayerInfo 
         }
     }
 
-    public WrappedPacketPlayOutPlayerInfoImpl() {}
-
-    public class WrappedPlayerInfoDataImpl extends PlayerInfoData implements WrappedPlayerInfoData {
-
-        public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name) {
-            super(gameProfile, latency, WorldSettings.EnumGamemode.valueOf(gamemode.name()), name == null ? null : (IChatBaseComponent) NMSImpl.INSTANCE.craftChatMessageFromString(name)[0]);
-        }
-
-        public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object nameComponent) {
-            super(gameProfile, latency, WorldSettings.EnumGamemode.valueOf(gamemode.name()), (IChatBaseComponent) nameComponent);
-        }
-
-        public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component nameComponent) {
-            super(gameProfile, latency, WorldSettings.EnumGamemode.valueOf(gamemode.name()), nameComponent == null ? null : (IChatBaseComponent) AdventureUtils.asVanilla(nameComponent));
-        }
-
-        @Override
-        public GameProfile getGameProfile() {
-            return this.a();
-        }
-
-        @Override
-        public int getLatency() {
-            return this.b();
-        }
-
-        @Override
-        public EnumGameMode getGameMode() {
-            return EnumGameMode.valueOf(this.c().name());
-        }
-
-        @Override
-        public Object getEnumGameMode() {
-            return this.c();
-        }
-
-        @Override
-        public String getName() {
-            return this.d() == null ? null : NMSImpl.INSTANCE.craftChatMessageFromComponent(this.d());
-        }
-
-        @Override
-        public Object getNameComponent() {
-            return this.d();
-        }
-
-        @Override
-        public Component getComponent() {
-            return this.d() == null ? null : AdventureUtils.asAdventure(this.d());
-        }
-
-    }
-
     public WrappedPacketPlayOutPlayerInfoImpl(WrappedPacketDataSerializer serializer) {
         try {
             this.a((PacketDataSerializer) serializer);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static class WrappedPlayerInfoDataImpl implements WrappedPlayerInfoData {
+
+        private final int latency;
+        private final WorldSettings.EnumGamemode gamemode;
+        private final GameProfile gameProfile;
+        private final IChatBaseComponent name;
+
+        public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name) {
+            this.latency = latency;
+            this.name = name == null ? null : (IChatBaseComponent) NMSProviderImpl.INSTANCE.craftChatMessageFromString(name)[0];
+            this.gamemode = WorldSettings.EnumGamemode.valueOf(gamemode.name());
+            this.gameProfile = gameProfile;
+        }
+
+        public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object nameComponent) {
+            this.latency = latency;
+            this.name = (IChatBaseComponent) nameComponent;
+            this.gamemode = WorldSettings.EnumGamemode.valueOf(gamemode.name());
+            this.gameProfile = gameProfile;
+        }
+
+        public WrappedPlayerInfoDataImpl(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component nameComponent) {
+            this.latency = latency;
+            this.name = (IChatBaseComponent) nameComponent;
+            this.gamemode = WorldSettings.EnumGamemode.valueOf(gamemode.name());
+            this.gameProfile = gameProfile;
+        }
+
+        @Override
+        public GameProfile getGameProfile() {
+            return this.gameProfile;
+        }
+
+        @Override
+        public int getLatency() {
+            return this.latency;
+        }
+
+        @Override
+        public EnumGameMode getGameMode() {
+            return EnumGameMode.valueOf(this.gamemode.name());
+        }
+
+        @Override
+        public Object getEnumGameMode() {
+            return this.gamemode;
+        }
+
+        @Override
+        public String getName() {
+            return this.name == null ? null : NMSProviderImpl.INSTANCE.craftChatMessageFromComponent(this.name);
+        }
+
+        @Override
+        public Object getNameComponent() {
+            return this.name;
+        }
+
+        @Override
+        public Component getComponent() {
+            return this.name == null ? null : AdventureUtils.asAdventure(this.name);
+        }
+
     }
 
 }

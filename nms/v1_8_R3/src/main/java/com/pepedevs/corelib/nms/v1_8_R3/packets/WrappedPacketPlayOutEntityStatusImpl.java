@@ -1,9 +1,9 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
 import com.pepedevs.corelib.nms.EntityStatus;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityStatus;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityStatus;
 
@@ -16,7 +16,7 @@ public class WrappedPacketPlayOutEntityStatusImpl extends PacketPlayOutEntitySta
     }
 
     public WrappedPacketPlayOutEntityStatusImpl(int entityID, byte status) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer().serializeInt(entityID).serializeByte(status);
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer().serializeInt(entityID).serializeByte(status);
         try {
             this.a((PacketDataSerializer) serializer);
         } catch (IOException e) {

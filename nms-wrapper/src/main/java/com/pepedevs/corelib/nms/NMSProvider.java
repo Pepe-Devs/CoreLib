@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms;
 
 import com.mojang.authlib.GameProfile;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;

@@ -73,6 +73,21 @@
         </dependency>
         <dependency>
             <groupId>com.pepedevs</groupId>
+            <artifactId>nms-wrapper</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>nms.v1_8_R3</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>nms.v1_12_R1</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pepedevs</groupId>
             <artifactId>packet-utils</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

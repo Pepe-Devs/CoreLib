@@ -31,19 +31,12 @@
     <dependencies>
         <dependency>
             <groupId>com.pepedevs</groupId>
-            <artifactId>minecraft-version</artifactId>
+            <artifactId>nms-wrapper</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.pepedevs</groupId>
             <artifactId>adventure-utils</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.pepedevs</groupId>
-            <artifactId>utils</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

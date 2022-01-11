@@ -19,6 +19,8 @@
         <module>hologram</module>
         <module>inventory-gui</module>
         <module>minecraft-version</module>
+        <module>nms</module>
+        <module>nms-wrapper</module>
         <module>packet-utils</module>
         <module>placeholder-utils</module>
         <module>plugin-helper</module>
@@ -27,7 +29,6 @@
         <module>task-utils</module>
         <module>utils</module>
         <module>vault-hook</module>
-        <module>nms</module>
     </modules>
 
     <properties>
@@ -104,9 +105,13 @@
     </repositories>
 
     <distributionManagement>
+<!--        <repository>-->
+<!--            <id>pepedevs</id>-->
+<!--            <url>https://repo.pepedevs.com/nexus/repository/maven-releases/</url>-->
+<!--        </repository>-->
         <repository>
-            <id>pepedevs</id>
-            <url>https://repo.pepedevs.com/nexus/repository/maven-releases/</url>
+            <id>pepedevs-snapshot</id>
+            <url>https://repo.pepedevs.com/nexus/repository/maven-snapshots/</url>
         </repository>
     </distributionManagement>
 

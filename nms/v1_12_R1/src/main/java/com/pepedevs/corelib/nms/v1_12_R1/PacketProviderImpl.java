@@ -42,6 +42,16 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
+    public WrappedPacketPlayOutChat getNewChatPacket(String chatMessage, WrappedPacketPlayOutChat.ChatMessageType type) {
+        return new WrappedPacketPlayOutChatImpl(chatMessage, type);
+    }
+
+    @Override
+    public WrappedPacketPlayOutChat getNewChatPacket(Component chatMessage, WrappedPacketPlayOutChat.ChatMessageType type) {
+        return new WrappedPacketPlayOutChatImpl(chatMessage, type);
+    }
+
+    @Override
     public WrappedPacketPlayOutCloseWindow getNewCloseWindowPacket(int containerID) {
         return new WrappedPacketPlayOutCloseWindowImpl(containerID);
     }

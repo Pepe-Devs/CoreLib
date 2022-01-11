@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms.v1_12_R1.packets;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutExplosion;
-import com.pepedevs.corelib.nms.v1_12_R1.NMSImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.NMSProviderImpl;
 import net.minecraft.server.v1_12_R1.BlockPosition;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutExplosion;
@@ -18,7 +18,7 @@ import java.util.Set;
 public class WrappedPacketPlayOutExplosionImpl extends PacketPlayOutExplosion implements WrappedPacketPlayOutExplosion {
 
     public WrappedPacketPlayOutExplosionImpl(Location location, float power, List<Location> blocks, Vector knockback) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer
                 .serializeFloat((float) location.getX())
                 .serializeFloat((float) location.getY())
@@ -44,7 +44,7 @@ public class WrappedPacketPlayOutExplosionImpl extends PacketPlayOutExplosion im
     }
 
     public WrappedPacketPlayOutExplosionImpl(Location location, float power, Set<Block> blocks, Vector knockback) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer
                 .serializeFloat((float) location.getX())
                 .serializeFloat((float) location.getY())
@@ -70,7 +70,7 @@ public class WrappedPacketPlayOutExplosionImpl extends PacketPlayOutExplosion im
     }
 
     public WrappedPacketPlayOutExplosionImpl(Location location, float power) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer
                 .serializeFloat((float) location.getX())
                 .serializeFloat((float) location.getY())

@@ -1,4 +1,4 @@
-package com.pepedevs.corelib.nms.packets;
+package com.pepedevs.corelib.nms.objects;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;

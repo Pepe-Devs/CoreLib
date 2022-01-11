@@ -1,9 +1,9 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
 import com.pepedevs.corelib.nms.EnumGameMode;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutRespawn;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.EnumDifficulty;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutRespawn;
@@ -18,7 +18,7 @@ import java.io.IOException;
 public class WrappedPacketPlayOutRespawnImpl extends PacketPlayOutRespawn implements WrappedPacketPlayOutRespawn {
 
     public WrappedPacketPlayOutRespawnImpl(World world, Difficulty difficulty, EnumGameMode gameMode, WorldType worldType) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeInt(((CraftWorld) world).getHandle().worldProvider.getDimension())
                 .serializeByte(EnumDifficulty.valueOf(difficulty.name()).a())
                 .serializeByte(WorldSettings.EnumGamemode.valueOf(gameMode.name()).getId());

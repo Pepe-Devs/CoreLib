@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms.v1_12_R1.packets;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityTeleport;
-import com.pepedevs.corelib.nms.v1_12_R1.NMSImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.NMSProviderImpl;
 import net.minecraft.server.v1_12_R1.MathHelper;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityTeleport;
@@ -13,7 +13,7 @@ import java.io.IOException;
 public class WrappedPacketPlayOutEntityTeleportImpl extends PacketPlayOutEntityTeleport implements WrappedPacketPlayOutEntityTeleport {
 
     public WrappedPacketPlayOutEntityTeleportImpl(int entityId, Location location, boolean onGround) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeIntToByte(entityId)
                 .serializeInt(MathHelper.floor(location.getX() * 32.0D))
                 .serializeInt(MathHelper.floor(location.getY() * 32.0D))

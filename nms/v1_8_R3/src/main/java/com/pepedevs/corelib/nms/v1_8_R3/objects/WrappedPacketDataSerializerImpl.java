@@ -1,13 +1,13 @@
-package com.pepedevs.corelib.nms.v1_12_R1;
+package com.pepedevs.corelib.nms.v1_8_R3.objects;
 
 import com.pepedevs.corelib.adventure.AdventureUtils;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
-import net.minecraft.server.v1_12_R1.BlockPosition;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.PacketDataSerializer;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
@@ -24,7 +24,7 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
 
     @Override
     public WrappedPacketDataSerializer serializeComponent(Component component) {
-        super.a(AdventureUtils.toVanillaString(component));
+        this.serializeComponent(AdventureUtils.asVanilla(component));
         return this;
     }
 
@@ -69,7 +69,7 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
 
     @Override
     public WrappedPacketDataSerializer serializeItemStack(Object itemStack) {
-        super.a((net.minecraft.server.v1_12_R1.ItemStack) itemStack);
+        super.a((net.minecraft.server.v1_8_R3.ItemStack) itemStack);
         return this;
     }
 

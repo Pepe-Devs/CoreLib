@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutNamedEntitySpawn;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -14,7 +14,7 @@ import java.util.UUID;
 public class WrappedPacketPlayOutNamedEntitySpawnImpl extends PacketPlayOutNamedEntitySpawn implements WrappedPacketPlayOutNamedEntitySpawn {
 
     public WrappedPacketPlayOutNamedEntitySpawnImpl(int entityId, UUID uuid, Location location, ItemStack mainHandItem, Object dataWatcher) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeIntToByte(entityId)
                 .serializeUUID(uuid)
                 .serializeInt(MathHelper.floor(location.getX() * 32.0D))

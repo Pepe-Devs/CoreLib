@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutSpawnEntityLiving;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class WrappedPacketPlayOutSpawnEntityLivingImpl extends PacketPlayOutSpawnEntityLiving implements WrappedPacketPlayOutSpawnEntityLiving {
 
     public WrappedPacketPlayOutSpawnEntityLivingImpl(int entityId, EntityType entity, Location location, int headPitch, Vector velocity, Object dataWatcher) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeIntToByte(entityId)
                 .serializeByte(((byte) entity.getTypeId()) & 255)
                 .serializeInt(MathHelper.floor(location.getX() * 32.0D))

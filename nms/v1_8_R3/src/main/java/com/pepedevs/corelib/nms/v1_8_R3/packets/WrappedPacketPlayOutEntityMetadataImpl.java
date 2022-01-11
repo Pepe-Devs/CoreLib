@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityMetadata;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
@@ -13,7 +13,7 @@ import java.util.List;
 public class WrappedPacketPlayOutEntityMetadataImpl extends PacketPlayOutEntityMetadata implements WrappedPacketPlayOutEntityMetadata {
 
     public WrappedPacketPlayOutEntityMetadataImpl(int entityId, Object watchableObjects) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeIntToByte(entityId);
 
         List<DataWatcher.WatchableObject> watchableObjectList = (List<DataWatcher.WatchableObject>) watchableObjects;

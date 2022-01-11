@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutScoreboardTeam;
-import com.pepedevs.corelib.nms.v1_8_R3.NMSImpl;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.EnumChatFormat;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
@@ -14,7 +14,7 @@ import java.util.Set;
 public class WrappedPacketPlayOutScoreboardTeamImpl extends PacketPlayOutScoreboardTeam implements WrappedPacketPlayOutScoreboardTeam {
 
     public WrappedPacketPlayOutScoreboardTeamImpl(String teamName, String displayName, String prefix, String suffix, Set<String> playerNames, TeamMode mode, TagVisibility visibility, PacketOptionData data, ChatColor color) {
-        WrappedPacketDataSerializer dataSerializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer dataSerializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         dataSerializer.serializeString(teamName)
                 .serializeByte(mode.ordinal());
         if (mode == TeamMode.CREATE || mode == TeamMode.UPDATE) {
@@ -23,7 +23,7 @@ public class WrappedPacketPlayOutScoreboardTeamImpl extends PacketPlayOutScorebo
                     .serializeString(suffix)
                     .serializeByte(data.ordinal())
                     .serializeString(visibility.ID)
-                    .serializeByte(((EnumChatFormat) NMSImpl.INSTANCE.getEnumChatFormat(color)).b());
+                    .serializeByte(((EnumChatFormat) NMSProviderImpl.INSTANCE.getEnumChatFormat(color)).b());
         }
 
         if (mode == TeamMode.CREATE || mode == TeamMode.ADD_PLAYERS || mode == TeamMode.REMOVE_PLAYERS) {

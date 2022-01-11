@@ -25,7 +25,7 @@
 
         <dependency>
             <groupId>com.pepedevs</groupId>
-            <artifactId>nms</artifactId>
+            <artifactId>nms-wrapper</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

@@ -1,9 +1,9 @@
 package com.pepedevs.corelib.nms.v1_12_R1.packets;
 
 import com.pepedevs.corelib.nms.InventoryType;
-import com.pepedevs.corelib.nms.packets.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutOpenWindow;
-import com.pepedevs.corelib.nms.v1_12_R1.NMSImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.NMSProviderImpl;
 import net.kyori.adventure.text.Component;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutOpenWindow;
@@ -45,7 +45,7 @@ public class WrappedPacketPlayOutOpenWindowImpl extends PacketPlayOutOpenWindow 
     }
 
     private PacketDataSerializer getSerializer(int nextContainerCounter, String title, InventoryType type, byte size) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeByte(nextContainerCounter);
         serializer.serializeString("minecraft:" +  type.name().toLowerCase());
         serializer.serializeComponent(title);
@@ -54,7 +54,7 @@ public class WrappedPacketPlayOutOpenWindowImpl extends PacketPlayOutOpenWindow 
     }
 
     private PacketDataSerializer getSerializer(int nextContainerCounter, Component title, InventoryType type, byte size) {
-        WrappedPacketDataSerializer serializer = NMSImpl.INSTANCE.getDataSerializer();
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeByte(nextContainerCounter);
         serializer.serializeString("minecraft:" +  type.name().toLowerCase());
         serializer.serializeComponent(title);
