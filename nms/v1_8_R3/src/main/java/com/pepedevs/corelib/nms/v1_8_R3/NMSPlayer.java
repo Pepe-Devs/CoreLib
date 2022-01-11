@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.nms.v1_8_R3;
 
+import com.pepedevs.corelib.nms.packets.WrappedPacket;
 import net.minecraft.server.v1_8_R3.Packet;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -29,8 +30,13 @@ public class NMSPlayer implements com.pepedevs.corelib.nms.NMSPlayer {
     }
 
     @Override
+    public void sendPacket(WrappedPacket packet) {
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet) packet);
+    }
+
+    @Override
     public void sendPacket(Object packet) {
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet) packet);
     }
 
     @Override

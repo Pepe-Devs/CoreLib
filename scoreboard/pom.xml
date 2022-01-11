@@ -33,6 +33,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>nms-wrapper</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.3-R0.1-SNAPSHOT</version>

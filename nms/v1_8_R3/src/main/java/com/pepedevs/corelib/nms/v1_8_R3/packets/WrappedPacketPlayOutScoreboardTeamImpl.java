@@ -1,12 +1,16 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
+import com.pepedevs.corelib.adventure.AdventureUtils;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutScoreboardTeam;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
+import net.kyori.adventure.text.Component;
 import net.minecraft.server.v1_8_R3.EnumChatFormat;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
 
 import java.io.IOException;
 import java.util.Set;
@@ -38,6 +42,14 @@ public class WrappedPacketPlayOutScoreboardTeamImpl extends PacketPlayOutScorebo
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public WrappedPacketPlayOutScoreboardTeamImpl(String teamName, Component displayName, Component prefix, Component suffix, Set<String> playerNames, TeamMode mode, TagVisibility visibility, PacketOptionData data, ChatColor color) {
+        this(teamName, AdventureUtils.toVanillaString(displayName), AdventureUtils.toVanillaString(prefix), AdventureUtils.toVanillaString(suffix), playerNames, mode, visibility, data, color);
+    }
+
+    public WrappedPacketPlayOutScoreboardTeamImpl(String teamName, Object displayName, Object prefix, Object suffix, Set<String> playerNames, TeamMode mode, TagVisibility visibility, PacketOptionData data, ChatColor color) {
+        this(teamName, CraftChatMessage.fromComponent((IChatBaseComponent) displayName), CraftChatMessage.fromComponent((IChatBaseComponent) prefix), CraftChatMessage.fromComponent((IChatBaseComponent) suffix), playerNames, mode, visibility, data, color);
     }
 
     public WrappedPacketPlayOutScoreboardTeamImpl(WrappedPacketDataSerializer dataSerializer) {

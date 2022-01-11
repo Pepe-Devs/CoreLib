@@ -212,6 +212,16 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
+    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, Component displayName, Component prefix, Component suffix, Set<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
+        return new WrappedPacketPlayOutScoreboardTeamImpl(teamName, displayName, prefix, suffix, playerNames, mode, visibility, data, color);
+    }
+
+    @Override
+    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, Object displayName, Object prefix, Object suffix, Set<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
+        return new WrappedPacketPlayOutScoreboardTeamImpl(teamName, displayName, prefix, suffix, playerNames, mode, visibility, data, color);
+    }
+
+    @Override
     public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, EntityType entity, Location location, int headPitch, Vector velocity, Object dataWatcher) {
         return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, entity, location, headPitch, velocity, dataWatcher);
     }
