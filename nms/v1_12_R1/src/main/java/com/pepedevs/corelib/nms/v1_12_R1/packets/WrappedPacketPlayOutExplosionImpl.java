@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,11 @@ public class WrappedPacketPlayOutExplosionImpl extends PacketPlayOutExplosion im
                 .serializeFloat((float) knockback.getX())
                 .serializeFloat((float) knockback.getY())
                 .serializeFloat((float) knockback.getZ());
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public WrappedPacketPlayOutExplosionImpl(Location location, float power, Set<Block> blocks, Vector knockback) {
@@ -67,16 +73,15 @@ public class WrappedPacketPlayOutExplosionImpl extends PacketPlayOutExplosion im
                 .serializeFloat((float) knockback.getX())
                 .serializeFloat((float) knockback.getY())
                 .serializeFloat((float) knockback.getZ());
+        try {
+            this.a((PacketDataSerializer) serializer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public WrappedPacketPlayOutExplosionImpl(Location location, float power) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer
-                .serializeFloat((float) location.getX())
-                .serializeFloat((float) location.getY())
-                .serializeFloat((float) location.getZ())
-                .serializeFloat(power)
-                .serializeInt(0);
+        this(location, power, new ArrayList<>(), new Vector(0,0,0));
     }
 
     public WrappedPacketPlayOutExplosionImpl(WrappedPacketDataSerializer serializer) {

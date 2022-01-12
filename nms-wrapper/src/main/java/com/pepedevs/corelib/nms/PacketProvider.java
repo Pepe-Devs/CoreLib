@@ -49,8 +49,6 @@ public interface PacketProvider {
 
     WrappedPacketPlayOutExplosion getNewExplosionPacket(Location location, float power, Set<Block> blocks, Vector knockback);
 
-    WrappedPacketPlayOutExplosion getNewExplosionPacket(Location location, float power, List<Location> blocks, Vector knockback);
-
     WrappedPacketPlayOutHeldItemSlot getNewHeldItemSlotPacket(int slot);
 
     WrappedPacketPlayOutNamedEntitySpawn getNewNamedEntitySpawnPacket(int entityId, UUID uuid, Location location, ItemStack mainHandItem, Object dataWatcher);

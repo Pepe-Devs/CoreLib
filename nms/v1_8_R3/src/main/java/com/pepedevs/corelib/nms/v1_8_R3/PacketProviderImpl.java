@@ -112,11 +112,6 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutExplosion getNewExplosionPacket(Location location, float power, List<Location> blocks, Vector knockback) {
-        return new WrappedPacketPlayOutExplosionImpl(location, power, blocks, knockback);
-    }
-
-    @Override
     public WrappedPacketPlayOutHeldItemSlot getNewHeldItemSlotPacket(int slot) {
         return new WrappedPacketPlayOutHeldItemSlotImpl(slot);
     }

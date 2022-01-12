@@ -8,7 +8,9 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutEntityDestroyImpl extends PacketPlayOutEntityDestroy implements WrappedPacketPlayOutEntityDestroy {
+public class WrappedPacketPlayOutEntityDestroyImpl implements WrappedPacketPlayOutEntityDestroy {
+
+    private int[] entityIDs;
 
     public WrappedPacketPlayOutEntityDestroyImpl(int... entityIDs) {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
@@ -19,11 +21,41 @@ public class WrappedPacketPlayOutEntityDestroyImpl extends PacketPlayOutEntityDe
     }
 
     public WrappedPacketPlayOutEntityDestroyImpl(WrappedPacketDataSerializer serializer) {
-        try {
-            this.a((PacketDataSerializer) serializer);
-        } catch (IOException e) {
-            e.printStackTrace();
+        PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
+        this.entityIDs = new int[dataSerializer.e()];
+        for (int i = 0; i < this.entityIDs.length; i++) {
+            this.entityIDs[i] = dataSerializer.e();
         }
     }
 
+    @Override
+    public int[] getEntityIDs() {
+        return entityIDs;
+    }
+
+    @Override
+    public void setEntityIDs(int[] entityIDs) {
+        this.entityIDs = entityIDs;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeIntToByte(this.entityIDs.length);
+        for (int entityID : this.entityIDs) {
+            serializer.serializeIntToByte(entityID);
+        }
+        return serializer;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy();
+        try {
+            packet.a((PacketDataSerializer) buildData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return packet;
+    }
 }

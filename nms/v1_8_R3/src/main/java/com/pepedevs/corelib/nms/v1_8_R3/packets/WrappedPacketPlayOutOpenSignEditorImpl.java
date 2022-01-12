@@ -2,6 +2,7 @@ package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutOpenSignEditor;
+import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutOpenSignEditor;
@@ -9,22 +10,49 @@ import org.bukkit.Location;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutOpenSignEditorImpl extends PacketPlayOutOpenSignEditor implements WrappedPacketPlayOutOpenSignEditor {
+public class WrappedPacketPlayOutOpenSignEditorImpl implements WrappedPacketPlayOutOpenSignEditor {
+
+    private Location location;
 
     public WrappedPacketPlayOutOpenSignEditorImpl(Location location) {
-        super(new BlockPosition(location.getX(), location.getY(), location.getZ()));
+        this.location = location;
     }
 
     public WrappedPacketPlayOutOpenSignEditorImpl(Object blockPos) {
-        super((BlockPosition) blockPos);
+        BlockPosition blockPosition = ((BlockPosition) blockPos);
+        this.location = new Location(null, blockPosition.getX(), blockPosition.getY(), blockPosition.getZ());
     }
 
     public WrappedPacketPlayOutOpenSignEditorImpl(WrappedPacketDataSerializer serializer) {
+        BlockPosition position = ((PacketDataSerializer) serializer).c();
+        this.location = new Location(null, position.getX(), position.getY(), position.getZ());
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeBlockPosition(location);
+        return serializer;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutOpenSignEditor packet = new PacketPlayOutOpenSignEditor();
         try {
-            this.a((PacketDataSerializer) serializer);
+            packet.a((PacketDataSerializer) buildData());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return packet;
     }
-
 }

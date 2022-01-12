@@ -25,7 +25,8 @@ public class WrappedPacketPlayOutPlayerInfoImpl extends PacketPlayOutPlayerInfo 
         for (WrappedPlayerInfoData infoData : data) {
             switch (action) {
                 case ADD_PLAYER:
-                    serializer.serializeUUID(infoData.getGameProfile().getId())
+                    serializer
+                            .serializeUUID(infoData.getGameProfile().getId())
                             .serializeString(infoData.getGameProfile().getName())
                             .serializeIntToByte(infoData.getGameProfile().getProperties().size());
                     for (Property value : infoData.getGameProfile().getProperties().values()) {

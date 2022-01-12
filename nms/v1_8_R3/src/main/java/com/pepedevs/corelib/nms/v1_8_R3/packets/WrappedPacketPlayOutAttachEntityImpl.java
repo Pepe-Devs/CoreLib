@@ -8,16 +8,16 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutAttachEntityImpl extends PacketPlayOutAttachEntity implements WrappedPacketPlayOutAttachEntity {
+public class WrappedPacketPlayOutAttachEntityImpl implements WrappedPacketPlayOutAttachEntity {
+
+    private AttachmentType type;
+    private int riderID;
+    private int providerID;
 
     public WrappedPacketPlayOutAttachEntityImpl(AttachmentType type, int riderID, int providerID) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeInt(riderID).serializeInt(providerID).serializeByte(type.ordinal());
-        try {
-            this.a((PacketDataSerializer) serializer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.type = type;
+        this.riderID = riderID;
+        this.providerID = providerID;
     }
 
     public WrappedPacketPlayOutAttachEntityImpl(AttachmentType type, int riderID) {
@@ -25,11 +25,57 @@ public class WrappedPacketPlayOutAttachEntityImpl extends PacketPlayOutAttachEnt
     }
 
     public WrappedPacketPlayOutAttachEntityImpl(WrappedPacketDataSerializer serializer) {
+        PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
+        this.riderID = dataSerializer.readInt();
+        this.providerID = dataSerializer.readInt();
+        this.type = AttachmentType.values()[dataSerializer.readUnsignedByte()];
+    }
+
+    @Override
+    public AttachmentType getType() {
+        return type;
+    }
+
+    @Override
+    public int getProviderID() {
+        return providerID;
+    }
+
+    @Override
+    public int getRiderID() {
+        return riderID;
+    }
+
+    @Override
+    public void setProviderID(int providerID) {
+        this.providerID = providerID;
+    }
+
+    @Override
+    public void setRiderID(int riderID) {
+        this.riderID = riderID;
+    }
+
+    @Override
+    public void setType(AttachmentType type) {
+        this.type = type;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutAttachEntity packet = new PacketPlayOutAttachEntity();
         try {
-            this.a((PacketDataSerializer) serializer);
+            packet.a((PacketDataSerializer) buildData());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return packet;
     }
 
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeInt(riderID).serializeInt(providerID).serializeByte(type.ordinal());
+        return serializer;
+    }
 }
