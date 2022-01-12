@@ -11,19 +11,19 @@ import java.io.IOException;
 
 public class WrappedPacketPlayOutUpdateSignImpl extends PacketPlayOutUpdateSign implements WrappedPacketPlayOutUpdateSign {
 
+    private Location location;
+    private String[] lines;
+
     public WrappedPacketPlayOutUpdateSignImpl(Location location, String... lines) {
+        this.location = location;
         String[] newLines = new String[4];
         if (lines.length < 4) {
             System.arraycopy(lines, 0, newLines, 0, lines.length);
         }else {
             System.arraycopy(lines, 0 ,newLines, 0 ,newLines.length);
         }
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeBlockPosition(location)
-                .serializeComponent(newLines[0])
-                .serializeComponent(newLines[1])
-                .serializeComponent(newLines[2])
-                .serializeComponent(newLines[3]);
+        this.lines = newLines;
+
     }
 
     public WrappedPacketPlayOutUpdateSignImpl(Location location, String first, String second, String third, String fourth) {
@@ -48,4 +48,45 @@ public class WrappedPacketPlayOutUpdateSignImpl extends PacketPlayOutUpdateSign 
         }
     }
 
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public String[] getLines() {
+        return lines;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public void setLines(String[] lines) {
+        this.lines = lines;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeBlockPosition(location)
+                .serializeComponent(this.lines[0])
+                .serializeComponent(this.lines[1])
+                .serializeComponent(this.lines[2])
+                .serializeComponent(this.lines[3]);
+        return serializer;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutUpdateSign packet = new PacketPlayOutUpdateSign();
+        try {
+            packet.a((PacketDataSerializer) buildData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return packet;
+    }
 }

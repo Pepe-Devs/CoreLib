@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
+import com.pepedevs.corelib.nms.ItemSlot;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityEquipment;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
@@ -14,10 +15,10 @@ import java.io.IOException;
 public class WrappedPacketPlayOutEntityEquipmentImpl implements WrappedPacketPlayOutEntityEquipment {
 
     private int entityID;
-    private int slot;
+    private ItemSlot slot;
     private ItemStack itemStack;
 
-    public WrappedPacketPlayOutEntityEquipmentImpl(int entityID, int slot, ItemStack itemStack) {
+    public WrappedPacketPlayOutEntityEquipmentImpl(int entityID, ItemSlot slot, ItemStack itemStack) {
         this.entityID = entityID;
         this.slot = slot;
         this.itemStack = itemStack;
@@ -26,7 +27,7 @@ public class WrappedPacketPlayOutEntityEquipmentImpl implements WrappedPacketPla
     public WrappedPacketPlayOutEntityEquipmentImpl(WrappedPacketDataSerializer serializer) {
         PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
         this.entityID = dataSerializer.e();
-        this.slot = dataSerializer.readShort();
+        this.slot = ItemSlot.fromOldSlot(dataSerializer.readShort());
         try {
             this.itemStack = CraftItemStack.asBukkitCopy(dataSerializer.i());
         } catch (IOException e) {
@@ -40,7 +41,7 @@ public class WrappedPacketPlayOutEntityEquipmentImpl implements WrappedPacketPla
     }
 
     @Override
-    public int getSlot() {
+    public ItemSlot getSlot() {
         return slot;
     }
 
@@ -60,14 +61,14 @@ public class WrappedPacketPlayOutEntityEquipmentImpl implements WrappedPacketPla
     }
 
     @Override
-    public void setSlot(int slot) {
+    public void setSlot(ItemSlot slot) {
         this.slot = slot;
     }
 
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityID).serializeShort((short) slot).serializeItemStack(itemStack);
+        serializer.serializeIntToByte(entityID).serializeShort((short) slot.OLD).serializeItemStack(itemStack);
         return serializer;
     }
 

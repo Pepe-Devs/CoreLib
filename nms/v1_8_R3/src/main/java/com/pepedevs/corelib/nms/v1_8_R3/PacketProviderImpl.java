@@ -1,9 +1,6 @@
 package com.pepedevs.corelib.nms.v1_8_R3;
 
-import com.pepedevs.corelib.nms.EntityStatus;
-import com.pepedevs.corelib.nms.EnumGameMode;
-import com.pepedevs.corelib.nms.InventoryType;
-import com.pepedevs.corelib.nms.PacketProvider;
+import com.pepedevs.corelib.nms.*;
 import com.pepedevs.corelib.nms.packets.*;
 import com.pepedevs.corelib.nms.v1_8_R3.packets.*;
 import net.kyori.adventure.text.Component;
@@ -62,7 +59,7 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutEntityEquipment getNewEntityEquipmentPacket(int entityID, int slot, ItemStack itemStack) {
+    public WrappedPacketPlayOutEntityEquipment getNewEntityEquipmentPacket(int entityID, ItemSlot slot, ItemStack itemStack) {
         return new WrappedPacketPlayOutEntityEquipmentImpl(entityID, slot, itemStack);
     }
 

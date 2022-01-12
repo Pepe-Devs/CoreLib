@@ -2,23 +2,50 @@ package com.pepedevs.corelib.nms.v1_12_R1.packets;
 
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutCloseWindow;
+import com.pepedevs.corelib.nms.v1_12_R1.NMSProviderImpl;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutCloseWindow;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutCloseWindowImpl extends PacketPlayOutCloseWindow implements WrappedPacketPlayOutCloseWindow {
+public class WrappedPacketPlayOutCloseWindowImpl implements WrappedPacketPlayOutCloseWindow {
+
+    private int containerID;
 
     public WrappedPacketPlayOutCloseWindowImpl(int containerID) {
-        super(containerID);
+        this.containerID = containerID;
     }
 
     public WrappedPacketPlayOutCloseWindowImpl(WrappedPacketDataSerializer serializer) {
+        this.containerID = ((PacketDataSerializer) serializer).readByte();
+    }
+
+    @Override
+    public int getContainerID() {
+        return containerID;
+    }
+
+    @Override
+    public void setContainerID(int containerID) {
+        this.containerID = containerID;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeByte(this.containerID);
+        return serializer;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutCloseWindow packet = new PacketPlayOutCloseWindow();
         try {
-            this.a((PacketDataSerializer) serializer);
+            packet.a((PacketDataSerializer) buildData());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return packet;
     }
 
 }

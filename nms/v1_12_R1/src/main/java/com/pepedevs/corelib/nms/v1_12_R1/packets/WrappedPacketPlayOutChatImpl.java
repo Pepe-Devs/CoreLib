@@ -11,30 +11,73 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutChatImpl extends PacketPlayOutChat implements WrappedPacketPlayOutChat {
+public class WrappedPacketPlayOutChatImpl implements WrappedPacketPlayOutChat {
+
+    private Component message;
+    private ChatMessageType messageType;
 
     public WrappedPacketPlayOutChatImpl(String component) {
-        super((IChatBaseComponent) NMSProviderImpl.INSTANCE.craftChatMessageFromString(component)[0]);
+        this.message = AdventureUtils.fromVanillaString(component);
+        this.messageType = ChatMessageType.SYSTEM;
     }
 
     public WrappedPacketPlayOutChatImpl(Component component) {
-        super((IChatBaseComponent) AdventureUtils.asVanilla(component));
+        this.message = component;
+        this.messageType = ChatMessageType.SYSTEM;
     }
 
     public WrappedPacketPlayOutChatImpl(String component, ChatMessageType type) {
-        super((IChatBaseComponent) NMSProviderImpl.INSTANCE.craftChatMessageFromString(component)[0], net.minecraft.server.v1_12_R1.ChatMessageType.a(type.BYTE));
+        this.message = AdventureUtils.fromVanillaString(component);
+        this.messageType = type;
     }
 
     public WrappedPacketPlayOutChatImpl(Component component, ChatMessageType type) {
-        super((IChatBaseComponent) AdventureUtils.asVanilla(component), net.minecraft.server.v1_12_R1.ChatMessageType.a(type.BYTE));
+        this.message = component;
+        this.messageType = type;
     }
 
     public WrappedPacketPlayOutChatImpl(WrappedPacketDataSerializer serializer) {
+        PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
+        this.message = AdventureUtils.asAdventure(dataSerializer.f());
+        this.messageType = ChatMessageType.values()[dataSerializer.readByte()];
+    }
+
+    @Override
+    public Component getMessage() {
+        return message;
+    }
+
+    @Override
+    public ChatMessageType getMessageType() {
+        return messageType;
+    }
+
+    @Override
+    public void setMessage(Component message) {
+        this.message = message;
+    }
+
+    @Override
+    public void setMessageType(ChatMessageType messageType) {
+        this.messageType = messageType;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutChat packet = new PacketPlayOutChat();
         try {
-            this.a((PacketDataSerializer) serializer);
+            packet.a((PacketDataSerializer) buildData());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return packet;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeComponent(this.message).serializeByte(this.messageType.BYTE);
+        return serializer;
     }
 
 }

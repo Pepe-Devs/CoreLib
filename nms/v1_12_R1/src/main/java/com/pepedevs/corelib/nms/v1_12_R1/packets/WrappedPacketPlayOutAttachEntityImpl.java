@@ -8,16 +8,14 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutAttachEntity;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutAttachEntityImpl extends PacketPlayOutAttachEntity implements WrappedPacketPlayOutAttachEntity {
+public class WrappedPacketPlayOutAttachEntityImpl implements WrappedPacketPlayOutAttachEntity {
+
+    private int riderID;
+    private int providerID;
 
     public WrappedPacketPlayOutAttachEntityImpl(AttachmentType ignored, int riderID, int providerID) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeInt(riderID).serializeInt(providerID);
-        try {
-            this.a((PacketDataSerializer) serializer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.riderID = riderID;
+        this.providerID = providerID;
     }
 
     public WrappedPacketPlayOutAttachEntityImpl(AttachmentType ignored, int riderID) {
@@ -25,11 +23,54 @@ public class WrappedPacketPlayOutAttachEntityImpl extends PacketPlayOutAttachEnt
     }
 
     public WrappedPacketPlayOutAttachEntityImpl(WrappedPacketDataSerializer serializer) {
+        PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
+        this.riderID = dataSerializer.readInt();
+        this.providerID = dataSerializer.readInt();
+    }
+
+    @Override
+    public AttachmentType getType() {
+        return null;
+    }
+
+    @Override
+    public int getProviderID() {
+        return this.providerID;
+    }
+
+    @Override
+    public int getRiderID() {
+        return this.riderID;
+    }
+
+    @Override
+    public void setType(AttachmentType type) {}
+
+    @Override
+    public void setProviderID(int providerID) {
+        this.providerID = providerID;
+    }
+
+    @Override
+    public void setRiderID(int riderID) {
+        this.riderID = riderID;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeInt(riderID).serializeInt(providerID);
+        return serializer;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutAttachEntity packet = new PacketPlayOutAttachEntity();
         try {
-            this.a((PacketDataSerializer) serializer);
+            packet.a((PacketDataSerializer) buildData());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return packet;
     }
-
 }

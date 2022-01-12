@@ -11,85 +11,126 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class WrappedPacketPlayOutExplosionImpl extends PacketPlayOutExplosion implements WrappedPacketPlayOutExplosion {
+public class WrappedPacketPlayOutExplosionImpl implements WrappedPacketPlayOutExplosion {
 
-    public WrappedPacketPlayOutExplosionImpl(Location location, float power, List<Location> blocks, Vector knockback) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer
-                .serializeFloat((float) location.getX())
-                .serializeFloat((float) location.getY())
-                .serializeFloat((float) location.getZ())
-                .serializeFloat(power)
-                .serializeInt(blocks.size());
-        int x = location.getBlockX();
-        int y = location.getBlockY();
-        int z = location.getBlockZ();
-
-        Iterator<Location> locationIterator = blocks.iterator();
-        while (locationIterator.hasNext()) {
-            BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-            int subX = position.getX() - x;
-            int subY = position.getY() - y;
-            int subZ = position.getZ() - z;
-            serializer.serializeByte(subX).serializeByte(subY).serializeByte(subZ);
-        }
-        serializer
-                .serializeFloat((float) knockback.getX())
-                .serializeFloat((float) knockback.getY())
-                .serializeFloat((float) knockback.getZ());
-        try {
-            this.a((PacketDataSerializer) serializer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private Location location;
+    private float power;
+    private Set<Location> blocks;
+    private Vector knockback;
 
     public WrappedPacketPlayOutExplosionImpl(Location location, float power, Set<Block> blocks, Vector knockback) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer
-                .serializeFloat((float) location.getX())
-                .serializeFloat((float) location.getY())
-                .serializeFloat((float) location.getZ())
-                .serializeFloat(power)
-                .serializeInt(blocks.size());
-        int x = location.getBlockX();
-        int y = location.getBlockY();
-        int z = location.getBlockZ();
-
-        Iterator<Block> blockIterator = blocks.iterator();
-        while (blockIterator.hasNext()) {
-            BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-            int subX = position.getX() - x;
-            int subY = position.getY() - y;
-            int subZ = position.getZ() - z;
-            serializer.serializeByte(subX).serializeByte(subY).serializeByte(subZ);
+        this.location = location;
+        this.power = power;
+        Set<Location> locations = new HashSet<>();
+        for (Block block : blocks) {
+            locations.add(block.getLocation());
         }
-        serializer
-                .serializeFloat((float) knockback.getX())
-                .serializeFloat((float) knockback.getY())
-                .serializeFloat((float) knockback.getZ());
-        try {
-            this.a((PacketDataSerializer) serializer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.blocks = locations;
+        this.knockback = knockback;
     }
 
     public WrappedPacketPlayOutExplosionImpl(Location location, float power) {
-        this(location, power, new ArrayList<>(), new Vector(0,0,0));
+        this(location, power, new HashSet<>(), new Vector(0,0,0));
     }
 
     public WrappedPacketPlayOutExplosionImpl(WrappedPacketDataSerializer serializer) {
+        PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
+        this.location = new Location(null, dataSerializer.readFloat(), dataSerializer.readFloat(), dataSerializer.readFloat());
+        this.power = dataSerializer.readFloat();
+        this.blocks = new HashSet<>();
+
+        int count = dataSerializer.readInt();
+
+        int x = this.location.getBlockX();
+        int y = this.location.getBlockY();
+        int z = this.location.getBlockZ();
+
+        for (int i = 0; i < count; i++) {
+            this.blocks.add(new Location(null, dataSerializer.readByte() + x, dataSerializer.readByte() + y, dataSerializer.readByte() + z));
+        }
+
+        this.knockback = new Vector(dataSerializer.readFloat(), dataSerializer.readFloat(), dataSerializer.readFloat());
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public float getPower() {
+        return power;
+    }
+
+    @Override
+    public Set<Location> getBlocks() {
+        return blocks;
+    }
+
+    @Override
+    public Vector getKnockback() {
+        return knockback;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public void setPower(float power) {
+        this.power = power;
+    }
+
+    @Override
+    public void setBlocks(Set<Location> blocks) {
+        this.blocks = blocks;
+    }
+
+    @Override
+    public void setKnockback(Vector knockback) {
+        this.knockback = knockback;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer
+                .serializeFloat((float) location.getX())
+                .serializeFloat((float) location.getY())
+                .serializeFloat((float) location.getZ())
+                .serializeFloat(power)
+                .serializeInt(blocks.size());
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        Iterator<Location> blockIterator = blocks.iterator();
+        while (blockIterator.hasNext()) {
+            BlockPosition position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            int subX = position.getX() - x;
+            int subY = position.getY() - y;
+            int subZ = position.getZ() - z;
+            serializer.serializeByte(subX).serializeByte(subY).serializeByte(subZ);
+        }
+        serializer
+                .serializeFloat((float) knockback.getX())
+                .serializeFloat((float) knockback.getY())
+                .serializeFloat((float) knockback.getZ());
+        return serializer;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutExplosion packet = new PacketPlayOutExplosion();
         try {
-            this.a((PacketDataSerializer) serializer);
+            packet.a((PacketDataSerializer) buildData());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return packet;
     }
 
 }

@@ -1,13 +1,13 @@
 package com.pepedevs.corelib.nms.packets;
 
+import com.pepedevs.corelib.nms.ItemSlot;
 import org.bukkit.inventory.ItemStack;
 
 public interface WrappedPacketPlayOutEntityEquipment extends WrappedPacket {
 
-
     int getEntityID();
 
-    int getSlot();
+    ItemSlot getSlot();
 
     ItemStack getItemStack();
 
@@ -15,5 +15,5 @@ public interface WrappedPacketPlayOutEntityEquipment extends WrappedPacket {
 
     void setItemStack(ItemStack itemStack);
 
-    void setSlot(int slot);
+    void setSlot(ItemSlot slot);
 }

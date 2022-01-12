@@ -29,7 +29,7 @@ public interface PacketProvider {
 
     WrappedPacketPlayOutEntityDestroy getNewEntityDestroyPacket(int... entityIDs);
 
-    WrappedPacketPlayOutEntityEquipment getNewEntityEquipmentPacket(int entityID, int slot, ItemStack itemStack);
+    WrappedPacketPlayOutEntityEquipment getNewEntityEquipmentPacket(int entityID, ItemSlot slot, ItemStack itemStack);
 
     WrappedPacketPlayOutEntityMetadata getNewEntityMetadataPacket(int entityID, Object watchableObjects);
 
