@@ -1,6 +1,7 @@
 package com.pepedevs.corelib.nms.v1_8_R3;
 
 import com.pepedevs.corelib.nms.*;
+import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
 import com.pepedevs.corelib.nms.packets.*;
 import com.pepedevs.corelib.nms.v1_8_R3.packets.*;
 import net.kyori.adventure.text.Component;
@@ -169,7 +170,7 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutPlayerInfo getNewPlayerInfoPacket(WrappedPacketPlayOutPlayerInfo.PlayerInfoAction action, List<WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData> data) {
+    public WrappedPacketPlayOutPlayerInfo getNewPlayerInfoPacket(WrappedPacketPlayOutPlayerInfo.PlayerInfoAction action, List<WrappedPlayerInfoData> data) {
         return new WrappedPacketPlayOutPlayerInfoImpl(action, data);
     }
 

@@ -5,9 +5,9 @@ import com.pepedevs.corelib.nms.EnumGameMode;
 import com.pepedevs.corelib.nms.NMSPlayer;
 import com.pepedevs.corelib.nms.NMSProvider;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
-import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
+import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
 import com.pepedevs.corelib.nms.v1_12_R1.objects.WrappedPacketDataSerializerImpl;
-import com.pepedevs.corelib.nms.v1_12_R1.packets.WrappedPacketPlayOutPlayerInfoImpl;
+import com.pepedevs.corelib.nms.v1_12_R1.objects.WrappedPlayerInfoDataImpl;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.kyori.adventure.text.Component;
@@ -52,18 +52,18 @@ public class NMSProviderImpl implements NMSProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name) {
-        return new WrappedPacketPlayOutPlayerInfoImpl.WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
+    public WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name) {
+        return new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
     }
 
     @Override
-    public WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name) {
-        return new WrappedPacketPlayOutPlayerInfoImpl.WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
+    public WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name) {
+        return new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
     }
 
     @Override
-    public WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name) {
-        return new WrappedPacketPlayOutPlayerInfoImpl.WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
+    public WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name) {
+        return new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
     }
 
     @Override

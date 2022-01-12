@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.nms;
 
+import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
 import com.pepedevs.corelib.nms.packets.*;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -74,7 +75,7 @@ public interface PacketProvider {
 
     WrappedPacketPlayOutOpenWindow getNewOpenWindowPacket(int nextContainerCounter, Component title, InventoryType type, int rows);
 
-    WrappedPacketPlayOutPlayerInfo getNewPlayerInfoPacket(WrappedPacketPlayOutPlayerInfo.PlayerInfoAction action, List<WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData> data);
+    WrappedPacketPlayOutPlayerInfo getNewPlayerInfoPacket(WrappedPacketPlayOutPlayerInfo.PlayerInfoAction action, List<WrappedPlayerInfoData> data);
 
     WrappedPacketPlayOutPlayerListHeaderFooter getNewPlayerListHeaderFooterPacket(String header, String footer);
 

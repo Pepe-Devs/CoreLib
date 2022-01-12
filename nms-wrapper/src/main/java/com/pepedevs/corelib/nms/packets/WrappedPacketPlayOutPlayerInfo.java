@@ -1,28 +1,18 @@
 package com.pepedevs.corelib.nms.packets;
 
-import com.mojang.authlib.GameProfile;
-import com.pepedevs.corelib.nms.EnumGameMode;
-import net.kyori.adventure.text.Component;
+import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
+
+import java.util.List;
 
 public interface WrappedPacketPlayOutPlayerInfo extends WrappedPacket {
 
-    interface WrappedPlayerInfoData {
+    PlayerInfoAction getInfoAction();
 
-        GameProfile getGameProfile();
+    void setInfoAction(PlayerInfoAction infoAction);
 
-        int getLatency();
+    List<WrappedPlayerInfoData> getInfoData();
 
-        EnumGameMode getGameMode();
-
-        Object getEnumGameMode();
-
-        String getName();
-
-        Object getNameComponent();
-
-        Component getComponent();
-
-    }
+    void setInfoData(List<WrappedPlayerInfoData> infoData);
 
     enum PlayerInfoAction {
         ADD_PLAYER,

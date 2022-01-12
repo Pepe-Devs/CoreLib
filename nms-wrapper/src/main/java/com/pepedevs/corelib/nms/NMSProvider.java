@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.nms;
 
 import com.mojang.authlib.GameProfile;
-import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutPlayerInfo;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
+import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
 import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -20,11 +20,11 @@ public interface NMSProvider {
 
     WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf);
 
-    WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name);
+    WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name);
 
-    WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name);
+    WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name);
 
-    WrappedPacketPlayOutPlayerInfo.WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name);
+    WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name);
 
     void craftEventFactoryHandleInventoryClose(Player player);
 
