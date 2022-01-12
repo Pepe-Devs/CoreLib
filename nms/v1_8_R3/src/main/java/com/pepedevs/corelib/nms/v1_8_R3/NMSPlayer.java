@@ -31,7 +31,7 @@ public class NMSPlayer implements com.pepedevs.corelib.nms.NMSPlayer {
 
     @Override
     public void sendPacket(WrappedPacket packet) {
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet) packet);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet) packet.buildPacket());
     }
 
     @Override
