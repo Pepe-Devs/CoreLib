@@ -5,7 +5,6 @@ import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutChat;
 import com.pepedevs.corelib.nms.v1_12_R1.NMSProviderImpl;
 import net.kyori.adventure.text.Component;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 
@@ -63,6 +62,14 @@ public class WrappedPacketPlayOutChatImpl implements WrappedPacketPlayOutChat {
     }
 
     @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeComponent(this.message)
+                .serializeByte(this.messageType.ordinal());
+        return serializer;
+    }
+
+    @Override
     public Object buildPacket() {
         PacketPlayOutChat packet = new PacketPlayOutChat();
         try {
@@ -71,13 +78,6 @@ public class WrappedPacketPlayOutChatImpl implements WrappedPacketPlayOutChat {
             e.printStackTrace();
         }
         return packet;
-    }
-
-    @Override
-    public WrappedPacketDataSerializer buildData() {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeComponent(this.message).serializeByte(this.messageType.BYTE);
-        return serializer;
     }
 
 }

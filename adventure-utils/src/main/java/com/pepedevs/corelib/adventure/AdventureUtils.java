@@ -91,6 +91,14 @@ public class AdventureUtils {
         return NMSBridge.getNMSProvider().craftChatMessageFromComponent(chatComponent);
     }
 
+    public static String[] toVanillaString(Component... components) {
+        final String[] vanillas = new String[components.length];
+        for (int i = 0; i < components.length; i++) {
+            vanillas[i] = toVanillaString(components[i]);
+        }
+        return vanillas;
+    }
+
     public static List<String> toVanillaString(List<Component> components) {
         final List<String> vanillas = new ArrayList<>(components.size());
         for (final Component component : components) {
@@ -104,6 +112,14 @@ public class AdventureUtils {
             return null;
         Object chatComponent = NMSBridge.getNMSProvider().craftChatMessageFromString(text)[0];
         return asAdventure(chatComponent);
+    }
+
+    public static Component[] fromVanillaString(String... texts) {
+        final Component[] components = new Component[texts.length];
+        for (int i = 0; i < texts.length; i++) {
+            components[i] = fromVanillaString(texts[i]);
+        }
+        return components;
     }
 
     public static List<Component> fromVanillaString(List<String> texts) {

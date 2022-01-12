@@ -1,70 +1,73 @@
 package com.pepedevs.corelib.nms.v1_8_R3.packets;
 
+import com.pepedevs.corelib.adventure.AdventureUtils;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutUpdateSign;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
+import net.kyori.adventure.text.Component;
+import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutUpdateSign;
-import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutUpdateSignImpl extends PacketPlayOutUpdateSign implements WrappedPacketPlayOutUpdateSign {
+public class WrappedPacketPlayOutUpdateSignImpl implements WrappedPacketPlayOutUpdateSign {
 
-    private Location location;
-    private String[] lines;
+    private Vector location;
+    private Component[] lines;
 
-    public WrappedPacketPlayOutUpdateSignImpl(Location location, String... lines) {
+    public WrappedPacketPlayOutUpdateSignImpl(Vector location, String... lines) {
+        this(location, AdventureUtils.fromVanillaString(lines));
+    }
+
+    public WrappedPacketPlayOutUpdateSignImpl(Vector location, Component... lines) {
         this.location = location;
-        String[] newLines = new String[4];
+        Component[] newLines = new Component[4];
         if (lines.length < 4) {
             System.arraycopy(lines, 0, newLines, 0, lines.length);
         }else {
             System.arraycopy(lines, 0 ,newLines, 0 ,newLines.length);
         }
         this.lines = newLines;
-
     }
 
-    public WrappedPacketPlayOutUpdateSignImpl(Location location, String first, String second, String third, String fourth) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeBlockPosition(location)
-                .serializeComponent(first)
-                .serializeComponent(second)
-                .serializeComponent(third)
-                .serializeComponent(fourth);
-        try {
-            this.a((PacketDataSerializer) serializer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public WrappedPacketPlayOutUpdateSignImpl(Vector location, Object... lines) {
+        this(location, AdventureUtils.asAdventure(lines));
     }
 
     public WrappedPacketPlayOutUpdateSignImpl(WrappedPacketDataSerializer serializer) {
-        try {
-            this.a((PacketDataSerializer) serializer);
-        } catch (IOException e) {
-            e.printStackTrace();
+        PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
+        BlockPosition position = dataSerializer.c();
+        this.location = new Vector(position.getX(), position.getY(), position.getZ());
+        this.lines = new Component[4];
+
+        for(int i = 0; i < 4; ++i) {
+            try {
+                this.lines[i] = AdventureUtils.asAdventure(dataSerializer.d());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public Location getLocation() {
+    public Vector getLocation() {
         return location;
     }
 
     @Override
-    public String[] getLines() {
-        return lines;
-    }
-
-    @Override
-    public void setLocation(Location location) {
+    public void setLocation(Vector location) {
         this.location = location;
     }
 
     @Override
-    public void setLines(String[] lines) {
+    public Component[] getLines() {
+        return lines;
+    }
+
+    @Override
+    public void setLines(Component[] lines) {
         this.lines = lines;
     }
 

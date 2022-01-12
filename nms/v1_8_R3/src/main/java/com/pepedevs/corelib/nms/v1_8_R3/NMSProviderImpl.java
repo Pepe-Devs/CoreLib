@@ -72,11 +72,19 @@ public class NMSProviderImpl implements NMSProvider {
     }
 
     @Override
-    public Object getEnumChatFormat(ChatColor color) {
+    public Enum<?> getEnumChatFormat(ChatColor color) {
         if (color == ChatColor.MAGIC)
             return EnumChatFormat.OBFUSCATED;
 
         return EnumChatFormat.valueOf(color.name());
+    }
+
+    @Override
+    public ChatColor getEnumChatFormat(Enum<?> enumChatFormat) {
+        if (enumChatFormat == EnumChatFormat.OBFUSCATED)
+            return ChatColor.MAGIC;
+
+        return ChatColor.valueOf(enumChatFormat.name());
     }
 
 }

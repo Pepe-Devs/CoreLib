@@ -66,6 +66,14 @@ public class WrappedPacketPlayOutChatImpl implements WrappedPacketPlayOutChat {
     }
 
     @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeComponent(this.message)
+                .serializeByte(this.messageType.ordinal());
+        return serializer;
+    }
+
+    @Override
     public Object buildPacket() {
         PacketPlayOutChat packet = new PacketPlayOutChat();
         try {
@@ -74,12 +82,5 @@ public class WrappedPacketPlayOutChatImpl implements WrappedPacketPlayOutChat {
             e.printStackTrace();
         }
         return packet;
-    }
-
-    @Override
-    public WrappedPacketDataSerializer buildData() {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeComponent(this.message).serializeByte(this.messageType.BYTE);
-        return serializer;
     }
 }

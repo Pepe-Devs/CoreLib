@@ -8,7 +8,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutTabComplete;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutTabCompleteImpl extends PacketPlayOutTabComplete implements WrappedPacketPlayOutTabComplete {
+public class WrappedPacketPlayOutTabCompleteImpl implements WrappedPacketPlayOutTabComplete {
 
     private String[] completions;
 

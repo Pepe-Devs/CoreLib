@@ -10,27 +10,67 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import java.io.IOException;
 import java.util.List;
 
-public class WrappedPacketPlayOutEntityMetadataImpl extends PacketPlayOutEntityMetadata implements WrappedPacketPlayOutEntityMetadata {
+public class WrappedPacketPlayOutEntityMetadataImpl implements WrappedPacketPlayOutEntityMetadata {
+
+    private int entityId;
+    private List<DataWatcher.WatchableObject> watchableObjects;
 
     public WrappedPacketPlayOutEntityMetadataImpl(int entityId, Object watchableObjects) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityId);
+        this.entityId = entityId;
+        this.watchableObjects = (List<DataWatcher.WatchableObject>) watchableObjects;
+    }
 
-        List<DataWatcher.WatchableObject> watchableObjectList = (List<DataWatcher.WatchableObject>) watchableObjects;
+    public WrappedPacketPlayOutEntityMetadataImpl(WrappedPacketDataSerializer serializer) {
+        PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
+        this.entityId = dataSerializer.e();
         try {
-            DataWatcher.a(watchableObjectList, (PacketDataSerializer) serializer);
-            this.a((PacketDataSerializer) serializer);
+            this.watchableObjects = DataWatcher.b(dataSerializer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public WrappedPacketPlayOutEntityMetadataImpl(WrappedPacketDataSerializer serializer) {
+    @Override
+    public int getEntityId() {
+        return entityId;
+    }
+
+    @Override
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
+    }
+
+    @Override
+    public Object getWatchableObjects() {
+        return watchableObjects;
+    }
+
+    @Override
+    public void setWatchableObjects(Object watchableObjects) {
+        this.watchableObjects = (List<DataWatcher.WatchableObject>) watchableObjects;
+    }
+
+    @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeIntToByte(this.entityId);
         try {
-            this.a((PacketDataSerializer) serializer);
+            DataWatcher.a(this.watchableObjects, (PacketDataSerializer) serializer);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return serializer;
+    }
+
+    @Override
+    public Object buildPacket() {
+        PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata();
+        try {
+            packet.a((PacketDataSerializer) buildData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return packet;
     }
 
 }

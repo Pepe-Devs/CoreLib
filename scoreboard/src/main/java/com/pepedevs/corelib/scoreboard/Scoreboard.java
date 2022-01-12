@@ -304,7 +304,7 @@ public class Scoreboard {
 
         WrappedPacket packet = PROVIDER.getNewScoreboardTeamPacket(id + ':' + score,
                 id + ':' + score, prefix, suffix == null ? "" : suffix,
-                new HashSet<>(Collections.singletonList(COLOR_CODES[score].toString())),
+                Collections.singletonList(COLOR_CODES[score].toString()),
                 mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility.ALWAYS,
                 WrappedPacketPlayOutScoreboardTeam.PacketOptionData.NONE,
                 ChatColor.RESET);

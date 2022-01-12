@@ -28,6 +28,8 @@ public interface NMSProvider {
 
     void craftEventFactoryHandleInventoryClose(Player player);
 
-    Object getEnumChatFormat(ChatColor color);
+    Enum<?> getEnumChatFormat(ChatColor color);
+
+    ChatColor getEnumChatFormat(Enum<?> enumChatFormat);
 
 }

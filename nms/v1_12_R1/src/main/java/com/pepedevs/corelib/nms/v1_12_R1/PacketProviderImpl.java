@@ -79,6 +79,16 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
+    public WrappedPacketPlayOutEntityTeleport getNewEntityTeleportPacket(int entityId, int locX, int locY, int locZ, float yaw, float pitch) {
+        return new WrappedPacketPlayOutEntityTeleportImpl(entityId, locX, locY, locZ, yaw, pitch);
+    }
+
+    @Override
+    public WrappedPacketPlayOutEntityTeleport getNewEntityTeleportPacket(int entityId, int locX, int locY, int locZ, float yaw, float pitch, boolean onGround) {
+        return new WrappedPacketPlayOutEntityTeleportImpl(entityId, locX, locY, locZ, yaw, pitch, onGround);
+    }
+
+    @Override
     public WrappedPacketPlayOutEntityTeleport getNewEntityTeleportPacket(int entityID, Location location) {
         return new WrappedPacketPlayOutEntityTeleportImpl(entityID, location);
     }
@@ -99,12 +109,17 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutExplosion getNewExplosionPacket(Location location, float power) {
+    public WrappedPacketPlayOutExplosion getNewExplosionPacket(Vector location, float power) {
         return new WrappedPacketPlayOutExplosionImpl(location, power);
     }
 
     @Override
-    public WrappedPacketPlayOutExplosion getNewExplosionPacket(Location location, float power, Set<Block> blocks, Vector knockback) {
+    public WrappedPacketPlayOutExplosion getNewExplosionPacket(Vector location, float power, Set<Block> blocks, Vector knockback) {
+        return new WrappedPacketPlayOutExplosionImpl(location, power, blocks, knockback);
+    }
+
+    @Override
+    public WrappedPacketPlayOutExplosion getNewExplosionPacket(Vector location, float power, List<Vector> blocks, Vector knockback) {
         return new WrappedPacketPlayOutExplosionImpl(location, power, blocks, knockback);
     }
 
@@ -114,8 +129,8 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutNamedEntitySpawn getNewNamedEntitySpawnPacket(int entityId, UUID uuid, Location location, ItemStack mainHandItem, Object dataWatcher) {
-        return new WrappedPacketPlayOutNamedEntitySpawnImpl(entityId, uuid, location, mainHandItem, dataWatcher);
+    public WrappedPacketPlayOutNamedEntitySpawn getNewNamedEntitySpawnPacket(int entityId, UUID uuid, double locX, double locY, double locZ, float yaw, float pitch, Object dataWatcher) {
+        return new WrappedPacketPlayOutNamedEntitySpawnImpl(entityId, uuid, locX, locY, locZ, yaw, pitch, dataWatcher);
     }
 
     @Override
@@ -125,6 +140,11 @@ public class PacketProviderImpl implements PacketProvider {
 
     @Override
     public WrappedPacketPlayOutOpenSignEditor getNewOpenSignEditorPacket(Location location) {
+        return new WrappedPacketPlayOutOpenSignEditorImpl(location);
+    }
+
+    @Override
+    public WrappedPacketPlayOutOpenSignEditor getNewOpenSignEditorPacket(Vector location) {
         return new WrappedPacketPlayOutOpenSignEditorImpl(location);
     }
 
@@ -199,29 +219,38 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, String displayName, String prefix, String suffix, Set<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
+    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, String displayName, String prefix, String suffix, List<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
         return new WrappedPacketPlayOutScoreboardTeamImpl(teamName, displayName, prefix, suffix, playerNames, mode, visibility, data, color);
     }
 
     @Override
-    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, Component displayName, Component prefix, Component suffix, Set<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
+    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, Component displayName, Component prefix, Component suffix, List<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
         return new WrappedPacketPlayOutScoreboardTeamImpl(teamName, displayName, prefix, suffix, playerNames, mode, visibility, data, color);
     }
 
     @Override
-    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, Object displayName, Object prefix, Object suffix, Set<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
+    public WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, Object displayName, Object prefix, Object suffix, List<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color) {
         return new WrappedPacketPlayOutScoreboardTeamImpl(teamName, displayName, prefix, suffix, playerNames, mode, visibility, data, color);
     }
 
-
     @Override
-    public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, EntityType entity, Location location, int headPitch, Vector velocity, Object dataWatcher) {
-        return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, entity, location, headPitch, velocity, dataWatcher);
+    public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, UUID uuid, EntityType entityType, double locX, double locY, double locZ, float yaw, float pitch, float headRotation, Vector velocity, Object dataWatcher) {
+        return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, uuid, entityType, locX, locY, locZ, yaw, pitch, headRotation, velocity, dataWatcher);
     }
 
     @Override
-    public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, EntityType entity, Location location, int headPitch, Object dataWatcher) {
-        return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, entity, location, headPitch, dataWatcher);
+    public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, UUID uuid, EntityType entity, Location location, float headPitch, Vector velocity, Object dataWatcher) {
+        return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, uuid, entity, location, headPitch, velocity, dataWatcher);
+    }
+
+    @Override
+    public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, UUID uuid, EntityType entity, double locX, double locY, double locZ, float yaw, float pitch, float headPitch, Object dataWatcher) {
+        return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, uuid, entity, locX, locY, locZ, yaw, pitch, headPitch, dataWatcher);
+    }
+
+    @Override
+    public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, UUID uuid, EntityType entity, Location location, float headPitch, Object dataWatcher) {
+        return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, uuid, entity, location, headPitch, dataWatcher);
     }
 
     @Override
@@ -230,12 +259,17 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
-    public WrappedPacketPlayOutUpdateSign getNewUpdateSignPacket(Location location, String... lines) {
+    public WrappedPacketPlayOutUpdateSign getNewUpdateSignPacket(Vector location, String... lines) {
         return null;
     }
 
     @Override
-    public WrappedPacketPlayOutUpdateSign getNewUpdateSignPacket(Location location, String first, String second, String third, String fourth) {
+    public WrappedPacketPlayOutUpdateSign getNewUpdateSignPacket(Vector location, Component... lines) {
+        return null;
+    }
+
+    @Override
+    public WrappedPacketPlayOutUpdateSign getNewUpdateSignPacket(Vector location, Object... lines) {
         return null;
     }
 

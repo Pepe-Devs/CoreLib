@@ -22,7 +22,7 @@ public class WrappedPacketPlayOutEntityVelocityImpl implements WrappedPacketPlay
     public WrappedPacketPlayOutEntityVelocityImpl(WrappedPacketDataSerializer serializer) {
         PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
         this.entityID = dataSerializer.e();
-        this.velocity = new Vector(dataSerializer.readShort()/8000, dataSerializer.readShort()/8000, dataSerializer.readShort()/8000);
+        this.velocity = new Vector(dataSerializer.readShort() / 8000.0D, dataSerializer.readShort() / 8000.0D, dataSerializer.readShort() / 8000.0D);
     }
 
     @Override

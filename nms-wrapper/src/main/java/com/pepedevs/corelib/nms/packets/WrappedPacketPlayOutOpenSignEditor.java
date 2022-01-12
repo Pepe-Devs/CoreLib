@@ -1,9 +1,11 @@
 package com.pepedevs.corelib.nms.packets;
 
-import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 public interface WrappedPacketPlayOutOpenSignEditor extends WrappedPacket {
-    Location getLocation();
 
-    void setLocation(Location location);
+    Vector getLocation();
+
+    void setLocation(Vector location);
+
 }

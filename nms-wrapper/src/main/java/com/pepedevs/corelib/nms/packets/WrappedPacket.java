@@ -6,7 +6,7 @@ public interface WrappedPacket {
 
     String toString();
 
-    Object buildPacket();
-
     WrappedPacketDataSerializer buildData();
+
+    Object buildPacket();
 }

@@ -13,15 +13,9 @@ public interface WrappedPacketPlayOutChat extends WrappedPacket {
     void setMessageType(ChatMessageType messageType);
 
     enum ChatMessageType {
-        CHAT(0),
-        SYSTEM(1),
-        ACTION_BAR(2);
-
-        ChatMessageType(int a) {
-            this.BYTE = (byte) a;
-        }
-
-        public final byte BYTE;
+        CHAT,
+        SYSTEM,
+        ACTION_BAR;
     }
 
 }

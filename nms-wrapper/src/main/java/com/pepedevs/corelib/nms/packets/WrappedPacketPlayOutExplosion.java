@@ -1,24 +1,25 @@
 package com.pepedevs.corelib.nms.packets;
 
-import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import java.util.Set;
 
 public interface WrappedPacketPlayOutExplosion extends WrappedPacket {
-    Location getLocation();
+
+    Vector getLocation();
 
     float getPower();
 
-    Set<Location> getBlocks();
+    Set<Vector> getBlocks();
 
     Vector getKnockback();
 
-    void setLocation(Location location);
+    void setLocation(Vector location);
 
     void setPower(float power);
 
-    void setBlocks(Set<Location> blocks);
+    void setBlocks(Set<Vector> blocks);
 
     void setKnockback(Vector knockback);
+
 }

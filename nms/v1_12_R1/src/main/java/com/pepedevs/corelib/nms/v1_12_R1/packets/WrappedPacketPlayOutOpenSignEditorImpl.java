@@ -7,34 +7,39 @@ import net.minecraft.server.v1_12_R1.BlockPosition;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutOpenSignEditor;
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutOpenSignEditorImpl extends PacketPlayOutOpenSignEditor implements WrappedPacketPlayOutOpenSignEditor {
+public class WrappedPacketPlayOutOpenSignEditorImpl implements WrappedPacketPlayOutOpenSignEditor {
 
-    private Location location;
+    private Vector location;
 
     public WrappedPacketPlayOutOpenSignEditorImpl(Location location) {
+        this.location = location.toVector();
+    }
+
+    public WrappedPacketPlayOutOpenSignEditorImpl(Vector location) {
         this.location = location;
     }
 
     public WrappedPacketPlayOutOpenSignEditorImpl(Object blockPos) {
         BlockPosition blockPosition = ((BlockPosition) blockPos);
-        this.location = new Location(null, blockPosition.getX(), blockPosition.getY(), blockPosition.getZ());
+        this.location = new Vector(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ());
     }
 
     public WrappedPacketPlayOutOpenSignEditorImpl(WrappedPacketDataSerializer serializer) {
         BlockPosition position = ((PacketDataSerializer) serializer).e();
-        this.location = new Location(null, position.getX(), position.getY(), position.getZ());
+        this.location = new Vector(position.getX(), position.getY(), position.getZ());
     }
 
     @Override
-    public Location getLocation() {
+    public Vector getLocation() {
         return location;
     }
 
     @Override
-    public void setLocation(Location location) {
+    public void setLocation(Vector location) {
         this.location = location;
     }
 

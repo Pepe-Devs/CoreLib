@@ -62,6 +62,15 @@ public class WrappedPacketPlayOutAttachEntityImpl implements WrappedPacketPlayOu
     }
 
     @Override
+    public WrappedPacketDataSerializer buildData() {
+        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
+        serializer.serializeInt(this.riderID)
+                .serializeInt(this.providerID)
+                .serializeByte(this.type.ordinal());
+        return serializer;
+    }
+
+    @Override
     public Object buildPacket() {
         PacketPlayOutAttachEntity packet = new PacketPlayOutAttachEntity();
         try {
@@ -70,12 +79,5 @@ public class WrappedPacketPlayOutAttachEntityImpl implements WrappedPacketPlayOu
             e.printStackTrace();
         }
         return packet;
-    }
-
-    @Override
-    public WrappedPacketDataSerializer buildData() {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeInt(riderID).serializeInt(providerID).serializeByte(type.ordinal());
-        return serializer;
     }
 }

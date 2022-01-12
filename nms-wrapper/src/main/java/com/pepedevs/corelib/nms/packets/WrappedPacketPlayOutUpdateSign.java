@@ -1,13 +1,14 @@
 package com.pepedevs.corelib.nms.packets;
 
-import org.bukkit.Location;
+import net.kyori.adventure.text.Component;
+import org.bukkit.util.Vector;
 
 public interface WrappedPacketPlayOutUpdateSign extends WrappedPacket {
-    Location getLocation();
+    Vector getLocation();
 
-    String[] getLines();
+    void setLocation(Vector location);
 
-    void setLocation(Location location);
+    Component[] getLines();
 
-    void setLines(String[] lines);
+    void setLines(Component[] lines);
 }

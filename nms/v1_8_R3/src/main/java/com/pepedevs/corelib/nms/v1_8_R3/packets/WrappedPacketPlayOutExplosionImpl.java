@@ -4,6 +4,7 @@ import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutExplosion;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutExplosion;
 import org.bukkit.Location;
@@ -15,29 +16,36 @@ import java.util.*;
 
 public class WrappedPacketPlayOutExplosionImpl implements WrappedPacketPlayOutExplosion {
 
-    private Location location;
+    private Vector location;
     private float power;
-    private Set<Location> blocks;
+    private Set<Vector> blocks;
     private Vector knockback;
 
-    public WrappedPacketPlayOutExplosionImpl(Location location, float power, Set<Block> blocks, Vector knockback) {
+    public WrappedPacketPlayOutExplosionImpl(Vector location, float power, Set<Block> blocks, Vector knockback) {
         this.location = location;
         this.power = power;
-        Set<Location> locations = new HashSet<>();
+        Set<Vector> locations = new HashSet<>();
         for (Block block : blocks) {
-            locations.add(block.getLocation());
+            locations.add(block.getLocation().toVector());
         }
         this.blocks = locations;
         this.knockback = knockback;
     }
 
-    public WrappedPacketPlayOutExplosionImpl(Location location, float power) {
-        this(location, power, new HashSet<>(), new Vector(0,0,0));
+    public WrappedPacketPlayOutExplosionImpl(Vector location, float power, List<Vector> blocks, Vector knockback) {
+        this.location = location;
+        this.power = power;
+        this.blocks = new HashSet<>(blocks);
+        this.knockback = knockback;
+    }
+
+    public WrappedPacketPlayOutExplosionImpl(Vector location, float power) {
+        this(location, power, new ArrayList<>(), new Vector(0,0,0));
     }
 
     public WrappedPacketPlayOutExplosionImpl(WrappedPacketDataSerializer serializer) {
         PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
-        this.location = new Location(null, dataSerializer.readFloat(), dataSerializer.readFloat(), dataSerializer.readFloat());
+        this.location = new Vector(dataSerializer.readFloat(), dataSerializer.readFloat(), dataSerializer.readFloat());
         this.power = dataSerializer.readFloat();
         this.blocks = new HashSet<>();
 
@@ -48,14 +56,14 @@ public class WrappedPacketPlayOutExplosionImpl implements WrappedPacketPlayOutEx
         int z = this.location.getBlockZ();
 
         for (int i = 0; i < count; i++) {
-            this.blocks.add(new Location(null, dataSerializer.readByte() + x, dataSerializer.readByte() + y, dataSerializer.readByte() + z));
+            this.blocks.add(new Vector(dataSerializer.readByte() + x, dataSerializer.readByte() + y, dataSerializer.readByte() + z));
         }
 
         this.knockback = new Vector(dataSerializer.readFloat(), dataSerializer.readFloat(), dataSerializer.readFloat());
     }
 
     @Override
-    public Location getLocation() {
+    public Vector getLocation() {
         return location;
     }
 
@@ -65,7 +73,7 @@ public class WrappedPacketPlayOutExplosionImpl implements WrappedPacketPlayOutEx
     }
 
     @Override
-    public Set<Location> getBlocks() {
+    public Set<Vector> getBlocks() {
         return blocks;
     }
 
@@ -75,7 +83,7 @@ public class WrappedPacketPlayOutExplosionImpl implements WrappedPacketPlayOutEx
     }
 
     @Override
-    public void setLocation(Location location) {
+    public void setLocation(Vector location) {
         this.location = location;
     }
 
@@ -85,7 +93,7 @@ public class WrappedPacketPlayOutExplosionImpl implements WrappedPacketPlayOutEx
     }
 
     @Override
-    public void setBlocks(Set<Location> blocks) {
+    public void setBlocks(Set<Vector> blocks) {
         this.blocks = blocks;
     }
 
@@ -98,23 +106,24 @@ public class WrappedPacketPlayOutExplosionImpl implements WrappedPacketPlayOutEx
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer
-                .serializeFloat((float) location.getX())
-                .serializeFloat((float) location.getY())
-                .serializeFloat((float) location.getZ())
+                .serializeFloat((float) this.location.getX())
+                .serializeFloat((float) this.location.getY())
+                .serializeFloat((float) this.location.getZ())
                 .serializeFloat(power)
                 .serializeInt(blocks.size());
-        int x = location.getBlockX();
-        int y = location.getBlockY();
-        int z = location.getBlockZ();
+        int x = this.location.getBlockX();
+        int y = this.location.getBlockY();
+        int z = this.location.getBlockZ();
 
-        Iterator<Location> blockIterator = blocks.iterator();
-        while (blockIterator.hasNext()) {
-            BlockPosition position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-            int subX = position.getX() - x;
-            int subY = position.getY() - y;
-            int subZ = position.getZ() - z;
-            serializer.serializeByte(subX).serializeByte(subY).serializeByte(subZ);
+        for (Vector block : this.blocks) {
+            int subX = MathHelper.floor(block.getX()) - x;
+            int subY = MathHelper.floor(block.getY()) - y;
+            int subZ = MathHelper.floor(block.getZ()) - z;
+            serializer.serializeByte(subX)
+                    .serializeByte(subY)
+                    .serializeByte(subZ);
         }
+
         serializer
                 .serializeFloat((float) knockback.getX())
                 .serializeFloat((float) knockback.getY())

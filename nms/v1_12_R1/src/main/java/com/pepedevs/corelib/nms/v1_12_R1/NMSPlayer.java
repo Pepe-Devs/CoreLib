@@ -13,7 +13,6 @@ public class NMSPlayer implements com.pepedevs.corelib.nms.NMSPlayer {
         this.player = player;
     }
 
-
     @Override
     public Object getEntityPlayer() {
         return ((CraftPlayer) player).getHandle();
