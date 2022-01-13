@@ -10,7 +10,7 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 
 import java.io.IOException;
 
-public class WrappedPacketPlayOutPlayerListHeaderFooterImpl extends PacketPlayOutPlayerListHeaderFooter implements WrappedPacketPlayOutPlayerListHeaderFooter {
+public class WrappedPacketPlayOutPlayerListHeaderFooterImpl implements WrappedPacketPlayOutPlayerListHeaderFooter {
 
     private Component header;
     private Component footer;
@@ -73,5 +73,4 @@ public class WrappedPacketPlayOutPlayerListHeaderFooterImpl extends PacketPlayOu
         }
         return packet;
     }
-
 }

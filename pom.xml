@@ -7,7 +7,7 @@
     <groupId>com.pepedevs</groupId>
     <artifactId>CoreLib</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.0-BETA-1.1-SNAPSHOT</version>
+    <version>1.2.0-BETA-1.2-SNAPSHOT</version>
     <modules>
         <module>action-item</module>
         <module>adventure-utils</module>
