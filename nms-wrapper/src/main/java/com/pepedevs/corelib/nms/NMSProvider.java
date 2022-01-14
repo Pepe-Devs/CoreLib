@@ -1,6 +1,7 @@
 package com.pepedevs.corelib.nms;
 
 import com.mojang.authlib.GameProfile;
+import com.pepedevs.corelib.nms.objects.WrappedDataWatcher;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
 import io.netty.buffer.ByteBuf;
@@ -19,6 +20,12 @@ public interface NMSProvider {
     WrappedPacketDataSerializer getDataSerializer();
 
     WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf);
+
+    WrappedDataWatcher getDataWatcher();
+
+    WrappedDataWatcher.WrappedWatchableObject getWatchableObject(Object watchableObject);
+
+    WrappedDataWatcher.WrappedWatchableObject getWatchableObject(int i, int j, Object o);
 
     WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name);
 

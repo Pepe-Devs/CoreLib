@@ -2,6 +2,7 @@ package com.pepedevs.corelib.utils.io;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.pepedevs.corelib.utils.Skin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class MineSkinAPI {
 
     private static final String URL_FORMAT = "https://api.mineskin.org/get/uuid/%s";
 
-    public static String[] getTextureProperties(String id) {
+    public static Skin getTextureProperties(String id) {
 
         try {
             // Open http connection
@@ -32,16 +33,15 @@ public class MineSkinAPI {
 
             String[] property =
                     new String[] {
-                        texture.get("value").getAsString(), texture.get("signature").getAsString()
+                            texture.get("value").getAsString(), texture.get("signature").getAsString()
                     };
             reader.close();
             textureConnection.disconnect();
 
-            return property;
+            return Skin.from(property[0], property[1]);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        return new String[] {null, null};
+        return Skin.NULL;
     }
 }

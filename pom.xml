@@ -7,7 +7,7 @@
     <groupId>com.pepedevs</groupId>
     <artifactId>CoreLib</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.0-BETA-1.2-SNAPSHOT</version>
+    <version>1.2.0-BETA-1.3-SNAPSHOT</version>
     <modules>
         <module>action-item</module>
         <module>adventure-utils</module>
@@ -29,6 +29,7 @@
         <module>task-utils</module>
         <module>utils</module>
         <module>vault-hook</module>
+        <module>npc</module>
     </modules>
 
     <properties>

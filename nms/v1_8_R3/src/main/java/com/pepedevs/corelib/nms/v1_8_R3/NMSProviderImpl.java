@@ -4,8 +4,10 @@ import com.mojang.authlib.GameProfile;
 import com.pepedevs.corelib.nms.EnumGameMode;
 import com.pepedevs.corelib.nms.NMSPlayer;
 import com.pepedevs.corelib.nms.NMSProvider;
+import com.pepedevs.corelib.nms.objects.WrappedDataWatcher;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
+import com.pepedevs.corelib.nms.v1_8_R3.objects.WrappedDataWatcherImpl;
 import com.pepedevs.corelib.nms.v1_8_R3.objects.WrappedPacketDataSerializerImpl;
 import com.pepedevs.corelib.nms.v1_8_R3.objects.WrappedPlayerInfoDataImpl;
 import io.netty.buffer.ByteBuf;
@@ -49,6 +51,21 @@ public class NMSProviderImpl implements NMSProvider {
     @Override
     public WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf) {
         return new WrappedPacketDataSerializerImpl(byteBuf);
+    }
+
+    @Override
+    public WrappedDataWatcher getDataWatcher() {
+        return new WrappedDataWatcherImpl();
+    }
+
+    @Override
+    public WrappedDataWatcher.WrappedWatchableObject getWatchableObject(Object watchableObject) {
+        return new WrappedDataWatcherImpl.WrappedWatchableObjectImpl(watchableObject);
+    }
+
+    @Override
+    public WrappedDataWatcher.WrappedWatchableObject getWatchableObject(int i, int j, Object o) {
+        return new WrappedDataWatcherImpl.WrappedWatchableObjectImpl(i, j, o);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.pepedevs.corelib.nms.EnumGameMode;
 import com.pepedevs.corelib.nms.NMSPlayer;
 import com.pepedevs.corelib.nms.NMSProvider;
+import com.pepedevs.corelib.nms.objects.WrappedDataWatcher;
 import com.pepedevs.corelib.nms.objects.WrappedPacketDataSerializer;
 import com.pepedevs.corelib.nms.objects.WrappedPlayerInfoData;
 import com.pepedevs.corelib.nms.v1_12_R1.objects.WrappedPacketDataSerializerImpl;
@@ -49,6 +50,21 @@ public class NMSProviderImpl implements NMSProvider {
     @Override
     public WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf) {
         return new WrappedPacketDataSerializerImpl(byteBuf);
+    }
+
+    @Override
+    public WrappedDataWatcher getDataWatcher() {
+        return null;
+    }
+
+    @Override
+    public WrappedDataWatcher.WrappedWatchableObject getWatchableObject(Object watchableObject) {
+        return null;
+    }
+
+    @Override
+    public WrappedDataWatcher.WrappedWatchableObject getWatchableObject(int i, int j, Object o) {
+        return null;
     }
 
     @Override

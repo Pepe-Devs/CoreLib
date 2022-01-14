@@ -12,6 +12,10 @@ public interface WrappedDataWatcher {
 
     interface WrappedWatchableObject {
 
+        int getType();
+
+        int getIndex();
+
         Object getValue();
 
         void setValue(Object object);

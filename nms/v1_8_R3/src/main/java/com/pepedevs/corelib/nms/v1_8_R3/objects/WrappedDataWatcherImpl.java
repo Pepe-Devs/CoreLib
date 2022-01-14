@@ -37,8 +37,22 @@ public class WrappedDataWatcherImpl extends DataWatcher implements WrappedDataWa
 
     public static class WrappedWatchableObjectImpl extends WatchableObject implements WrappedWatchableObject {
 
+        public WrappedWatchableObjectImpl(Object watchableObject) {
+            super(((WatchableObject) watchableObject).c(), ((WatchableObject) watchableObject).a(), ((WatchableObject) watchableObject).b());
+        }
+
         public WrappedWatchableObjectImpl(int i, int j, Object object) {
             super(i, j, object);
+        }
+
+        @Override
+        public int getType() {
+            return super.c();
+        }
+
+        @Override
+        public int getIndex() {
+            return super.a();
         }
 
         @Override
