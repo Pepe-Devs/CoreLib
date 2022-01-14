@@ -45,9 +45,9 @@ public class WrappedPacketPlayOutEntityTeleportImpl implements WrappedPacketPlay
     public WrappedPacketPlayOutEntityTeleportImpl(WrappedPacketDataSerializer serializer) {
         PacketDataSerializer dataSerializer = (PacketDataSerializer) serializer;
         this.entityId = dataSerializer.readInt();
-        this.locX = dataSerializer.readInt() / 32;
-        this.locY = dataSerializer.readInt() / 32;
-        this.locZ = dataSerializer.readInt() / 32;
+        this.locX = dataSerializer.readDouble();
+        this.locY = dataSerializer.readDouble();
+        this.locZ = dataSerializer.readDouble();
         this.yaw = dataSerializer.readByte() / 256.0F * 360.0F;
         this.pitch = dataSerializer.readByte() / 256.0F * 360.0F;
         this.onGround = dataSerializer.readBoolean();
@@ -127,9 +127,9 @@ public class WrappedPacketPlayOutEntityTeleportImpl implements WrappedPacketPlay
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeVarInt(this.entityId)
-                .serializeInt(MathHelper.floor(this.locX * 32.0D))
-                .serializeInt(MathHelper.floor(this.locY * 32.0D))
-                .serializeInt(MathHelper.floor(this.locZ * 32.0D))
+                .serializeDouble(this.locX)
+                .serializeDouble(this.locY)
+                .serializeDouble(this.locZ)
                 .serializeByte(MathHelper.d(this.yaw * 256.0F / 360.0F))
                 .serializeByte(MathHelper.d(this.pitch * 256.0F / 360.0F))
                 .serializeBoolean(this.onGround);

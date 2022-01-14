@@ -15,6 +15,8 @@ import java.util.UUID;
 
 public interface PacketProvider {
 
+    WrappedPacketPlayOutAnimation getNewAnimationPacket(int entityId, WrappedPacketPlayOutAnimation.AnimationType type);
+
     WrappedPacketPlayOutAttachEntity getNewAttachEntityPacket(WrappedPacketPlayOutAttachEntity.AttachmentType type, int riderID, int providerID);
 
     WrappedPacketPlayOutAttachEntity getNewAttachEntityPacket(WrappedPacketPlayOutAttachEntity.AttachmentType type, int riderID);
@@ -34,6 +36,8 @@ public interface PacketProvider {
     WrappedPacketPlayOutEntityEquipment getNewEntityEquipmentPacket(int entityID, ItemSlot slot, ItemStack itemStack);
 
     WrappedPacketPlayOutEntityHeadRotation getNewEntityHeadRotationPacket(int entityId, float headRotation);
+
+    WrappedPacketPlayOutEntityLook getNewEntityLookPacket(int entityId, float yaw, float pitch, boolean onGround);
 
     WrappedPacketPlayOutEntityMetadata getNewEntityMetadataPacket(int entityID, Object watchableObjects);
 
@@ -84,6 +88,14 @@ public interface PacketProvider {
     WrappedPacketPlayOutPlayerListHeaderFooter getNewPlayerListHeaderFooterPacket(Component header, Component footer);
 
     WrappedPacketPlayOutPlayerListHeaderFooter getNewPlayerListHeaderFooterPacket(Object header, Object footer);
+
+    WrappedPacketPlayOutRelEntityMove getNewRelEntityMovePacket(int entityID, byte deltaX, byte deltaY, byte deltaZ, boolean onGround);
+
+    WrappedPacketPlayOutRelEntityMove getNewRelEntityMovePacket(int entityId, Location oldLocation, Location newLocation, boolean onGround);
+
+    WrappedPacketPlayOutRelEntityMoveLook getNewRelEntityMoveLookPacket(int entityID, byte deltaX, byte deltaY, byte deltaZ, byte yaw, byte pitch, boolean onGround);
+
+    WrappedPacketPlayOutRelEntityMoveLook getNewRelEntityMoveLookPacket(int entityId, Location oldLocation, Location newLocation, boolean onGround);
 
     WrappedPacketPlayOutRespawn getNewRespawnPacket(World world, Difficulty difficulty, EnumGameMode gameMode);
 

@@ -20,6 +20,11 @@ public class PacketProviderImpl implements PacketProvider {
     public static final PacketProviderImpl INSTANCE = new PacketProviderImpl();
 
     @Override
+    public WrappedPacketPlayOutAnimation getNewAnimationPacket(int entityId, WrappedPacketPlayOutAnimation.AnimationType type) {
+        return new WrappedPacketPlayOutAnimationImpl(entityId, type);
+    }
+
+    @Override
     public WrappedPacketPlayOutAttachEntity getNewAttachEntityPacket(WrappedPacketPlayOutAttachEntity.AttachmentType type, int riderID, int providerID) {
         return new WrappedPacketPlayOutAttachEntityImpl(type, riderID, providerID);
     }
@@ -67,6 +72,11 @@ public class PacketProviderImpl implements PacketProvider {
     @Override
     public WrappedPacketPlayOutEntityHeadRotation getNewEntityHeadRotationPacket(int entityId, float headRotation) {
         return new WrappedPacketPlayOutEntityHeadRotationImpl(entityId, headRotation);
+    }
+
+    @Override
+    public WrappedPacketPlayOutEntityLook getNewEntityLookPacket(int entityId, float yaw, float pitch, boolean onGround) {
+        return new WrappedPacketPlayOutEntityLookImpl(entityId, yaw, pitch, onGround);
     }
 
     @Override
@@ -192,6 +202,26 @@ public class PacketProviderImpl implements PacketProvider {
     @Override
     public WrappedPacketPlayOutPlayerListHeaderFooter getNewPlayerListHeaderFooterPacket(Object header, Object footer) {
         return new WrappedPacketPlayOutPlayerListHeaderFooterImpl(header, footer);
+    }
+
+    @Override
+    public WrappedPacketPlayOutRelEntityMove getNewRelEntityMovePacket(int entityID, byte deltaX, byte deltaY, byte deltaZ, boolean onGround) {
+        return new WrappedPacketPlayOutRelEntityMoveImpl(entityID, deltaX, deltaY, deltaZ, onGround);
+    }
+
+    @Override
+    public WrappedPacketPlayOutRelEntityMove getNewRelEntityMovePacket(int entityId, Location oldLocation, Location newLocation, boolean onGround) {
+        return new WrappedPacketPlayOutRelEntityMoveImpl(entityId, oldLocation, newLocation, onGround);
+    }
+
+    @Override
+    public WrappedPacketPlayOutRelEntityMoveLook getNewRelEntityMoveLookPacket(int entityID, byte deltaX, byte deltaY, byte deltaZ, byte yaw, byte pitch, boolean onGround) {
+        return new WrappedPacketPlayOutRelEntityMoveLookImpl(entityID, deltaX, deltaY, deltaZ, yaw, pitch, onGround);
+    }
+
+    @Override
+    public WrappedPacketPlayOutRelEntityMoveLook getNewRelEntityMoveLookPacket(int entityId, Location oldLocation, Location newLocation, boolean onGround) {
+        return new WrappedPacketPlayOutRelEntityMoveLookImpl(entityId, oldLocation, newLocation, onGround);
     }
 
     @Override

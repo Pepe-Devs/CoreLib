@@ -1,8 +1,8 @@
 package com.pepedevs.corelib.npc;
 
-import com.pepedevs.corelib.utils.math.Vector;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.Set;
 import java.util.UUID;

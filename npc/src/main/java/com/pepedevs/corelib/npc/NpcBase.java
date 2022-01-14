@@ -6,6 +6,7 @@ import com.pepedevs.corelib.nms.PacketProvider;
 import com.pepedevs.corelib.utils.reflection.bukkit.EntityReflection;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -52,5 +53,7 @@ public abstract class NpcBase implements NPC {
     protected abstract void destroy(Player player);
 
     protected abstract void changeLocation(Player player);
+
+    protected abstract void changeFov(Player player, Vector direction);
 
 }

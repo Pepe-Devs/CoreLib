@@ -1,13 +1,14 @@
 package com.pepedevs.corelib.npc;
 
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityDestroy;
+import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityHeadRotation;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityTeleport;
 import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutSpawnEntityLiving;
-import com.pepedevs.corelib.utils.math.Vector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
@@ -65,19 +66,24 @@ public class EntityNPC extends NpcBase {
 
     @Override
     public void hide(Player player) {
+        if (!this.shown.contains(player.getUniqueId()))
+            return;
 
+        this.destroy(player);
+        this.shown.remove(player.getUniqueId());
     }
 
     @Override
     public void show(Player player) {
+        if (this.shown.contains(player.getUniqueId()))
+            return;
 
+        this.view(player);
+        this.shown.add(player.getUniqueId());
     }
 
     @Override
     protected void view(Player player) {
-        if (this.shown.contains(player.getUniqueId()))
-            return;
-
         WrappedPacketPlayOutSpawnEntityLiving packet = PACKET_PROVIDER.getNewSpawnEntityLivingPacket(this.getEntityId(), this.getUuid(), this.entityType, this.location, this.location.getYaw(), NMS_PROVIDER.getDataWatcher());
         NMS_PROVIDER.getPlayer(player).sendPacket(packet);
         this.shown.add(player.getUniqueId());
@@ -85,9 +91,6 @@ public class EntityNPC extends NpcBase {
 
     @Override
     protected void destroy(Player player) {
-        if (!this.shown.contains(player.getUniqueId()))
-            return;
-
         WrappedPacketPlayOutEntityDestroy packet = PACKET_PROVIDER.getNewEntityDestroyPacket(this.getEntityId());
         NMS_PROVIDER.getPlayer(player).sendPacket(packet);
         this.shown.remove(player.getUniqueId());
@@ -95,11 +98,13 @@ public class EntityNPC extends NpcBase {
 
     @Override
     protected void changeLocation(Player player) {
-        if (this.shown.contains(player.getUniqueId()))
-            return;
-
         WrappedPacketPlayOutEntityTeleport packet = PACKET_PROVIDER.getNewEntityTeleportPacket(this.getEntityId(), this.location);
         NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+    }
+
+    @Override
+    protected void changeFov(Player player, Vector direction) {
+
     }
 
 }
