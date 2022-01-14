@@ -103,6 +103,14 @@ public interface PacketProvider {
 
     WrappedPacketPlayOutScoreboardTeam getNewScoreboardTeamPacket(String teamName, Object displayName, Object prefix, Object suffix, List<String> playerNames, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility visibility, WrappedPacketPlayOutScoreboardTeam.PacketOptionData data, ChatColor color);
 
+    WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, double locX, double locY, double locZ, float yaw, float pitch, Vector velocity, EntityType entityType, int data);
+
+    WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, Location location, Vector velocity, EntityType entityType, int data);
+
+    WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, double locX, double locY, double locZ, float yaw, float pitch, EntityType entityType);
+
+    WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, Location location, EntityType entityType);
+
     WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, UUID uuid, EntityType entityType, double locX, double locY, double locZ, float yaw, float pitch, float headRotation, Vector velocity, Object dataWatcher);
 
     WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, UUID uuid, EntityType entity, Location location, float headPitch, Vector velocity, Object dataWatcher);

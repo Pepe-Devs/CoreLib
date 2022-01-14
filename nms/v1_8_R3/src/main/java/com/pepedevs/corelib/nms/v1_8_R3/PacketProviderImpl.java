@@ -240,6 +240,26 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
+    public WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, double locX, double locY, double locZ, float yaw, float pitch, Vector velocity, EntityType entityType, int data) {
+        return new WrappedPacketPlayOutSpawnEntityImpl(entityId, uuid, locX, locY, locZ, yaw, pitch, velocity, entityType, data);
+    }
+
+    @Override
+    public WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, Location location, Vector velocity, EntityType entityType, int data) {
+        return new WrappedPacketPlayOutSpawnEntityImpl(entityId, uuid, location, velocity, entityType, data);
+    }
+
+    @Override
+    public WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, double locX, double locY, double locZ, float yaw, float pitch, EntityType entityType) {
+        return new WrappedPacketPlayOutSpawnEntityImpl(entityId, uuid, locX, locY, locZ, yaw, pitch, entityType);
+    }
+
+    @Override
+    public WrappedPacketPlayOutSpawnEntity getNewSpawnEntityPacket(int entityId, UUID uuid, Location location, EntityType entityType) {
+        return new WrappedPacketPlayOutSpawnEntityImpl(entityId, uuid, location, entityType);
+    }
+
+    @Override
     public WrappedPacketPlayOutSpawnEntityLiving getNewSpawnEntityLivingPacket(int entityId, UUID uuid, EntityType entityType, double locX, double locY, double locZ, float yaw, float pitch, float headRotation, Vector velocity, Object dataWatcher) {
         return new WrappedPacketPlayOutSpawnEntityLivingImpl(entityId, uuid, entityType, locX, locY, locZ, yaw, pitch, headRotation, velocity, dataWatcher);
     }
