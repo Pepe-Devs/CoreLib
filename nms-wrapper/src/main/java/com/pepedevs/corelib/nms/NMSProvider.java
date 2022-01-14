@@ -8,6 +8,7 @@ import io.netty.buffer.ByteBuf;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public interface NMSProvider {
 
@@ -38,5 +39,11 @@ public interface NMSProvider {
     Enum<?> getEnumChatFormat(ChatColor color);
 
     ChatColor getEnumChatFormat(Enum<?> enumChatFormat);
+
+    Object craftItemStackAsNmsCopy(ItemStack itemStack);
+
+    Object craftItemStackAsCraftCopy(ItemStack itemStack);
+
+    ItemStack craftItemStackAsBukkitCopy(Object nmsItemStack);
 
 }

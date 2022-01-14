@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** Class for reflecting Bukkit entities */
 public class EntityReflection {
@@ -53,6 +54,7 @@ public class EntityReflection {
     public static final FieldAccessor NMS_ENTITY_INVULNERABLE;
     public static final FieldAccessor ENTITY_ARMOR_STAND_INVULNERABLE;
     public static final FieldAccessor DAMAGE_SOURCE_GENERIC;
+    public static FieldAccessor ENTITY_COUNTER_FIELD;
 
     static {
         NMSClassResolver nmsClassResolver = new NMSClassResolver();
@@ -181,6 +183,22 @@ public class EntityReflection {
                                         .build());
         DAMAGE_SOURCE_GENERIC =
                 new FieldResolver(DAMAGE_SOURCE.getClazz()).resolveAccessor("GENERIC", "n");
+        ENTITY_COUNTER_FIELD =
+                new FieldResolver(EntityReflection.NMS_ENTITY_CLASS.getClazz())
+                        .resolveAccessor("entityCount");
+        if (ENTITY_COUNTER_FIELD.getField() == null) {
+            ENTITY_COUNTER_FIELD = new FieldResolver(EntityReflection.NMS_ENTITY_CLASS.getClazz()).resolveByFirstExtendingTypeAccessor(AtomicInteger.class);
+        }
+    }
+
+    public static int getFreeEntityId() {
+        Object entityCount = ENTITY_COUNTER_FIELD.get(null);
+        if (entityCount instanceof AtomicInteger) {
+            return ((AtomicInteger) entityCount).incrementAndGet();
+        } else {
+            ENTITY_COUNTER_FIELD.set(null, (int) entityCount + 1);
+        }
+        return (int) entityCount;
     }
 
     /**

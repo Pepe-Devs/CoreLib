@@ -2,7 +2,7 @@ package com.pepedevs.corelib.holograms.object;
 
 import com.pepedevs.corelib.holograms.action.ClickType;
 import com.pepedevs.corelib.holograms.action.HologramClickAction;
-import com.pepedevs.corelib.holograms.action.utils.PacketUtils;
+import com.pepedevs.corelib.holograms.utils.PacketUtils;
 import com.pepedevs.corelib.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

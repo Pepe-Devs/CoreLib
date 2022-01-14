@@ -2,7 +2,7 @@ package com.pepedevs.corelib.holograms.hologramline;
 
 import com.pepedevs.corelib.holograms.object.HologramLine;
 import com.pepedevs.corelib.holograms.object.HologramLineType;
-import com.pepedevs.corelib.holograms.action.utils.PacketUtils;
+import com.pepedevs.corelib.holograms.utils.PacketUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package com.pepedevs.corelib.holograms.action.utils;
+package com.pepedevs.corelib.holograms.utils;
 
 import com.google.common.collect.Sets;
 import org.bukkit.entity.EntityType;

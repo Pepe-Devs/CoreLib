@@ -2,8 +2,8 @@ package com.pepedevs.corelib.holograms.hologramline;
 
 import com.pepedevs.corelib.holograms.object.HologramLine;
 import com.pepedevs.corelib.holograms.object.HologramLineType;
-import com.pepedevs.corelib.holograms.action.utils.HologramEntities;
-import com.pepedevs.corelib.holograms.action.utils.PacketUtils;
+import com.pepedevs.corelib.holograms.utils.HologramEntities;
+import com.pepedevs.corelib.holograms.utils.PacketUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,8 +44,7 @@ public class EntityHologramLine extends HologramLine {
                 PacketUtils.showFakeEntityLiving(
                         player, this.getLocation(), this.content, this.entityIds[1]);
             else
-                PacketUtils.showFakeEntity(
-                        player, this.getLocation(), this.content, this.entityIds[1]);
+                PacketUtils.showFakeEntity(player, this.getLocation(), this.content, this.entityIds[1]);
             PacketUtils.attachFakeEntity(player, this.entityIds[0], this.entityIds[1]);
 
             this.viewers.add(player.getUniqueId());

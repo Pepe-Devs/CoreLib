@@ -17,8 +17,10 @@ import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.event.CraftEventFactory;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_12_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class NMSProviderImpl implements NMSProvider {
 
@@ -101,6 +103,21 @@ public class NMSProviderImpl implements NMSProvider {
             return ChatColor.MAGIC;
 
         return ChatColor.valueOf(enumChatFormat.name());
+    }
+
+    @Override
+    public Object craftItemStackAsNmsCopy(ItemStack itemStack) {
+        return CraftItemStack.asNMSCopy(itemStack);
+    }
+
+    @Override
+    public Object craftItemStackAsCraftCopy(ItemStack itemStack) {
+        return CraftItemStack.asCraftCopy(itemStack);
+    }
+
+    @Override
+    public ItemStack craftItemStackAsBukkitCopy(Object nmsItemStack) {
+        return CraftItemStack.asBukkitCopy((net.minecraft.server.v1_12_R1.ItemStack) nmsItemStack);
     }
 
 }
