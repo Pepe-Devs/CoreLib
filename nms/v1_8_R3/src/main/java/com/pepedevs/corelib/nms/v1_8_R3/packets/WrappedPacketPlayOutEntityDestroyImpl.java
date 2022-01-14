@@ -13,11 +13,7 @@ public class WrappedPacketPlayOutEntityDestroyImpl implements WrappedPacketPlayO
     private int[] entityIDs;
 
     public WrappedPacketPlayOutEntityDestroyImpl(int... entityIDs) {
-        WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeVarInt(entityIDs.length);
-        for (int entityID : entityIDs) {
-            serializer.serializeVarInt(entityID);
-        }
+        this.entityIDs = entityIDs;
     }
 
     public WrappedPacketPlayOutEntityDestroyImpl(WrappedPacketDataSerializer serializer) {

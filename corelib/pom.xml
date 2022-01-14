@@ -5,7 +5,7 @@
     <parent>
         <artifactId>CoreLib</artifactId>
         <groupId>com.pepedevs</groupId>
-        <version>1.2.0-BETA-1.3-SNAPSHOT</version>
+        <version>1.2.0-BETA-1.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -124,6 +124,11 @@
         <dependency>
             <groupId>com.pepedevs</groupId>
             <artifactId>vault-hook</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>npc</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

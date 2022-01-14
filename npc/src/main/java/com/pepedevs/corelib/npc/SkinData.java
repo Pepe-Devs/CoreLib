@@ -1,3 +1,5 @@
+package com.pepedevs.corelib.npc;
+
 public class SkinData {
 
     private boolean capeEnabled;
