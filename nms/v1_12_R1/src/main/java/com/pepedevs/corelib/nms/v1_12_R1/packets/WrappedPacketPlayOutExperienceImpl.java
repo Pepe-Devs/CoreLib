@@ -60,7 +60,7 @@ public class WrappedPacketPlayOutExperienceImpl implements WrappedPacketPlayOutE
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeFloat(this.xp).serializeIntToByte(this.level).serializeIntToByte(this.totalXp);
+        serializer.serializeFloat(this.xp).serializeVarInt(this.level).serializeVarInt(this.totalXp);
         return serializer;
     }
 

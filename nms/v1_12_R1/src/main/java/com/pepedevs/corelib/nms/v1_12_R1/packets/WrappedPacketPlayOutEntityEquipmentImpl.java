@@ -64,7 +64,7 @@ public class WrappedPacketPlayOutEntityEquipmentImpl implements WrappedPacketPla
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityID).serializeEnum(slot).serializeItemStack(itemStack);
+        serializer.serializeVarInt(entityID).serializeEnum(slot).serializeItemStack(itemStack);
         return serializer;
     }
 

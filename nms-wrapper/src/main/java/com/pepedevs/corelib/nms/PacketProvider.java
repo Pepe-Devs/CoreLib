@@ -33,6 +33,8 @@ public interface PacketProvider {
 
     WrappedPacketPlayOutEntityEquipment getNewEntityEquipmentPacket(int entityID, ItemSlot slot, ItemStack itemStack);
 
+    WrappedPacketPlayOutEntityHeadRotation getNewEntityHeadRotationPacket(int entityId, float headRotation);
+
     WrappedPacketPlayOutEntityMetadata getNewEntityMetadataPacket(int entityID, Object watchableObjects);
 
     WrappedPacketPlayOutEntityStatus getNewEntityStatusPacket(int entityID, EntityStatus status);

@@ -48,7 +48,7 @@ public class WrappedPacketPlayOutEntityVelocityImpl extends PacketPlayOutEntityV
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(this.entityID);
+        serializer.serializeVarInt(this.entityID);
         serializer.serializeShort((int) (velocity.getX() * 8000.0D)).serializeShort((int) (velocity.getY() * 8000.0D)).serializeShort((int) (velocity.getZ() * 8000.0D));
         return serializer;
     }

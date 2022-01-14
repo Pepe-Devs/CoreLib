@@ -14,9 +14,9 @@ public class WrappedPacketPlayOutEntityDestroyImpl implements WrappedPacketPlayO
 
     public WrappedPacketPlayOutEntityDestroyImpl(int... entityIDs) {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityIDs.length);
+        serializer.serializeVarInt(entityIDs.length);
         for (int entityID : entityIDs) {
-            serializer.serializeIntToByte(entityID);
+            serializer.serializeVarInt(entityID);
         }
     }
 
@@ -41,9 +41,9 @@ public class WrappedPacketPlayOutEntityDestroyImpl implements WrappedPacketPlayO
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(this.entityIDs.length);
+        serializer.serializeVarInt(this.entityIDs.length);
         for (int entityID : this.entityIDs) {
-            serializer.serializeIntToByte(entityID);
+            serializer.serializeVarInt(entityID);
         }
         return serializer;
     }

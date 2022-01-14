@@ -174,7 +174,7 @@ public class WrappedPacketPlayOutScoreboardTeamImpl implements WrappedPacketPlay
         }
 
         if (this.mode == TeamMode.CREATE || this.mode == TeamMode.ADD_PLAYERS || this.mode == TeamMode.REMOVE_PLAYERS) {
-            dataSerializer.serializeIntToByte(this.playerNames.size());
+            dataSerializer.serializeVarInt(this.playerNames.size());
             for (String playerName : this.playerNames) {
                 dataSerializer.serializeString(playerName);
             }

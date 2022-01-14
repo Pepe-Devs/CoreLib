@@ -149,7 +149,7 @@ public class WrappedPacketPlayOutNamedEntitySpawnImpl implements WrappedPacketPl
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityId)
+        serializer.serializeVarInt(entityId)
                 .serializeUUID(uuid)
                 .serializeInt(MathHelper.floor(this.locX * 32.0D))
                 .serializeInt(MathHelper.floor(this.locY * 32.0D))

@@ -79,7 +79,7 @@ public class WrappedPacketPlayOutScoreboardScoreImpl implements WrappedPacketPla
                 .serializeEnum(this.action)
                 .serializeString(this.objectiveName);
         if (action != ScoreboardAction.REMOVE) {
-            serializer.serializeIntToByte(this.value);
+            serializer.serializeVarInt(this.value);
         }
         return serializer;
     }

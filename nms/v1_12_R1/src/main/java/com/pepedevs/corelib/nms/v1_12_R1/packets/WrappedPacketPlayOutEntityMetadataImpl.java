@@ -53,7 +53,7 @@ public class WrappedPacketPlayOutEntityMetadataImpl implements WrappedPacketPlay
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(this.entityId);
+        serializer.serializeVarInt(this.entityId);
         try {
             DataWatcher.a(this.watchableObjects, (PacketDataSerializer) serializer);
         } catch (IOException e) {

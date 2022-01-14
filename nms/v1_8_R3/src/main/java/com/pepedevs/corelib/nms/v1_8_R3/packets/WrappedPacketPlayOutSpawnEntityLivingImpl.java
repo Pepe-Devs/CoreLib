@@ -183,7 +183,7 @@ public class WrappedPacketPlayOutSpawnEntityLivingImpl implements WrappedPacketP
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(this.entityId)
+        serializer.serializeVarInt(this.entityId)
                 .serializeByte(((byte) this.entityType.getTypeId()) & 255)
                 .serializeInt(MathHelper.floor(this.locX * 32.0D))
                 .serializeInt(MathHelper.floor(this.locY * 32.0D))

@@ -28,7 +28,7 @@ public interface WrappedPacketDataSerializer {
 
     WrappedPacketDataSerializer serializeEnum(Enum<?> e);
 
-    WrappedPacketDataSerializer serializeIntToByte(int size);
+    WrappedPacketDataSerializer serializeVarInt(int size);
 
     WrappedPacketDataSerializer serializeBytes(byte[] array);
 

@@ -65,6 +65,11 @@ public class PacketProviderImpl implements PacketProvider {
     }
 
     @Override
+    public WrappedPacketPlayOutEntityHeadRotation getNewEntityHeadRotationPacket(int entityId, float headRotation) {
+        return new WrappedPacketPlayOutEntityHeadRotationImpl(entityId, headRotation);
+    }
+
+    @Override
     public WrappedPacketPlayOutEntityMetadata getNewEntityMetadataPacket(int entityID, Object watchableObjects) {
         return new WrappedPacketPlayOutEntityMetadataImpl(entityID, watchableObjects);
     }

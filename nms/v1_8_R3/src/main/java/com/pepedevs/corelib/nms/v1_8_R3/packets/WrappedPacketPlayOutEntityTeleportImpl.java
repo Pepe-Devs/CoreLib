@@ -126,7 +126,7 @@ public class WrappedPacketPlayOutEntityTeleportImpl implements WrappedPacketPlay
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(this.entityId)
+        serializer.serializeVarInt(this.entityId)
                 .serializeInt(MathHelper.floor(this.locX * 32.0D))
                 .serializeInt(MathHelper.floor(this.locY * 32.0D))
                 .serializeInt(MathHelper.floor(this.locZ * 32.0D))

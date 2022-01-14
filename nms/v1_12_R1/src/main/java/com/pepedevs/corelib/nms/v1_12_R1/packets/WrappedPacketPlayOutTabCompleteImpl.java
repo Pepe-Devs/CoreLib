@@ -37,7 +37,7 @@ public class WrappedPacketPlayOutTabCompleteImpl implements WrappedPacketPlayOut
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(this.completions.length);
+        serializer.serializeVarInt(this.completions.length);
         for (String completion : this.completions) {
             serializer.serializeString(completion);
         }

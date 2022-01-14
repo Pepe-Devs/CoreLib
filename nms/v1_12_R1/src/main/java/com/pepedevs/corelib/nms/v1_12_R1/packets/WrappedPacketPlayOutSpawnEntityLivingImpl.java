@@ -6,7 +6,6 @@ import com.pepedevs.corelib.nms.v1_12_R1.NMSProviderImpl;
 import com.pepedevs.corelib.utils.reflection.accessor.FieldAccessor;
 import com.pepedevs.corelib.utils.reflection.resolver.FieldResolver;
 import net.minecraft.server.v1_12_R1.DataWatcher;
-import net.minecraft.server.v1_12_R1.MathHelper;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
@@ -184,9 +183,9 @@ public class WrappedPacketPlayOutSpawnEntityLivingImpl implements WrappedPacketP
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(this.entityId)
+        serializer.serializeVarInt(this.entityId)
                 .serializeUUID(this.uuid)
-                .serializeIntToByte(this.entityType.getTypeId())
+                .serializeVarInt(this.entityType.getTypeId())
                 .serializeDouble(this.locX)
                 .serializeDouble(this.locY)
                 .serializeDouble(this.locZ)

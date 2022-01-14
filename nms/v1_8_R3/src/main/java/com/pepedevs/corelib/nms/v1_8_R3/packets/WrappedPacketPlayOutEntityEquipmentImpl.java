@@ -6,7 +6,6 @@ import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityEquipment;
 import com.pepedevs.corelib.nms.v1_8_R3.NMSProviderImpl;
 import net.minecraft.server.v1_8_R3.PacketDataSerializer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
@@ -68,7 +67,7 @@ public class WrappedPacketPlayOutEntityEquipmentImpl implements WrappedPacketPla
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityID).serializeShort((short) slot.OLD).serializeItemStack(itemStack);
+        serializer.serializeVarInt(entityID).serializeShort((short) slot.OLD).serializeItemStack(itemStack);
         return serializer;
     }
 

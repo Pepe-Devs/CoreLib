@@ -102,14 +102,14 @@ public class WrappedPacketPlayOutPlayerInfoImpl implements WrappedPacketPlayOutP
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
         serializer.serializeEnum(this.infoAction)
-                .serializeIntToByte(this.infoData.size());
+                .serializeVarInt(this.infoData.size());
         for (WrappedPlayerInfoData infoData : this.infoData) {
             switch (this.infoAction) {
                 case ADD_PLAYER:
                     serializer
                             .serializeUUID(infoData.getGameProfile().getId())
                             .serializeString(infoData.getGameProfile().getName())
-                            .serializeIntToByte(infoData.getGameProfile().getProperties().size());
+                            .serializeVarInt(infoData.getGameProfile().getProperties().size());
                     for (Property value : infoData.getGameProfile().getProperties().values()) {
                         serializer.serializeString(value.getName())
                                 .serializeString(value.getValue());
@@ -121,8 +121,8 @@ public class WrappedPacketPlayOutPlayerInfoImpl implements WrappedPacketPlayOutP
                         }
                     }
 
-                    serializer.serializeIntToByte(((EnumGamemode) infoData.getEnumGameMode()).getId())
-                            .serializeIntToByte(infoData.getLatency());
+                    serializer.serializeVarInt(((EnumGamemode) infoData.getEnumGameMode()).getId())
+                            .serializeVarInt(infoData.getLatency());
 
                     if (infoData.getNameComponent() == null) {
                         serializer.serializeBoolean(false);
@@ -133,11 +133,11 @@ public class WrappedPacketPlayOutPlayerInfoImpl implements WrappedPacketPlayOutP
                     break;
                 case UPDATE_GAME_MODE:
                     serializer.serializeUUID(infoData.getGameProfile().getId())
-                            .serializeIntToByte(((EnumGamemode) infoData.getEnumGameMode()).getId());
+                            .serializeVarInt(((EnumGamemode) infoData.getEnumGameMode()).getId());
                     break;
                 case UPDATE_LATENCY:
                     serializer.serializeUUID(infoData.getGameProfile().getId())
-                            .serializeIntToByte(infoData.getLatency());
+                            .serializeVarInt(infoData.getLatency());
                     break;
                 case UPDATE_DISPLAY_NAME:
                     serializer.serializeUUID(infoData.getGameProfile().getId());

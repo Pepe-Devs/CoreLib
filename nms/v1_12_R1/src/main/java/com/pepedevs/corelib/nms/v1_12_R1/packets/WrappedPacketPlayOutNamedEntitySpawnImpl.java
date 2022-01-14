@@ -7,7 +7,6 @@ import com.pepedevs.corelib.utils.reflection.accessor.FieldAccessor;
 import com.pepedevs.corelib.utils.reflection.resolver.FieldResolver;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -147,7 +146,7 @@ public class WrappedPacketPlayOutNamedEntitySpawnImpl implements WrappedPacketPl
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeIntToByte(entityId)
+        serializer.serializeVarInt(entityId)
                 .serializeUUID(uuid)
                 .serializeInt(MathHelper.floor(this.locX * 32.0D))
                 .serializeInt(MathHelper.floor(this.locY * 32.0D))

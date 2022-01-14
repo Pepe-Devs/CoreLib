@@ -86,7 +86,7 @@ public class WrappedPacketDataSerializerImpl extends PacketDataSerializer implem
     }
 
     @Override
-    public WrappedPacketDataSerializer serializeIntToByte(int size) {
+    public WrappedPacketDataSerializer serializeVarInt(int size) {
         super.b(size);
         return this;
     }
