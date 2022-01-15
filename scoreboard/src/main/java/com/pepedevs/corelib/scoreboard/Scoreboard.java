@@ -7,7 +7,6 @@ import com.pepedevs.corelib.nms.PacketProvider;
 import com.pepedevs.corelib.nms.packets.*;
 import com.pepedevs.corelib.utils.version.Version;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextReplacementConfig;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
 
 public class Scoreboard {
 
@@ -30,7 +28,7 @@ public class Scoreboard {
     private List<Component> elements;
     private Component oldTitle;
     private List<Component> oldElements;
-    private List<Placeholder> placeholders;
+    private PlaceholderFunction placeholderFunction;
 
     private final Map<UUID, String> shown;
 
@@ -41,7 +39,6 @@ public class Scoreboard {
         this.oldTitle = this.title;
         this.elements = new ArrayList<>();
         this.oldElements = new ArrayList<>();
-        this.placeholders = new ArrayList<>();
         this.shown = new ConcurrentHashMap<>();
     }
 
@@ -122,12 +119,8 @@ public class Scoreboard {
         this.elements.remove(index);
     }
 
-    public void addPlaceholders(Placeholder... placeholders) {
-        this.placeholders.addAll(Arrays.asList(placeholders));
-    }
-
-    public void removePlaceholders(Placeholder... placeholders) {
-        this.placeholders.removeAll(Arrays.asList(placeholders));
+    public void setPlaceholderFunction(PlaceholderFunction placeholderFunction) {
+        this.placeholderFunction = placeholderFunction;
     }
 
     public Collection<UUID> getViewers() {
@@ -331,35 +324,16 @@ public class Scoreboard {
     }
 
     private Component formatComponent(final Component component, Player player) {
-        Component formatted = component;
-        for (Placeholder placeholder : this.placeholders) {
-            formatted = formatted.replaceText(TextReplacementConfig.builder()
-                    .replacement(placeholder.getReplacement().apply(player))
-                    .matchLiteral(placeholder.getId())
-                    .build());
-        }
-        return formatted;
+        if (this.placeholderFunction != null)
+            return this.placeholderFunction.apply(player, component);
+        else
+            return component;
     }
 
-    public interface Placeholder {
+    @FunctionalInterface
+    public interface PlaceholderFunction {
 
-        static Placeholder of(String id, Function<Player, String> resolver) {
-            return new Placeholder() {
-                @Override
-                public String getId() {
-                    return id;
-                }
-
-                @Override
-                public Function<Player, String> getReplacement() {
-                    return resolver;
-                }
-            };
-        }
-
-        String getId();
-
-        Function<Player, String> getReplacement();
+        Component apply(Player player, Component raw);
 
     }
 }
