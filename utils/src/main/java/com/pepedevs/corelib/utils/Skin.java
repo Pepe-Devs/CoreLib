@@ -1,5 +1,7 @@
 package com.pepedevs.corelib.utils;
 
+import com.mojang.authlib.properties.Property;
+
 public class Skin {
 
     public static final Skin NULL = new Skin(null, null);
@@ -30,6 +32,10 @@ public class Skin {
 
     public void setSignature(String signature) {
         this.signature = signature;
+    }
+
+    public Property asProperty() {
+        return new Property("textures", this.value, this.signature);
     }
 
     @Override

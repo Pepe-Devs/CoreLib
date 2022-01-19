@@ -17,7 +17,11 @@ public interface NPC {
 
     Location getLocation();
 
+    void look(float yaw, float pitch);
+
     void lookAt(Vector direction);
+
+    void lookAt(Location location);
 
     void destroy();
 

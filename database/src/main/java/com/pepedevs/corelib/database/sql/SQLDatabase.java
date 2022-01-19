@@ -82,8 +82,23 @@ public abstract class SQLDatabase extends Database {
         return null;
     }
 
+    public <R> R query(String query, SQLFunction<ResultSet> function) throws SQLException {
+        try {
+            PreparedStatement statement = this.getConnection().prepareStatement(query);
+            return function.apply(statement.executeQuery());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public ResultSet query(PreparedStatement statement) throws SQLException {
         return statement.executeQuery();
+    }
+
+    public <R> R query(PreparedStatement statement, SQLFunction<ResultSet> function) throws SQLException {
+        return function.apply(statement.executeQuery());
     }
 
     public void query(String query, SQLConsumer<ResultSet> consumer) throws SQLException {
@@ -120,6 +135,21 @@ public abstract class SQLDatabase extends Database {
                 });
     }
 
+    public <R> CompletableFuture<R> queryAsync(String query, SQLFunction<ResultSet> function) {
+        return CompletableFuture.supplyAsync(
+                new Supplier<R>() {
+                    @Override
+                    public R get() {
+                        try {
+                            return SQLDatabase.this.query(query, function);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                });
+    }
+
     public CompletableFuture<ResultSet> queryAsync(PreparedStatement statement) {
         return CompletableFuture.supplyAsync(
                 new Supplier<ResultSet>() {
@@ -127,6 +157,21 @@ public abstract class SQLDatabase extends Database {
                     public ResultSet get() {
                         try {
                             return SQLDatabase.this.query(statement);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                });
+    }
+
+    public <R> CompletableFuture<R> queryAsync(PreparedStatement statement, SQLFunction<ResultSet> function) {
+        return CompletableFuture.supplyAsync(
+                new Supplier<R>() {
+                    @Override
+                    public R get() {
+                        try {
+                            return SQLDatabase.this.query(statement, function);
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

@@ -3,6 +3,9 @@ package com.pepedevs.corelib.npc.internal;
 import com.pepedevs.corelib.nms.NMSBridge;
 import com.pepedevs.corelib.nms.NMSProvider;
 import com.pepedevs.corelib.nms.PacketProvider;
+import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityDestroy;
+import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityLook;
+import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityTeleport;
 import com.pepedevs.corelib.npc.NPC;
 import com.pepedevs.corelib.npc.action.NPCClickAction;
 import com.pepedevs.corelib.utils.reflection.bukkit.EntityReflection;
@@ -18,8 +21,8 @@ public abstract class NpcBase implements NPC {
     protected static final PacketProvider PACKET_PROVIDER = NMSBridge.getPacketProvider();
     protected static final NMSProvider NMS_PROVIDER = NMSBridge.getNMSProvider();
 
-    private final int entityId;
-    private final UUID uuid;
+    protected final int entityId;
+    protected final UUID uuid;
     protected Location location;
 
     protected Set<NPCClickAction> clickActions = Collections.synchronizedSet(new HashSet<>());
@@ -69,7 +72,24 @@ public abstract class NpcBase implements NPC {
     }
 
     @Override
+    public void look(float yaw, float pitch) {
+        for (UUID uuid : this.shown) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                this.changeFov(player, yaw, pitch);
+            } else {
+                this.shown.remove(uuid);
+            }
+        }
+    }
+
+    @Override
     public void lookAt(Vector direction) {
+
+    }
+
+    @Override
+    public void lookAt(Location location) {
 
     }
 
@@ -117,12 +137,22 @@ public abstract class NpcBase implements NPC {
         this.clickActions.add(action);
     }
 
-    protected abstract void view(Player player);
+    protected void view(Player player) {
+    }
 
-    protected abstract void destroy(Player player);
+    protected void destroy(Player player) {
+        WrappedPacketPlayOutEntityDestroy packet = PACKET_PROVIDER.getNewEntityDestroyPacket(this.entityId);
+        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+    }
 
-    protected abstract void changeLocation(Player player);
+    protected void changeLocation(Player player) {
+        WrappedPacketPlayOutEntityTeleport packet = PACKET_PROVIDER.getNewEntityTeleportPacket(this.getEntityId(), this.location);
+        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+    }
 
-    protected abstract void changeFov(Player player, float yaw, float pitch);
+    protected void changeFov(Player player, float yaw, float pitch) {
+        WrappedPacketPlayOutEntityLook packet = PACKET_PROVIDER.getNewEntityLookPacket(this.getEntityId(), yaw, pitch, true);
+        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+    }
 
 }
