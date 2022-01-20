@@ -4,6 +4,7 @@ import com.pepedevs.corelib.holograms.action.ClickType;
 import com.pepedevs.corelib.holograms.action.HologramClickAction;
 import com.pepedevs.corelib.holograms.utils.PacketUtils;
 import com.pepedevs.corelib.utils.StringUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,8 +18,8 @@ public abstract class HologramLine extends AbstractHologram {
 
     protected HologramPage parent;
     protected final HologramLineType type;
-    protected BiFunction<String, Player, String> messageParse =
-            (s, player) -> StringUtils.translateAlternateColorCodes(s);
+    protected BiFunction<Component, Player, Component> messageParse =
+            (component, player) -> component;
     protected final int[] entityIds;
 
     protected HologramLine(Location location, HologramLineType type) {
@@ -68,7 +69,7 @@ public abstract class HologramLine extends AbstractHologram {
         if (page != null) {
             this.messageParse = this.parent.getParent().getSettings().getMessageParser();
         } else {
-            this.messageParse = (s, player) -> StringUtils.translateAlternateColorCodes(s);
+            this.messageParse = (component, player) -> component;
         }
     }
 
@@ -95,13 +96,13 @@ public abstract class HologramLine extends AbstractHologram {
         return false;
     }
 
-    protected String parse(String text, Player player) {
+    protected Component parse(Component text, Player player) {
         return this.messageParse.apply(text, player);
     }
 
-    protected List<String> parse(List<String> text, Player player) {
-        List<String> list = new ArrayList<>();
-        for (String s : text) {
+    protected List<Component> parse(List<Component> text, Player player) {
+        List<Component> list = new ArrayList<>();
+        for (Component s : text) {
             list.add(this.messageParse.apply(s, player));
         }
         return list;

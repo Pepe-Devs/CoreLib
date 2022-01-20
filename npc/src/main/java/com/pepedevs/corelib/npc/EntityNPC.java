@@ -1,10 +1,13 @@
 package com.pepedevs.corelib.npc;
 
-import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutSpawnEntityLiving;
+import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
+import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnLivingEntity;
 import com.pepedevs.corelib.npc.internal.NpcBase;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 public class EntityNPC extends NpcBase {
 
@@ -21,8 +24,17 @@ public class EntityNPC extends NpcBase {
 
     @Override
     protected void view(Player player) {
-        WrappedPacketPlayOutSpawnEntityLiving packet = PACKET_PROVIDER.getNewSpawnEntityLivingPacket(this.getEntityId(), this.getUuid(), this.entityType, this.location, this.location.getYaw(), NMS_PROVIDER.getDataWatcher());
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+        WrapperPlayServerSpawnLivingEntity packet = new WrapperPlayServerSpawnLivingEntity(this.getEntityId(),
+                this.getUuid(),
+                this.entityType,
+                super.convert(this.location),
+                this.location.getYaw(),
+                this.location.getPitch(),
+                this.location.getYaw(),
+                Vector3d.zero(),
+                new ArrayList<>()
+                );
+        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }
 
 }

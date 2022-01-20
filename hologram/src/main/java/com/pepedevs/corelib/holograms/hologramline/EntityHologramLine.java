@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.holograms.hologramline;
 
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.pepedevs.corelib.holograms.object.HologramLine;
 import com.pepedevs.corelib.holograms.object.HologramLineType;
 import com.pepedevs.corelib.holograms.utils.HologramEntities;
@@ -42,9 +43,9 @@ public class EntityHologramLine extends HologramLine {
                     player, this.getLocation(), this.entityIds[0], true, true, true);
             if (this.content.isAlive())
                 PacketUtils.showFakeEntityLiving(
-                        player, this.getLocation(), this.content, this.entityIds[1]);
+                        player, this.getLocation(), EntityTypes.getByName(this.content.name()), this.entityIds[1]);
             else
-                PacketUtils.showFakeEntity(player, this.getLocation(), this.content, this.entityIds[1]);
+                PacketUtils.showFakeEntity(player, this.getLocation(), EntityTypes.getByName(this.content.name()), this.entityIds[1]);
             PacketUtils.attachFakeEntity(player, this.entityIds[0], this.entityIds[1]);
 
             this.viewers.add(player.getUniqueId());

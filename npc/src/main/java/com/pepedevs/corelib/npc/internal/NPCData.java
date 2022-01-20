@@ -1,48 +1,48 @@
-package com.pepedevs.corelib.npc;
+package com.pepedevs.corelib.npc.internal;
 
-public class PlayerNPCData {
+public class NPCData {
 
     private boolean isOnFire;
     private boolean isCrouched;
-    private boolean isSprinting;
+    /*private boolean isSprinting;
     private boolean isHoldingRightClick;
-    private boolean isInvisible;
+    private boolean isInvisible;*/
 
-    public PlayerNPCData() {
+    protected NPCData() {
         this.isOnFire = false;
         this.isCrouched = false;
-        this.isSprinting = false;
+        /*this.isSprinting = false;
         this.isHoldingRightClick = false;
-        this.isInvisible = false;
+        this.isInvisible = false;*/
     }
 
-    public byte buildByte() {
+    protected byte buildByte() {
         byte a = (byte) 0x00;
         if (isOnFire) a = (byte) (a | (byte) 0x01);
         if (isCrouched) a = (byte) (a | (byte) 0x02);
-        if (isSprinting) a = (byte) (a | (byte) 0x08);
+        /*if (isSprinting) a = (byte) (a | (byte) 0x08);
         if (isHoldingRightClick) a = (byte) (a | (byte) 0x10);
-        if (isInvisible) a = (byte) (a | (byte) 0x20);
+        if (isInvisible) a = (byte) (a | (byte) 0x20);*/
         return a;
     }
 
-    public boolean isOnFire() {
+    protected boolean isOnFire() {
         return isOnFire;
     }
 
-    public void setOnFire(boolean onFire) {
+    protected void setOnFire(boolean onFire) {
         isOnFire = onFire;
     }
 
-    public boolean isCrouched() {
+    protected boolean isCrouched() {
         return isCrouched;
     }
 
-    public void setCrouched(boolean crouched) {
+    protected void setCrouched(boolean crouched) {
         isCrouched = crouched;
     }
 
-    public boolean isSprinting() {
+    /*public boolean isSprinting() {
         return isSprinting;
     }
 
@@ -64,5 +64,5 @@ public class PlayerNPCData {
 
     public void setInvisible(boolean invisible) {
         isInvisible = invisible;
-    }
+    }*/
 }

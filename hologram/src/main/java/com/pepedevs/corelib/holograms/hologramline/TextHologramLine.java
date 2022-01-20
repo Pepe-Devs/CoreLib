@@ -3,14 +3,15 @@ package com.pepedevs.corelib.holograms.hologramline;
 import com.pepedevs.corelib.holograms.object.HologramLine;
 import com.pepedevs.corelib.holograms.object.HologramLineType;
 import com.pepedevs.corelib.holograms.utils.PacketUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class TextHologramLine extends HologramLine {
 
-    private String content;
+    private Component content;
 
-    public TextHologramLine(Location location, String content) {
+    public TextHologramLine(Location location, Component content) {
         super(location, HologramLineType.TEXT);
         this.content = content;
         //        this.height = this.getParent().getParent().getSettings().getHeightText();
@@ -32,11 +33,11 @@ public class TextHologramLine extends HologramLine {
     @Override
     public void destroy() {}
 
-    public String getContent() {
+    public Component getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Component content) {
         this.content = content;
     }
 }

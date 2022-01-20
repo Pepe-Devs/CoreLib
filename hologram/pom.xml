@@ -16,6 +16,13 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>pepedevs</id>
+            <url>https://repo.pepedevs.com/nexus/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.pepedevs</groupId>
@@ -57,6 +64,12 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-transport</artifactId>
             <version>5.0.0.Alpha2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.retrooper.packetevents</groupId>
+            <artifactId>api</artifactId>
+            <version>1.8-pre-22</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

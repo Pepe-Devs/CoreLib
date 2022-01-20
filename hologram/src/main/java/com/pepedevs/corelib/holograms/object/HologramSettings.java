@@ -1,6 +1,7 @@
 package com.pepedevs.corelib.holograms.object;
 
 import com.pepedevs.corelib.utils.StringUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.util.function.BiFunction;
@@ -8,8 +9,8 @@ import java.util.function.BiFunction;
 public class HologramSettings {
 
     private String defaultText = " ";
-    private BiFunction<String, Player, String> messageParser =
-            (s, player) -> StringUtils.translateAlternateColorCodes(s);
+    private BiFunction<Component, Player, Component> messageParser =
+            (component, player) -> component;
     private boolean downOrigin = false;
 
     private double heightText = 0.3;
@@ -25,11 +26,11 @@ public class HologramSettings {
         return defaultText;
     }
 
-    public BiFunction<String, Player, String> getMessageParser() {
+    public BiFunction<Component, Player, Component> getMessageParser() {
         return messageParser;
     }
 
-    public void setMessageParser(BiFunction<String, Player, String> messageParser) {
+    public void setMessageParser(BiFunction<Component, Player, Component> messageParser) {
         this.messageParser = messageParser;
     }
 

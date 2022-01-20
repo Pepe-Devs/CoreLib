@@ -21,6 +21,10 @@
             <id>minecraft-repo</id>
             <url>https://libraries.minecraft.net/</url>
         </repository>
+        <repository>
+            <id>pepedevs</id>
+            <url>https://repo.pepedevs.com/nexus/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -50,6 +54,12 @@
             <groupId>com.pepedevs</groupId>
             <artifactId>utils</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.retrooper.packetevents</groupId>
+            <artifactId>api</artifactId>
+            <version>1.8-pre-23</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

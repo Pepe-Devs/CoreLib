@@ -1,11 +1,12 @@
 package com.pepedevs.corelib.npc.internal;
 
-import com.pepedevs.corelib.nms.NMSBridge;
-import com.pepedevs.corelib.nms.NMSProvider;
-import com.pepedevs.corelib.nms.PacketProvider;
-import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityDestroy;
-import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityLook;
-import com.pepedevs.corelib.nms.packets.WrappedPacketPlayOutEntityTeleport;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
+import com.github.retrooper.packetevents.util.MathUtil;
+import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.wrapper.play.server.*;
 import com.pepedevs.corelib.npc.NPC;
 import com.pepedevs.corelib.npc.action.NPCClickAction;
 import com.pepedevs.corelib.utils.reflection.bukkit.EntityReflection;
@@ -18,8 +19,9 @@ import java.util.*;
 
 public abstract class NpcBase implements NPC {
 
-    protected static final PacketProvider PACKET_PROVIDER = NMSBridge.getPacketProvider();
-    protected static final NMSProvider NMS_PROVIDER = NMSBridge.getNMSProvider();
+    protected static final PacketEventsAPI<?> PACKET_EVENTS_API = PacketEvents.getAPI();
+
+    private final NPCData npcData;
 
     protected final int entityId;
     protected final UUID uuid;
@@ -29,6 +31,7 @@ public abstract class NpcBase implements NPC {
     protected Set<UUID> shown = Collections.synchronizedSet(new HashSet<>());
 
     public NpcBase(Location location) {
+        this.npcData = new NPCData();
         this.entityId = EntityReflection.getFreeEntityId();
         this.location = location;
         this.uuid = UUID.randomUUID();
@@ -44,6 +47,7 @@ public abstract class NpcBase implements NPC {
 
     @Override
     public void spawn() {
+        if (this.location.getWorld() == null) throw new NullPointerException("World can't be null");
         for (Player player : this.location.getWorld().getPlayers()) {
             this.view(player);
             this.shown.add(player.getUniqueId());
@@ -75,22 +79,21 @@ public abstract class NpcBase implements NPC {
     public void look(float yaw, float pitch) {
         for (UUID uuid : this.shown) {
             Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                this.changeFov(player, yaw, pitch);
-            } else {
-                this.shown.remove(uuid);
-            }
+            if (player != null) this.changeFov(player, yaw, pitch);
+            else this.shown.remove(uuid);
         }
     }
 
     @Override
     public void lookAt(Vector direction) {
-
+        Location location = new Location(null, 0, 1, 0);
+        location.setDirection(direction);
+        this.look(location.getYaw(), location.getPitch());
     }
 
     @Override
     public void lookAt(Location location) {
-
+        lookAt(this.location.toVector().subtract(location.toVector()).normalize());
     }
 
     @Override
@@ -137,22 +140,60 @@ public abstract class NpcBase implements NPC {
         this.clickActions.add(action);
     }
 
+    public void setCrouching(boolean a) {
+        this.npcData.setCrouched(a);
+    }
+
+    public boolean isCrouching() {
+        return this.npcData.isCrouched();
+    }
+
+    public void setOnFire(boolean a) {
+        this.npcData.setOnFire(a);
+    }
+
+    public boolean isOnFire() {
+        return this.npcData.isOnFire();
+    }
+
+    private void updateNPCData() {
+        EntityData entityData = new EntityData(0, EntityDataTypes.BYTE, this.npcData.buildByte());
+        WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.entityId, Collections.singletonList(entityData));
+        for (UUID uuid : this.shown) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
+        }
+    }
+
     protected void view(Player player) {
+
+    }
+
+    protected Vector3d convert(Location location) {
+        return new Vector3d(location.getX(), location.getY(), location.getZ());
     }
 
     protected void destroy(Player player) {
-        WrappedPacketPlayOutEntityDestroy packet = PACKET_PROVIDER.getNewEntityDestroyPacket(this.entityId);
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+        WrapperPlayServerDestroyEntities packet = new WrapperPlayServerDestroyEntities(this.entityId);
+        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }
 
     protected void changeLocation(Player player) {
-        WrappedPacketPlayOutEntityTeleport packet = PACKET_PROVIDER.getNewEntityTeleportPacket(this.getEntityId(), this.location);
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+        WrapperPlayServerEntityTeleport packet = new WrapperPlayServerEntityTeleport(this.getEntityId(),
+                convert(this.location),
+                this.location.getYaw(),
+                this.location.getPitch(),
+                true);
+        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }
 
     protected void changeFov(Player player, float yaw, float pitch) {
-        WrappedPacketPlayOutEntityLook packet = PACKET_PROVIDER.getNewEntityLookPacket(this.getEntityId(), yaw, pitch, true);
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+        WrapperPlayServerEntityRotation packet = new WrapperPlayServerEntityRotation(this.getEntityId(),
+                (byte) MathUtil.floor(yaw * 256.0F / 360.0F),
+                (byte) MathUtil.floor(pitch * 256.0F / 360.0F),
+                true);
+        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }
 
 }

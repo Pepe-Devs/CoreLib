@@ -74,7 +74,8 @@ public class WrappedPacketPlayOutEntityLookImpl implements WrappedPacketPlayOutE
     @Override
     public WrappedPacketDataSerializer buildData() {
         WrappedPacketDataSerializer serializer = NMSProviderImpl.INSTANCE.getDataSerializer();
-        serializer.serializeVarInt(this.entityId)
+        serializer
+                .serializeVarInt(this.entityId)
                 .serializeByte(MathHelper.d(this.yaw * 256.0F / 360.0F))
                 .serializeByte(MathHelper.d(this.pitch * 256.0F / 360.0F))
                 .serializeBoolean(this.onGround);

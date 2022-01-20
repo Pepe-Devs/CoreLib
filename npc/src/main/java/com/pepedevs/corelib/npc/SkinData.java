@@ -10,7 +10,7 @@ public class SkinData {
     private boolean rightPantsLegEnabled;
     private boolean hatEnabled;
 
-    public SkinData() {
+    protected SkinData() {
         this.capeEnabled = true;
         this.jacketEnabled = true;
         this.leftSleeveEnabled = true;
@@ -20,7 +20,7 @@ public class SkinData {
         this.hatEnabled = true;
     }
 
-    public byte buildByte() {
+    protected byte buildByte() {
         byte a = (byte) 0x00;
         if (capeEnabled) a = (byte) (a | (byte) 0x01);
         if (jacketEnabled) a = (byte) (a | (byte) 0x02);
@@ -32,59 +32,59 @@ public class SkinData {
         return a;
     }
 
-    public boolean isCapeEnabled() {
+    protected boolean isCapeEnabled() {
         return capeEnabled;
     }
 
-    public void setCapeEnabled(boolean capeEnabled) {
+    protected void setCapeEnabled(boolean capeEnabled) {
         this.capeEnabled = capeEnabled;
     }
 
-    public boolean isJacketEnabled() {
+    protected boolean isJacketEnabled() {
         return jacketEnabled;
     }
 
-    public void setJacketEnabled(boolean jacketEnabled) {
+    protected void setJacketEnabled(boolean jacketEnabled) {
         this.jacketEnabled = jacketEnabled;
     }
 
-    public boolean isLeftSleeveEnabled() {
+    protected boolean isLeftSleeveEnabled() {
         return leftSleeveEnabled;
     }
 
-    public void setLeftSleeveEnabled(boolean leftSleeveEnabled) {
+    protected void setLeftSleeveEnabled(boolean leftSleeveEnabled) {
         this.leftSleeveEnabled = leftSleeveEnabled;
     }
 
-    public boolean isRightSleeveEnabled() {
+    protected boolean isRightSleeveEnabled() {
         return rightSleeveEnabled;
     }
 
-    public void setRightSleeveEnabled(boolean rightSleeveEnabled) {
+    protected void setRightSleeveEnabled(boolean rightSleeveEnabled) {
         this.rightSleeveEnabled = rightSleeveEnabled;
     }
 
-    public boolean isLeftPantsLegEnabled() {
+    protected boolean isLeftPantsLegEnabled() {
         return leftPantsLegEnabled;
     }
 
-    public void setLeftPantsLegEnabled(boolean leftPantsLegEnabled) {
+    protected void setLeftPantsLegEnabled(boolean leftPantsLegEnabled) {
         this.leftPantsLegEnabled = leftPantsLegEnabled;
     }
 
-    public boolean isRightPantsLegEnabled() {
+    protected boolean isRightPantsLegEnabled() {
         return rightPantsLegEnabled;
     }
 
-    public void setRightPantsLegEnabled(boolean rightPantsLegEnabled) {
+    protected void setRightPantsLegEnabled(boolean rightPantsLegEnabled) {
         this.rightPantsLegEnabled = rightPantsLegEnabled;
     }
 
-    public boolean isHatEnabled() {
+    protected boolean isHatEnabled() {
         return hatEnabled;
     }
 
-    public void setHatEnabled(boolean hatEnabled) {
+    protected void setHatEnabled(boolean hatEnabled) {
         this.hatEnabled = hatEnabled;
     }
 }
