@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class NpcBase implements NPC {
 
@@ -24,7 +25,7 @@ public abstract class NpcBase implements NPC {
     private final String id;
     private final NPCData npcData;
 
-    protected final int entityId;
+    protected int entityId;
     protected final UUID uuid;
     protected Location location;
 
@@ -36,11 +37,17 @@ public abstract class NpcBase implements NPC {
         this.npcData = new NPCData();
         this.entityId = EntityReflection.getFreeEntityId();
         this.location = location;
-        this.uuid = UUID.randomUUID();
+        this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0);
     }
 
+    @Override
     public int getEntityId() {
         return entityId;
+    }
+
+    @Override
+    public void setEntityId(int id) {
+        this.entityId = id;
     }
 
     public UUID getUuid() {
@@ -129,12 +136,22 @@ public abstract class NpcBase implements NPC {
     }
 
     @Override
+    public void silentHide(Player player) {
+        this.destroy(player);
+    }
+
+    @Override
     public void show(Player player) {
         if (this.shown.contains(player.getUniqueId()))
             return;
 
         this.view(player);
         this.shown.add(player.getUniqueId());
+    }
+
+    @Override
+    public void forceShow(Player player) {
+        this.view(player);
     }
 
     @Override
@@ -149,6 +166,7 @@ public abstract class NpcBase implements NPC {
 
     public void setCrouching(boolean a) {
         this.npcData.setCrouched(a);
+        this.updateNPCData();
     }
 
     public boolean isCrouching() {
@@ -157,6 +175,7 @@ public abstract class NpcBase implements NPC {
 
     public void setOnFire(boolean a) {
         this.npcData.setOnFire(a);
+        this.updateNPCData();
     }
 
     public boolean isOnFire() {
@@ -196,11 +215,14 @@ public abstract class NpcBase implements NPC {
     }
 
     protected void changeFov(Player player, float yaw, float pitch) {
-        WrapperPlayServerEntityRotation packet = new WrapperPlayServerEntityRotation(this.getEntityId(),
+        WrapperPlayServerEntityHeadLook yawPacket = new WrapperPlayServerEntityHeadLook(this.getEntityId(),
+                (byte) MathUtil.floor(yaw * 256.0F / 360.0F));
+        WrapperPlayServerEntityRotation pitchPacket = new WrapperPlayServerEntityRotation(this.getEntityId(),
                 (byte) MathUtil.floor(yaw * 256.0F / 360.0F),
                 (byte) MathUtil.floor(pitch * 256.0F / 360.0F),
                 true);
-        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
+        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, yawPacket);
+        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, pitchPacket);
     }
 
 }

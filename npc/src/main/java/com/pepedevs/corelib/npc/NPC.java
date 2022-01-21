@@ -11,6 +11,10 @@ import java.util.UUID;
 
 public interface NPC {
 
+    int getEntityId();
+
+    void setEntityId(int id);
+
     String getId();
 
     void spawn();
@@ -31,7 +35,11 @@ public interface NPC {
 
     void hide(Player player);
 
+    void silentHide(Player player);
+
     void show(Player player);
+
+    void forceShow(Player player);
 
     Collection<NPCClickAction> getClickActions();
 

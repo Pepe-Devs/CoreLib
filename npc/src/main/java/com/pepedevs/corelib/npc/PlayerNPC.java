@@ -24,10 +24,18 @@ public class PlayerNPC extends NpcBase {
     private final GameProfile gameProfile;
     private final SkinData skinData;
 
+    private final WrapperPlayServerPlayerInfo.PlayerData info;
+
     public PlayerNPC(String id, Location location) {
         super(id, location);
         this.gameProfile = new GameProfile(this.getUuid(), "");
         this.skinData = new SkinData();
+        this.info = new WrapperPlayServerPlayerInfo.PlayerData(
+                Component.empty(),
+                this.gameProfile,
+                GameMode.CREATIVE,
+                0
+        );
     }
 
     public void setSkin(Skin skin) {
@@ -35,27 +43,10 @@ public class PlayerNPC extends NpcBase {
         this.gameProfile.getTextureProperties().add(
                 new TextureProperty("textures", skin.getValue(), skin.getSignature())
         );
-        for (UUID uuid : this.shown) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null)
-                continue;
-            this.hide(player);
-            this.view(player);
-        }
     }
 
     @Override
     protected void view(Player player) {
-        WrapperPlayServerPlayerInfo.PlayerData info = new WrapperPlayServerPlayerInfo.PlayerData(
-                Component.empty(),
-                this.gameProfile,
-                GameMode.CREATIVE,
-                0
-        );
-        WrapperPlayServerPlayerInfo infoAddPacket = new WrapperPlayServerPlayerInfo(
-                WrapperPlayServerPlayerInfo.Action.ADD_PLAYER,
-                info
-        );
         WrapperPlayServerSpawnPlayer spawnPacket = new WrapperPlayServerSpawnPlayer(
                 this.entityId,
                 this.uuid,
@@ -64,25 +55,7 @@ public class PlayerNPC extends NpcBase {
                 this.location.getPitch(),
                 new ArrayList<>()
         );
-        WrapperPlayServerPlayerInfo infoRemovePacket = new WrapperPlayServerPlayerInfo(
-                WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
-                info
-        );
-        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoAddPacket);
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, spawnPacket);
-        //ADD DELAY
-        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoRemovePacket);
-    }
-
-    public void updateSkin(Skin skin) {
-        this.gameProfile.getTextureProperties().clear();
-        this.gameProfile.getTextureProperties().add(new TextureProperty("textures", skin.getValue(), skin.getSignature()));
-        for (UUID uuid : this.shown) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            this.destroy(player);
-            this.view(player);
-        }
     }
 
     public void hideNameTag() {
@@ -106,6 +79,30 @@ public class PlayerNPC extends NpcBase {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
             PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
+        }
+    }
+
+    public void addInTab() {
+        WrapperPlayServerPlayerInfo infoAddPacket = new WrapperPlayServerPlayerInfo(
+                WrapperPlayServerPlayerInfo.Action.ADD_PLAYER,
+                this.info
+        );
+        for (UUID uuid : this.shown) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoAddPacket);
+        }
+    }
+
+    public void removeFromTab() {
+        WrapperPlayServerPlayerInfo infoRemovePacket = new WrapperPlayServerPlayerInfo(
+                WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
+                this.info
+        );
+        for (UUID uuid : this.shown) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoRemovePacket);
         }
     }
 

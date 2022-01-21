@@ -58,8 +58,8 @@
         <dependency>
             <groupId>com.github.retrooper.packetevents</groupId>
             <artifactId>api</artifactId>
-            <version>1.8-pre-23</version>
-            <scope>compile</scope>
+            <version>1.8-pre-25</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
