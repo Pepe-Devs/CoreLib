@@ -88,8 +88,8 @@ public class PlayerNPC extends NpcBase {
     public void hideNameTag() {
         WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + this.uuid.toString().substring(0, 8),
                 WrapperPlayServerTeams.TeamMode.REMOVE,
-                Collections.singletonList(this.gameProfile.getName()),
-                Optional.empty());
+                Optional.empty(),
+                this.gameProfile.getName());
         for (UUID uuid : this.shown) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
@@ -100,8 +100,8 @@ public class PlayerNPC extends NpcBase {
     public void showNameTag() {
         WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + this.uuid.toString().substring(0, 8),
                 WrapperPlayServerTeams.TeamMode.CREATE,
-                Collections.singletonList(this.gameProfile.getName()),
-                Optional.empty());
+                Optional.empty(),
+                this.gameProfile.getName());
         for (UUID uuid : this.shown) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
@@ -237,7 +237,7 @@ public class PlayerNPC extends NpcBase {
         }
     }
 
-    enum SkinPart {
+    public enum SkinPart {
         CAPE,
         JACKET,
         LEFT_SLEEVE,
