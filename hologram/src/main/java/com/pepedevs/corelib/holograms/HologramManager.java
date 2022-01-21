@@ -1,5 +1,6 @@
 package com.pepedevs.corelib.holograms;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.pepedevs.corelib.holograms.listener.HologramListener;
 import com.pepedevs.corelib.holograms.listener.HologramPacketListener;
 import com.pepedevs.corelib.holograms.object.DefaultHologram;
@@ -31,12 +32,8 @@ public class HologramManager {
         this.handle = plugin;
         this.thread = thread;
         this.holograms = new ConcurrentHashMap<>();
-        this.packetListener = new HologramPacketListener();
-        PacketChannelHandler.getInstance(this.handle)
-                .addPacketListener(
-                        "PacketPlayInUseEntity",
-                        PacketListener.Priority.NORMAL,
-                        this.packetListener);
+        this.packetListener = new HologramPacketListener(this);
+        PacketEvents.getAPI().getEventManager().registerListener(this.packetListener);
         this.hologramListener = new HologramListener(this);
         this.handle
                 .getServer()
@@ -76,7 +73,7 @@ public class HologramManager {
             value.destroy();
         }
         this.holograms.clear();
-        PacketChannelHandler.getInstance(this.handle).removePacketListener(this.packetListener);
+//        PacketChannelHandler.getInstance(this.handle).removePacketListener(this.packetListener);
         this.thread.cancel();
         HandlerList.unregisterAll(this.hologramListener);
         instance = null;

@@ -21,6 +21,7 @@ public abstract class NpcBase implements NPC {
 
     protected static final PacketEventsAPI<?> PACKET_EVENTS_API = PacketEvents.getAPI();
 
+    private final String id;
     private final NPCData npcData;
 
     protected final int entityId;
@@ -30,19 +31,25 @@ public abstract class NpcBase implements NPC {
     protected Set<NPCClickAction> clickActions = Collections.synchronizedSet(new HashSet<>());
     protected Set<UUID> shown = Collections.synchronizedSet(new HashSet<>());
 
-    public NpcBase(Location location) {
+    public NpcBase(String id, Location location) {
+        this.id = id;
         this.npcData = new NPCData();
         this.entityId = EntityReflection.getFreeEntityId();
         this.location = location;
         this.uuid = UUID.randomUUID();
     }
 
-    protected int getEntityId() {
+    public int getEntityId() {
         return entityId;
     }
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     @Override

@@ -24,8 +24,8 @@ public class PlayerNPC extends NpcBase {
     private final GameProfile gameProfile;
     private final SkinData skinData;
 
-    public PlayerNPC(Location location) {
-        super(location);
+    public PlayerNPC(String id, Location location) {
+        super(id, location);
         this.gameProfile = new GameProfile(this.getUuid(), "");
         this.skinData = new SkinData();
     }

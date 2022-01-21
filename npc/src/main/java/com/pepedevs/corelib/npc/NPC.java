@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface NPC {
 
+    String getId();
+
     void spawn();
 
     void teleport(Location location);
