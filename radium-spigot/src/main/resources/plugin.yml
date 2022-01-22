@@ -1,0 +1,7 @@
+name: Radium
+version: ${project.version}
+main: com.pepedevs.radium.main.Radium
+api-version: 1.13
+author: PepeDevs
+softdepend: [Vault, PlaceHolderAPI]
+load: STARTUP

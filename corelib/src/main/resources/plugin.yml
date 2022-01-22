@@ -1,7 +1,0 @@
-name: CoreLib
-version: ${project.version}
-main: com.pepedevs.corelib.main.CoreLib
-api-version: 1.13
-author: PepeDevs
-softdepend: [Vault, PlaceHolderAPI]
-load: STARTUP

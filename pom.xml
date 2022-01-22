@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.pepedevs</groupId>
-    <artifactId>CoreLib</artifactId>
+    <artifactId>radium</artifactId>
     <packaging>pom</packaging>
     <version>1.2.0-BETA-1.4-SNAPSHOT</version>
     <modules>
@@ -13,7 +13,7 @@
         <module>adventure-utils</module>
         <module>bungee-utils</module>
         <module>configuration-utils</module>
-        <module>corelib</module>
+        <module>radium-spigot</module>
         <module>database</module>
         <module>event-utils</module>
         <module>hologram</module>
@@ -49,15 +49,15 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.pepedevs.corelib.libs.bstats</shadedPattern>
+                            <shadedPattern>com.pepedevs.radium.libs.bstats</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>xyz.xenondevs.particle</pattern>
-                            <shadedPattern>com.pepedevs.corelib.particles</shadedPattern>
+                            <shadedPattern>com.pepedevs.radium.particles</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
-                            <shadedPattern>com.pepedevs.corelib.utils.xseries</shadedPattern>
+                            <shadedPattern>com.pepedevs.radium.utils.xseries</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
