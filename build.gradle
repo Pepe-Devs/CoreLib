@@ -1,0 +1,75 @@
+plugins {
+    id 'java-library'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'maven-publish'
+}
+
+allprojects {
+    group 'com.pepedevs.radium'
+    version '1.2.0-BETA-1.5-SNAPSHOT'
+
+    apply plugin: 'java-library'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'maven-publish'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name 'spigotmc-repo'
+            url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+        maven {
+            name 'sonatype'
+            url 'https://oss.sonatype.org/content/groups/public/'
+        }
+        maven {
+            name 'pepedevs-public'
+            url 'https://repo.pepedevs.com/nexus/repository/maven-public/'
+        }
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from(components.java)
+            }
+        }
+        repositories {
+            maven {
+                credentials {
+                    username = "$usr"
+                    password = "$pwd"
+                }
+                url 'https://repo.pepedevs.com/nexus/repository/maven-snapshot/'
+            }
+        }
+    }
+
+    shadowJar {
+        relocate 'org.bstats', 'com.pepedevs.radium.libs.bstats'
+        relocate 'xyz.xenondevs.particle', 'com.pepedevs.radium.particles'
+        relocate 'com.cryptomorin.xseries', 'com.pepedevs.radium.utils.xseries'
+    }
+
+    java {
+        withJavadocJar()
+    }
+
+    build {
+        dependsOn shadowJar
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    shadowJar.shouldRunAfter build
+}
+
+
+build {
+    dependsOn shadowJar
+}
+
+build.shouldRunAfter subprojects.build

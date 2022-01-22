@@ -1,0 +1,8 @@
+description = 'task-utils'
+
+dependencies {
+    api project(':utils')
+    compileOnly 'com.google.guava:guava:31.0.1-jre'
+}
+
+

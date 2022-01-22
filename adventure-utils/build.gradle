@@ -1,0 +1,12 @@
+description = 'adventure-utils'
+
+dependencies {
+    api project(':reflection-utils')
+    api project(':nms-wrapper')
+    api 'net.kyori:adventure-api:4.10.0-SNAPSHOT'
+    api 'net.kyori:adventure-text-minimessage:4.10.0-SNAPSHOT'
+    api 'net.kyori:adventure-platform-bukkit:4.0.1'
+    api 'net.kyori:adventure-text-serializer-plain:4.9.3'
+    compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+}
+

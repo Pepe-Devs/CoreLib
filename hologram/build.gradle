@@ -1,0 +1,14 @@
+description = 'hologram'
+
+dependencies {
+    api project(':utils')
+    api project(':reflection-utils')
+    api project(':minecraft-version')
+    api project(':nms-wrapper')
+    api project(':task-utils')
+    api project(':packet-utils')
+    compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+    compileOnly 'io.netty:netty-transport:5.0.0.Alpha2'
+    compileOnly 'com.github.retrooper.packetevents:api:1.8-pre-26'
+}
+

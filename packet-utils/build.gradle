@@ -1,0 +1,9 @@
+description = 'packet-utils'
+
+dependencies {
+    api project(':utils')
+    compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+    compileOnly 'io.netty:netty-transport:5.0.0.Alpha2'
+}
+
+

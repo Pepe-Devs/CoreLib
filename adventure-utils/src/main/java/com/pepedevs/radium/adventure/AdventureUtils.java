@@ -139,10 +139,10 @@ public class AdventureUtils {
     }
 
     public static Component fromLegacyText(String text) {
-        if (text.contains("§")) {
-            return fromLegacyText('§', text);
+        if (text.contains(String.valueOf(LegacyComponentSerializer.SECTION_CHAR))) {
+            return fromLegacyText(LegacyComponentSerializer.SECTION_CHAR, text);
         } else {
-            return fromLegacyText('&', text);
+            return fromLegacyText(LegacyComponentSerializer.AMPERSAND_CHAR, text);
         }
     }
 

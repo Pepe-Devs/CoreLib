@@ -1,0 +1,29 @@
+description = 'radium-spigot'
+
+dependencies {
+    api project(':action-item')
+    api project(':adventure-utils')
+    api project(':bungee-utils')
+    api project(':configuration-utils')
+    api project(':database')
+    api project(':event-utils')
+    api project(':hologram')
+    api project(':inventory-gui')
+    api project(':minecraft-version')
+    api project(':nms-wrapper')
+    api project(':nms.v1_8_R3')
+    api project(':nms.v1_12_R1')
+    api project(':packet-utils')
+    api project(':placeholder-utils')
+    api project(':plugin-helper')
+    api project(':reflection-utils')
+    api project(':scoreboard')
+    api project(':task-utils')
+    api project(':utils')
+    api project(':vault-hook')
+    api project(':npc')
+    implementation 'org.bstats:bstats-bukkit:2.2.1'
+    compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+}
+
+

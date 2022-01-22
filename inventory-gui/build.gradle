@@ -1,0 +1,10 @@
+description = 'inventory-gui'
+
+dependencies {
+    api project(':utils')
+    api project(':reflection-utils')
+    api project(':nms-wrapper')
+    compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+}
+
+

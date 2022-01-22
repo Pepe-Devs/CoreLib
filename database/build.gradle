@@ -1,0 +1,8 @@
+description = 'database'
+
+dependencies {
+    api 'org.mongodb:mongo-java-driver:3.12.10'
+    api 'com.zaxxer:HikariCP:4.0.3'
+    compileOnly 'commons-lang:commons-lang:2.6'
+}
+

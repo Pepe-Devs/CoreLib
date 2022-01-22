@@ -1,0 +1,7 @@
+description = 'event-utils'
+
+dependencies {
+    api project(':utils')
+    compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+}
+
