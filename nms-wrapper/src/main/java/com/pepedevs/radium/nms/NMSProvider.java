@@ -1,11 +1,5 @@
 package com.pepedevs.radium.nms;
 
-import com.mojang.authlib.GameProfile;
-import com.pepedevs.radium.nms.objects.WrappedDataWatcher;
-import com.pepedevs.radium.nms.objects.WrappedPacketDataSerializer;
-import com.pepedevs.radium.nms.objects.WrappedPlayerInfoData;
-import io.netty.buffer.ByteBuf;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,22 +11,6 @@ public interface NMSProvider {
     Object[] craftChatMessageFromString(String message);
 
     NMSPlayer getPlayer(Player player);
-
-    WrappedPacketDataSerializer getDataSerializer();
-
-    WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf);
-
-    WrappedDataWatcher getDataWatcher();
-
-    WrappedDataWatcher.WrappedWatchableObject getWatchableObject(Object watchableObject);
-
-    WrappedDataWatcher.WrappedWatchableObject getWatchableObject(int i, int j, Object o);
-
-    WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name);
-
-    WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name);
-
-    WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name);
 
     void craftEventFactoryHandleInventoryClose(Player player);
 

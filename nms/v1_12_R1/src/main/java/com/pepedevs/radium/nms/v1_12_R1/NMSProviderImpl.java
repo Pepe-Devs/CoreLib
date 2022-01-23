@@ -1,17 +1,7 @@
 package com.pepedevs.radium.nms.v1_12_R1;
 
-import com.mojang.authlib.GameProfile;
-import com.pepedevs.radium.nms.EnumGameMode;
 import com.pepedevs.radium.nms.NMSPlayer;
 import com.pepedevs.radium.nms.NMSProvider;
-import com.pepedevs.radium.nms.objects.WrappedDataWatcher;
-import com.pepedevs.radium.nms.objects.WrappedPacketDataSerializer;
-import com.pepedevs.radium.nms.objects.WrappedPlayerInfoData;
-import com.pepedevs.radium.nms.v1_12_R1.objects.WrappedPacketDataSerializerImpl;
-import com.pepedevs.radium.nms.v1_12_R1.objects.WrappedPlayerInfoDataImpl;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.kyori.adventure.text.Component;
 import net.minecraft.server.v1_12_R1.EnumChatFormat;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import org.bukkit.ChatColor;
@@ -42,46 +32,6 @@ public class NMSProviderImpl implements NMSProvider {
     @Override
     public NMSPlayer getPlayer(Player player) {
         return new com.pepedevs.radium.nms.v1_12_R1.NMSPlayer(player);
-    }
-
-    @Override
-    public WrappedPacketDataSerializer getDataSerializer() {
-        return this.getDataSerializer(Unpooled.buffer());
-    }
-
-    @Override
-    public WrappedPacketDataSerializer getDataSerializer(ByteBuf byteBuf) {
-        return new WrappedPacketDataSerializerImpl(byteBuf);
-    }
-
-    @Override
-    public WrappedDataWatcher getDataWatcher() {
-        return null;
-    }
-
-    @Override
-    public WrappedDataWatcher.WrappedWatchableObject getWatchableObject(Object watchableObject) {
-        return null;
-    }
-
-    @Override
-    public WrappedDataWatcher.WrappedWatchableObject getWatchableObject(int i, int j, Object o) {
-        return null;
-    }
-
-    @Override
-    public WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, String name) {
-        return new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
-    }
-
-    @Override
-    public WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Component name) {
-        return new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
-    }
-
-    @Override
-    public WrappedPlayerInfoData getPlayerInfo(GameProfile gameProfile, int latency, EnumGameMode gamemode, Object name) {
-        return new WrappedPlayerInfoDataImpl(gameProfile, latency, gamemode, name);
     }
 
     @Override

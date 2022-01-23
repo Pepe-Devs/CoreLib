@@ -1,10 +1,7 @@
 package com.pepedevs.radium.adventure;
 
 import com.google.gson.Gson;
-import com.pepedevs.radium.nms.NMSBridge;
-import com.pepedevs.radium.utils.reflection.resolver.FieldResolver;
-import com.pepedevs.radium.utils.reflection.resolver.minecraft.NMSClassResolver;
-import com.pepedevs.radium.utils.reflection.resolver.wrapper.ClassWrapper;
+import com.pepedevs.radium.utils.version.Version;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -12,21 +9,38 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.ChatColor;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class AdventureUtils {
 
-    private static final ClassWrapper<?> I_CHAT_BASE_COMPONENT_CLASS;
+    private static Class<?> I_CHAT_BASE_COMPONENT_CLASS = null;
 
-    private static final Gson NMS_GSON;
+    private static Gson NMS_GSON;
     private static final GsonComponentSerializer GSON = GsonComponentSerializer.gson();
+    private static final LegacyComponentSerializer LEGACY_SECTION = LegacyComponentSerializer.legacySection();
     private static final EnumMap<ChatColor, NamedTextColor> COLOR_MAP = new EnumMap<ChatColor, NamedTextColor>(ChatColor.class);
 
     static {
-        NMSClassResolver NMS_CLASS_RESOLVER = new NMSClassResolver();
-        I_CHAT_BASE_COMPONENT_CLASS = NMS_CLASS_RESOLVER.resolveWrapper("IChatBaseComponent", "net.minecraft.network.chat.IChatBaseComponent");
-        ClassWrapper<?> I_CHAT_BASE_COMPONENT_CHAT_SERIALIZER_INNER_CLASS = NMS_CLASS_RESOLVER.resolveWrapper("IChatBaseComponent$ChatSerializer", "net.minecraft.network.chat.IChatBaseComponent$ChatSerializer");
-        NMS_GSON = new FieldResolver(I_CHAT_BASE_COMPONENT_CHAT_SERIALIZER_INNER_CLASS.getClazz()).resolveAccessor("a").get(null);
+        Class<?> I_CHAT_BASE_COMPONENT_CHAT_SERIALIZER = null;
+        try {
+            I_CHAT_BASE_COMPONENT_CLASS = Class.forName(Version.SERVER_VERSION.getNmsPackage() + ".IChatBaseComponent");
+            I_CHAT_BASE_COMPONENT_CHAT_SERIALIZER = Class.forName(Version.SERVER_VERSION.getNmsPackage() + ".IChatBaseComponent$ChatSerializer");
+        } catch (ClassNotFoundException e) {
+            try {
+                I_CHAT_BASE_COMPONENT_CLASS = Class.forName(Version.SERVER_VERSION.getNmsPackage() + ".network.chat.IChatBaseComponent");
+                I_CHAT_BASE_COMPONENT_CHAT_SERIALIZER = Class.forName(Version.SERVER_VERSION.getNmsPackage() + ".network.chat.IChatBaseComponent$ChatSerializer");
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
+        try {
+            Field field = I_CHAT_BASE_COMPONENT_CHAT_SERIALIZER.getDeclaredField("a");
+            field.setAccessible(true);
+            NMS_GSON = (Gson) field.get(null);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
 
         COLOR_MAP.put(ChatColor.AQUA, NamedTextColor.AQUA);
         COLOR_MAP.put(ChatColor.BLACK, NamedTextColor.BLACK);
@@ -75,7 +89,7 @@ public class AdventureUtils {
     }
 
     public static Object asVanilla(final Component component) {
-        return NMS_GSON.fromJson(GSON.serializer().toJsonTree(component), I_CHAT_BASE_COMPONENT_CLASS.getClazz());
+        return NMS_GSON.fromJson(GSON.serializer().toJsonTree(component), I_CHAT_BASE_COMPONENT_CLASS);
     }
 
     public static List<Object> asVanilla(final List<Component> adventures) {
@@ -87,8 +101,7 @@ public class AdventureUtils {
     }
 
     public static String toVanillaString(Component component) {
-        Object chatComponent = asVanilla(component);
-        return NMSBridge.getNMSProvider().craftChatMessageFromComponent(chatComponent);
+        return LEGACY_SECTION.serialize(component);
     }
 
     public static String[] toVanillaString(Component... components) {
@@ -108,10 +121,9 @@ public class AdventureUtils {
     }
 
     public static Component fromVanillaString(String text) {
-        if (text == null || text.isEmpty())
-            return null;
-        Object chatComponent = NMSBridge.getNMSProvider().craftChatMessageFromString(text)[0];
-        return asAdventure(chatComponent);
+        if (text == null) return null;
+        if (text.isEmpty()) return Component.empty();
+        return LEGACY_SECTION.deserialize(text);
     }
 
     public static Component[] fromVanillaString(String... texts) {

@@ -1,7 +1,5 @@
 package com.pepedevs.radium.nms;
 
-import com.pepedevs.radium.nms.packets.WrappedPacket;
-
 public interface NMSPlayer {
 
     Object getEntityPlayer();
@@ -9,8 +7,6 @@ public interface NMSPlayer {
     Object getPlayerConnection();
 
     Object getNetworkManager();
-
-    void sendPacket(WrappedPacket packet);
 
     void sendPacket(Object packet);
 

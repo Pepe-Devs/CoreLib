@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 public class NMSBridge {
 
     private static final NMSProvider SERVER_NMS_ADAPTOR;
-    private static final PacketProvider SERVER_PACKET_PROVIDER;
 
     static {
         Class<?> clazz = null;
@@ -23,30 +22,11 @@ public class NMSBridge {
             e.printStackTrace();
         }
 
-        Class<?> clazz2 = null;
-        try {
-            clazz2 = Class.forName("com.pepedevs.radium.nms." + Version.SERVER_VERSION.name() + ".PacketProviderImpl");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        PacketProvider packetProvider = null;
-        try {
-            packetProvider = (PacketProvider) clazz2.getDeclaredField("INSTANCE").get(null);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-
         SERVER_NMS_ADAPTOR = nmsProvider;
-        SERVER_PACKET_PROVIDER = packetProvider;
     }
 
     public static NMSProvider getNMSProvider() {
         return SERVER_NMS_ADAPTOR;
-    }
-
-    public static PacketProvider getPacketProvider() {
-        return SERVER_PACKET_PROVIDER;
     }
 
     public static NMSPlayer getNMSPlayer(Player player) {
