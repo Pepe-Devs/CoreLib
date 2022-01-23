@@ -1,11 +1,10 @@
 description = 'scoreboard'
 
 dependencies {
-    api project(':reflection-utils')
     api project(':minecraft-version')
-    api project(':utils')
-    api project(':nms-wrapper')
+    api project(':adventure-utils')
     compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+    compileOnly 'com.github.retrooper.packetevents:api:1.8-pre-27'
 }
 
 

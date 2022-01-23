@@ -1,12 +1,15 @@
 package com.pepedevs.radium.scoreboard;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.util.AdventureSerializer;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
 import com.pepedevs.radium.adventure.AdventureUtils;
-import com.pepedevs.radium.nms.NMSBridge;
-import com.pepedevs.radium.nms.NMSProvider;
-import com.pepedevs.radium.nms.PacketProvider;
-import com.pepedevs.radium.nms.packets.*;
 import com.pepedevs.radium.utils.version.Version;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,8 +23,6 @@ public class Scoreboard {
 
     private static final int MAX_DISPLAY_NAME_LENGTH = 32;
     private static final int MAX_ELEMENTS_LENGTH = 48;
-    private static final PacketProvider PROVIDER = NMSBridge.getPacketProvider();
-    private static final NMSProvider NMS_PROVIDER = NMSBridge.getNMSProvider();
     private static final ChatColor[] COLOR_CODES = ChatColor.values();
 
     private Component title;
@@ -132,11 +133,11 @@ public class Scoreboard {
             if (this.shown.containsKey(player.getUniqueId())) continue;
 
             String id = "coreboard-" + ThreadLocalRandom.current().nextInt(99999);
-            this.sendObjectivePacket(WrappedPacketPlayOutScoreboardObjective.ObjectiveMode.CREATE, player, id);
+            this.sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode.CREATE, player, id);
             this.sendDisplayObjectivePacket(player, id);
             for (int i = 0; i < this.elements.size(); i++) {
-                this.sendScorePacket(i, WrappedPacketPlayOutScoreboardScore.ScoreboardAction.CHANGE, player, id);
-                this.sendTeamPacket(i, WrappedPacketPlayOutScoreboardTeam.TeamMode.CREATE, player, id);
+                this.sendScorePacket(i, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM, player, id);
+                this.sendTeamPacket(i, WrapperPlayServerTeams.TeamMode.CREATE, player, id);
             }
             this.shown.put(player.getUniqueId(), id);
         }
@@ -148,9 +149,9 @@ public class Scoreboard {
 
             String id = this.shown.get(player.getUniqueId());
             for (int i = 0; i < this.elements.size(); i++) {
-                this.sendTeamPacket(i - 1, WrappedPacketPlayOutScoreboardTeam.TeamMode.REMOVE, player, id);
+                this.sendTeamPacket(i - 1, WrapperPlayServerTeams.TeamMode.REMOVE, player, id);
             }
-            this.sendObjectivePacket(WrappedPacketPlayOutScoreboardObjective.ObjectiveMode.REMOVE, player, id);
+            this.sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode.REMOVE, player, id);
             this.shown.remove(player.getUniqueId());
         }
     }
@@ -171,34 +172,34 @@ public class Scoreboard {
                     "The player is not viewing the this scoreboard.");
             String id = this.shown.get(player.getUniqueId());
             if (force) {
-                this.sendObjectivePacket(WrappedPacketPlayOutScoreboardObjective.ObjectiveMode.UPDATE, player, id);
+                this.sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode.UPDATE, player, id);
                 for (int i = this.elements.size(); i > 0; i--) {
-                    this.sendTeamPacket(i - 1, WrappedPacketPlayOutScoreboardTeam.TeamMode.REMOVE, player, id);
-                    this.sendScorePacket(i - 1, WrappedPacketPlayOutScoreboardScore.ScoreboardAction.REMOVE, player, id);
+                    this.sendTeamPacket(i - 1, WrapperPlayServerTeams.TeamMode.REMOVE, player, id);
+                    this.sendScorePacket(i - 1, WrapperPlayServerUpdateScore.Action.REMOVE_ITEM, player, id);
                 }
                 for (int i = 0; i < this.elements.size(); i++) {
-                    this.sendScorePacket(i, WrappedPacketPlayOutScoreboardScore.ScoreboardAction.CHANGE, player, id);
-                    this.sendTeamPacket(i, WrappedPacketPlayOutScoreboardTeam.TeamMode.CREATE, player, id);
+                    this.sendScorePacket(i, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM, player, id);
+                    this.sendTeamPacket(i, WrapperPlayServerTeams.TeamMode.CREATE, player, id);
                 }
                 this.oldElements = new ArrayList<>(this.elements);
             } else {
                 if (!this.oldTitle.equals(this.title))
-                    this.sendObjectivePacket(WrappedPacketPlayOutScoreboardObjective.ObjectiveMode.UPDATE, player, id);
+                    this.sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode.UPDATE, player, id);
 
                 if (this.oldElements.size() != this.elements.size()) {
                     List<Component> oldLinesCopy = new ArrayList<>(this.oldElements);
 
                     if (this.oldElements.size() > this.elements.size()) {
                         for (int i = oldLinesCopy.size(); i > this.elements.size(); i--) {
-                            this.sendTeamPacket(i - 1, WrappedPacketPlayOutScoreboardTeam.TeamMode.REMOVE, player, id);
-                            this.sendScorePacket(i - 1, WrappedPacketPlayOutScoreboardScore.ScoreboardAction.REMOVE, player, id);
+                            this.sendTeamPacket(i - 1, WrapperPlayServerTeams.TeamMode.REMOVE, player, id);
+                            this.sendScorePacket(i - 1, WrapperPlayServerUpdateScore.Action.REMOVE_ITEM, player, id);
 
                             this.oldElements.remove(0);
                         }
                     } else {
                         for (int i = oldLinesCopy.size(); i < this.elements.size(); i++) {
-                            this.sendScorePacket(i, WrappedPacketPlayOutScoreboardScore.ScoreboardAction.CHANGE, player, id);
-                            this.sendTeamPacket(i, WrappedPacketPlayOutScoreboardTeam.TeamMode.CREATE, player, id);
+                            this.sendScorePacket(i, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM, player, id);
+                            this.sendTeamPacket(i, WrapperPlayServerTeams.TeamMode.CREATE, player, id);
 
                             this.oldElements.add(
                                     this.oldElements.size() - i,
@@ -211,7 +212,7 @@ public class Scoreboard {
                     if (!Objects.equals(
                             this.oldElements.get(this.oldElements.size() - 1 - i),
                             this.elements.get(this.elements.size() - 1 - i))) {
-                        this.sendTeamPacket(i, WrappedPacketPlayOutScoreboardTeam.TeamMode.UPDATE, player, id);
+                        this.sendTeamPacket(i, WrapperPlayServerTeams.TeamMode.UPDATE, player, id);
                     }
                 }
             }
@@ -231,29 +232,25 @@ public class Scoreboard {
         return this;
     }
 
-    private void sendObjectivePacket(WrappedPacketPlayOutScoreboardObjective.ObjectiveMode mode, Player player, String id) {
-        WrappedPacket packet = PROVIDER.getNewScoreboardObjectivePacket(id,
-                AdventureUtils.toVanillaString(this.formatComponent(this.title, player)),
-                WrappedPacketPlayOutScoreboardObjective.HealthDisplay.INTEGER,
-                mode);
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+    private void sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode mode, Player player, String id) {
+        WrapperPlayServerScoreboardObjective packet = new WrapperPlayServerScoreboardObjective(id, mode,
+                Optional.of(AdventureUtils.toVanillaString(this.formatComponent(this.title, player))),
+                Optional.of(WrapperPlayServerScoreboardObjective.HealthDisplay.INTEGER));
+        PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
     private void sendDisplayObjectivePacket(Player player, String id) {
-        WrappedPacket packet = PROVIDER.getNewScoreboardDisplayObjectivePacket(WrappedPacketPlayOutScoreboardDisplayObjective
-                        .ScoreboardPosition.SIDEBAR, id);
-
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+        WrapperPlayServerDisplayScoreboard packet = new WrapperPlayServerDisplayScoreboard(1, id);
+        PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
-    private void sendScorePacket(int score, WrappedPacketPlayOutScoreboardScore.ScoreboardAction action, Player player, String id) {
-        WrappedPacket packet = PROVIDER.getNewScoreboardScorePacket(
-                COLOR_CODES[score].toString(), id, score, action);
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+    private void sendScorePacket(int score, WrapperPlayServerUpdateScore.Action action, Player player, String id) {
+        WrapperPlayServerUpdateScore packet = new WrapperPlayServerUpdateScore(COLOR_CODES[score].toString(), action, id, Optional.of(score));
+        PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
-    private void sendTeamPacket(int score, WrappedPacketPlayOutScoreboardTeam.TeamMode mode, Player player, String id) {
-        if (mode == WrappedPacketPlayOutScoreboardTeam.TeamMode.ADD_PLAYERS || mode == WrappedPacketPlayOutScoreboardTeam.TeamMode.REMOVE_PLAYERS) {
+    private void sendTeamPacket(int score, WrapperPlayServerTeams.TeamMode mode, Player player, String id) {
+        if (mode == WrapperPlayServerTeams.TeamMode.ADD_ENTITIES || mode == WrapperPlayServerTeams.TeamMode.REMOVE_ENTITIES) {
             throw new UnsupportedOperationException();
         }
 
@@ -295,14 +292,17 @@ public class Scoreboard {
             suffix = (suffix != null) ? suffix.substring(0, maxLength) : null;
         }
 
-        WrappedPacket packet = PROVIDER.getNewScoreboardTeamPacket(id + ':' + score,
-                id + ':' + score, prefix, suffix == null ? "" : suffix,
-                Collections.singletonList(COLOR_CODES[score].toString()),
-                mode, WrappedPacketPlayOutScoreboardTeam.TagVisibility.ALWAYS,
-                WrappedPacketPlayOutScoreboardTeam.PacketOptionData.NONE,
-                ChatColor.RESET);
-
-        NMS_PROVIDER.getPlayer(player).sendPacket(packet);
+        WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
+                AdventureSerializer.asAdventure(id + ':' + score),
+                AdventureSerializer.asAdventure(prefix),
+                AdventureSerializer.asAdventure(suffix == null ? "" : suffix),
+                WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
+                WrapperPlayServerTeams.CollisionRule.ALWAYS,
+                NamedTextColor.WHITE,
+                WrapperPlayServerTeams.OptionData.NONE
+        );
+        WrapperPlayServerTeams packet = new WrapperPlayServerTeams(id, mode, Optional.of(info), Collections.singletonList(COLOR_CODES[score].toString()));
+        PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
     //------------------------------
