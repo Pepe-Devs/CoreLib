@@ -33,8 +33,7 @@ public class HologramManager {
         this.packetListener = new HologramPacketListener(this);
         PacketEvents.getAPI().getEventManager().registerListener(this.packetListener);
         this.hologramListener = new HologramListener(this);
-        this.handle
-                .getServer()
+        this.handle.getServer()
                 .getPluginManager()
                 .registerEvents(this.hologramListener, this.handle);
     }
@@ -71,7 +70,7 @@ public class HologramManager {
             value.destroy();
         }
         this.holograms.clear();
-//        PacketChannelHandler.getInstance(this.handle).removePacketListener(this.packetListener);
+        PacketEvents.getAPI().getEventManager().unregisterListener(this.packetListener);
         this.thread.cancel();
         HandlerList.unregisterAll(this.hologramListener);
         instance = null;
