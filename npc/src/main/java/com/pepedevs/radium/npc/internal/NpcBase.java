@@ -166,7 +166,7 @@ public abstract class NpcBase implements NPC {
 
     public void setCrouching(boolean a) {
         this.npcData.setCrouched(a);
-        this.updateNPCData();
+        this.updateNPCData(new EntityData(0, EntityDataTypes.BYTE, this.npcData.buildByte()));
     }
 
     public boolean isCrouching() {
@@ -175,15 +175,14 @@ public abstract class NpcBase implements NPC {
 
     public void setOnFire(boolean a) {
         this.npcData.setOnFire(a);
-        this.updateNPCData();
+        this.updateNPCData(new EntityData(0, EntityDataTypes.BYTE, this.npcData.buildByte()));
     }
 
     public boolean isOnFire() {
         return this.npcData.isOnFire();
     }
 
-    private void updateNPCData() {
-        EntityData entityData = new EntityData(0, EntityDataTypes.BYTE, this.npcData.buildByte());
+    protected void updateNPCData(EntityData entityData) {
         WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.entityId, Collections.singletonList(entityData));
         for (UUID uuid : this.shown) {
             Player player = Bukkit.getPlayer(uuid);

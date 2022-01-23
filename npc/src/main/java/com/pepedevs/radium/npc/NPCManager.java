@@ -54,7 +54,7 @@ public class NPCManager {
             npc.destroy();
         }
         npcs.clear();
-//        PacketEvents.getAPI().getEventManager().unregisterListener(NPCPacketListener);
+        PacketEvents.getAPI().getEventManager().unregisterListener(this.packetListener);
     }
 
 }

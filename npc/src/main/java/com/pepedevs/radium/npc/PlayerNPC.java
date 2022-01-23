@@ -5,7 +5,6 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.GameProfile;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
@@ -17,7 +16,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class PlayerNPC extends NpcBase {
 
@@ -224,14 +226,7 @@ public class PlayerNPC extends NpcBase {
                 entityData.setIndex(17);
             }
         }
-        WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.entityId,
-                Collections.singletonList(entityData)
-        );
-        for (UUID uuid : this.shown) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
-        }
+        this.updateNPCData(entityData);
     }
 
     public enum SkinPart {
