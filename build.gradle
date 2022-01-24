@@ -6,7 +6,7 @@ plugins {
 
 allprojects {
     group 'com.pepedevs.radium'
-    version '1.2.0-BETA-1.5-SNAPSHOT'
+    version '1.2.0-BETA-1.6-TEST-SNAPSHOT'
 
     apply plugin: 'java-library'
     apply plugin: 'com.github.johnrengelman.shadow'
@@ -29,10 +29,21 @@ allprojects {
         }
     }
 
+    shadowJar {
+        archiveClassifier.set('')
+        archiveVersion.set('')
+
+        relocate 'org.bstats', 'com.pepedevs.radium.libs.bstats'
+        relocate 'xyz.xenondevs.particle', 'com.pepedevs.radium.particles'
+        relocate 'com.cryptomorin.xseries', 'com.pepedevs.radium.utils.xseries'
+    }
+
     publishing {
         publications {
-            maven(MavenPublication) {
-                from(components.java)
+            shadow(MavenPublication) { publication ->
+                groupId = 'com.pepedevs'
+                artifactId = project.name
+                project.shadow.component(publication)
             }
         }
         repositories {
@@ -41,15 +52,9 @@ allprojects {
                     username = "$usr"
                     password = "$pwd"
                 }
-                url 'https://repo.pepedevs.com/nexus/repository/maven-snapshot/'
+                url 'https://repo.pepedevs.com/nexus/repository/maven-snapshots/'
             }
         }
-    }
-
-    shadowJar {
-        relocate 'org.bstats', 'com.pepedevs.radium.libs.bstats'
-        relocate 'xyz.xenondevs.particle', 'com.pepedevs.radium.particles'
-        relocate 'com.cryptomorin.xseries', 'com.pepedevs.radium.utils.xseries'
     }
 
     java {
@@ -64,6 +69,7 @@ allprojects {
         options.encoding = 'UTF-8'
     }
 
+    publish.shouldRunAfter shadowJar
     shadowJar.shouldRunAfter build
 }
 
