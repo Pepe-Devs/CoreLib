@@ -471,7 +471,7 @@ public class ItemStackUtils {
         GameProfile profile = new GameProfile(UUID.randomUUID(), "CoreHead");
 
         // put textures property.
-        profile.getProperties().put("textures", new Property("texture", texture));
+        profile.getProperties().put("textures", new Property("textures", texture));
 
         // set field.
         try {

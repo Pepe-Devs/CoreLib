@@ -155,6 +155,11 @@ public abstract class NpcBase implements NPC {
     }
 
     @Override
+    public void addInShownList(Player player) {
+        this.shown.add(player.getUniqueId());
+    }
+
+    @Override
     public Collection<NPCClickAction> getClickActions() {
         return this.clickActions;
     }

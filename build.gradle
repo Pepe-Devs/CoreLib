@@ -6,7 +6,7 @@ plugins {
 
 allprojects {
     group 'com.pepedevs.radium'
-    version '1.2.0-BETA-1.6-TEST-SNAPSHOT'
+    version '1.2.0-BETA-1.9-TEST-SNAPSHOT'
 
     apply plugin: 'java-library'
     apply plugin: 'com.github.johnrengelman.shadow'
@@ -47,6 +47,7 @@ allprojects {
             }
         }
         repositories {
+            mavenLocal()
             maven {
                 credentials {
                     username = "$usr"
@@ -65,7 +66,7 @@ allprojects {
         dependsOn shadowJar
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
     }
 

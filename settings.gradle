@@ -24,3 +24,4 @@ include(':nms.v1_12_R1')
 include(':placeholder-utils')
 project(":nms.v1_8_R3").projectDir = file('nms/v1_8_R3')
 project(":nms.v1_12_R1").projectDir = file('nms/v1_12_R1')
+

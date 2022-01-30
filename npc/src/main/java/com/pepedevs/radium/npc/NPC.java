@@ -41,6 +41,8 @@ public interface NPC {
 
     void forceShow(Player player);
 
+    void addInShownList(Player player);
+
     Collection<NPCClickAction> getClickActions();
 
     void addClickAction(NPCClickAction action);
